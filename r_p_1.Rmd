@@ -1,0 +1,81 @@
+---
+title: "1. Исследование датасета по продуктам процессинга белков протеасомой."
+author: "Антон Смирнов"
+date: "02.11.2022"
+output:
+  html_document:
+    df_print: paged
+---
+
+Датасет взят из статьи Specht, G., Roetschke, H.P., Mansurkhodzhaev, A. et al. Large database for the analysis and prediction of spliced and non-spliced peptide generation by proteasomes. Sci Data 7, 146 (2020). https://doi.org/10.1038/s41597-020-0487-6
+
+Ссылка на датасет: https://doi.org/10.17632/nr7cs764rc.1
+
+Датасет представляет из себя совокупность результатов процессинга пептидов разными протеасомами in vitro. Пептиды определяли с помощью масс-спектрометрии.
+
+```{r}
+library(dplyr)
+library(stringr)
+library(ggplot2)
+
+proteasome.data = read.csv("ProteasomeDB.csv")
+str(proteasome.data)
+```
+Посмотрим на основные интересующие нас моменты: тип протеасомы, видовое разнообразие, тип сплайсинга, разнообразие белков.
+
+```{r}
+proteasome.data %>% count(spliceType, species, protIsotype)
+```
+
+как можно заметить, все сделано на человеческих белках, преобладают несплайсированные формы, крайне мало образцов, процессированных 26S протеосомой(20S + регуляторные субъединицы). Для дальнейшего рассмотрения возьмем не сплайсированные формы, процессированные 20S протеосомой без посттрансляционных модификаций.
+
+```{r}
+not.spliced = proteasome.data[proteasome.data$spliceType  == "" & 
+                                grepl("20S", proteasome.data$protIsotype) &
+                                proteasome.data$PTM  == "",]
+not.spliced %>% count(substrateOrigin)
+
+immuno = not.spliced[not.spliced$protIsotype == "20S immuno",]
+standard = not.spliced[not.spliced$protIsotype == "20S standard",]
+```
+
+Определим сайты протеолиза иммунопротеосомы.
+```{r}
+i.pos = immuno %>% pull(positions) %>% str_split_fixed("_",2) %>% 
+  as.data.frame() %>% mutate(across(where(is.character), as.numeric))
+colnames(i.pos) = c("N","C")
+i.pos$substrateSeq = immuno$substrateSeq
+i.sites = append(substr(i.pos$substrateSeq,i.pos$N - 1,i.pos$N),substr(i.pos$substrateSeq,i.pos$C,i.pos$C+1))             
+i.sites.stat = as.data.frame(round(table(i.sites) / length(i.sites),5))%>% mutate(N = substr(i.sites,1,1))
+i.sites.stat
+table(i.sites.stat$N)
+
+```
+Определим сайты разрезания стандартной протеосомы
+```{r}
+s.pos = standard %>% pull(positions) %>% str_split_fixed("_",2) %>% 
+  as.data.frame() %>% mutate(across(where(is.character), as.numeric))
+colnames(s.pos) = c("N","C")
+s.pos$substrateSeq = standard$substrateSeq
+s.sites = append(substr(s.pos$substrateSeq,s.pos$N - 1,s.pos$N),substr(s.pos$substrateSeq,s.pos$C,s.pos$C+1))             
+s.sites.stat = as.data.frame(round(table(s.sites) / length(s.sites),5))%>% mutate(N = substr(s.sites,1,1))
+s.sites.stat
+table(s.sites.stat$N)
+```
+
+Как можно видеть, протеосомы могут разрезать белок по всем аминокислотам, но с разной частотой.
+
+```{r}
+i.N.amino.sites = as.data.frame(round(table(substr(i.sites,1,1))/length(i.sites),5))
+s.N.amino.sites = as.data.frame(round(table(substr(s.sites,1,1))/length(s.sites),5))
+i.N.amino.sites$class = 'immuno'
+s.N.amino.sites$class = "standard"
+sites = rbind.data.frame(i.N.amino.sites,s.N.amino.sites)
+sites = rbind.data.frame(sites,c("C",0,"immuno"))
+sites$Freq = as.numeric(sites$Freq)
+colnames(sites) = c("Residue","Freq", "Class")
+ggplot(sites) + geom_col(aes(x = Residue,y = Freq,colour=Class),fill = "white",position = "dodge")+scale_color_manual(values = c("immuno" = "green","standard" = "red"))
+
+
+```
+
