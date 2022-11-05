@@ -1,2 +1,2 @@
-# PredictionEpitope
+# PredictionEpitopes
 Мой дипломный проект по предсказанию эпитопов
