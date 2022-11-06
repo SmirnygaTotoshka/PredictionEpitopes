@@ -18,7 +18,7 @@ library(dplyr)
 library(stringr)
 library(ggplot2)
 
-proteasome.data = read.csv("ProteasomeDB.csv")
+proteasome.data = read.csv("~/Documents/Epitops/Data/ProteasomeDB.csv")
 str(proteasome.data)
 ```
 Посмотрим на основные интересующие нас моменты: тип протеасомы, видовое разнообразие, тип сплайсинга, разнообразие белков.
