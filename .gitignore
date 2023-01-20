@@ -6,4 +6,5 @@ data/source/*
 html_reports/*
 logs/*
 notebooks/.ipynb_checkpoints/
+.idea/*
 
