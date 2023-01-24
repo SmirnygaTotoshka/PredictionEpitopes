@@ -84,9 +84,49 @@ AS (SELECT mhc_bind_id, reference_id, curated_epitope_id, as_char_value, mhc_all
 SELECT COUNT(*) FROM filtered_bind;
 ```
 
+# mhc_elution
+
+Распределение по результатам
+
+```{sql connection=con}
+SELECT as_char_value, COUNT(as_char_value)  FROM mhc_elution GROUP BY as_char_value;
+```
+
+Всего строк в таблице
+
+```{sql connection=con}
+SELECT COUNT(*) FROM mhc_elution;
+```
+
+Отфильтруем строки с пустыми полями
+
+```{sql connection=con}
+CREATE OR REPLACE ALGORITHM = TEMPTABLE
+VIEW filtered_elution
+AS (SELECT mhc_elution_id, reference_id, curated_epitope_id, as_char_value, mhc_allele_restriction_id, h_organism_id, ant_type, ant_ref_name, ant_object_id, apc_cell_type, apc_tissue_type, apc_origin
+    FROM mhc_elution
+    WHERE mhc_elution_id IS NOT NULL AND
+          reference_id IS NOT NULL AND
+          curated_epitope_id IS NOT NULL AND
+          as_char_value IS NOT NULL AND
+          mhc_allele_restriction_id IS NOT NULL AND
+          h_organism_id = 9606 AND
+          ant_type = 'Epitope');
+```
+
+Количество строк
+
+```{sql connection=con}
+SELECT COUNT(*) FROM filtered_elution;
+```
+
 Нам необходима информация о МНС и о эпитопе. Подготовим по отдельности и объединим.
 
-## Эпитопы
+# Эпитопы
+
+```{sql connection=con}
+SELECT COUNT(*) FROM curated_epitope;
+```
 
 ```{sql connection=con}
 SELECT e_region_domain_flag, COUNT(e_region_domain_flag) FROM curated_epitope
@@ -103,11 +143,9 @@ GROUP BY e_ev;
 ```{sql connection=con}
 CREATE OR REPLACE ALGORITHM = TEMPTABLE
 VIEW filtered_epitope_cur
-AS (SELECT mhc_bind_id, ce.curated_epitope_id, e_name, e_object_id,e_region_domain_flag, e_ev, e_ref_start,e_ref_end
-    FROM curated_epitope ce
-    INNER JOIN filtered_bind fb ON fb.mhc_bind_id = mhc_bind_id
-    WHERE mhc_bind_id IS NOT NULL AND
-          ce.curated_epitope_id IS NOT NULL AND
+AS (SELECT curated_epitope_id, e_name, e_object_id,e_region_domain_flag, e_ev, e_ref_start,e_ref_end
+    FROM curated_epitope
+    WHERE curated_epitope_id IS NOT NULL AND
           e_name IS NOT NULL AND
           e_object_id IS NOT NULL AND
           e_region_domain_flag = 'Exact Epitope' AND
@@ -119,3 +157,106 @@ AS (SELECT mhc_bind_id, ce.curated_epitope_id, e_name, e_object_id,e_region_doma
 ```{sql connection=con}
 SELECT COUNT(*) FROM filtered_epitope_cur;
 ```
+
+# MHC
+
+```{sql connection=con}
+SELECT COUNT(*) FROM mhc_allele_restriction;
+```
+
+```{sql connection=con}
+SELECT restriction_level, COUNT(restriction_level) FROM mhc_allele_restriction
+GROUP BY restriction_level;
+```
+
+```{sql connection=con}
+SELECT class, COUNT(class) FROM mhc_allele_restriction
+GROUP BY class;
+```
+
+Нам нужны человеческие (NCBI Taxonomy ID 9606) МНС 1 класса.
+
+```{sql connection=con}
+CREATE OR REPLACE ALGORITHM = TEMPTABLE
+VIEW filtered_mhc
+AS (SELECT mhc_allele_restriction_id, restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
+    FROM mhc_allele_restriction
+    WHERE mhc_allele_restriction_id IS NOT NULL AND
+          restriction_level = 'complete molecule' AND
+          organism_ncbi_tax_id = 9606 AND
+          class = 'I');
+```
+
+```{sql connection=con}
+SELECT COUNT(*) FROM filtered_mhc;
+```
+
+# BIND TOGETHER
+
+```{sql connection=con}
+CREATE OR REPLACE ALGORITHM = TEMPTABLE
+VIEW epi_mhc_bind
+AS (SELECT fb.mhc_bind_id, fe.curated_epitope_id, fe.e_name, fe.e_object_id,fe.e_region_domain_flag, fe.e_ev, fe.e_ref_start,fe.e_ref_end,fm.mhc_allele_restriction_id, fm.restriction_level,fm.displayed_restriction, fm.organism_ncbi_tax_id,fm.class, fm.chain_i_name
+    FROM filtered_bind fb
+    INNER JOIN filtered_mhc fm ON fm.mhc_allele_restriction_id = fb.mhc_allele_restriction_id
+    INNER JOIN filtered_epitope_cur fe ON fe.curated_epitope_id = fb.curated_epitope_id);
+```
+
+```{sql connection=con}
+SELECT COUNT(*) FROM epi_mhc_bind;
+```
+
+```{sql connection=con}
+CREATE OR REPLACE ALGORITHM = TEMPTABLE
+VIEW epi_mhc_elution
+AS (SELECT fel.mhc_elution_id, fe.curated_epitope_id, fe.e_name, fe.e_object_id,fe.e_region_domain_flag, fe.e_ev, fe.e_ref_start,fe.e_ref_end,fm.mhc_allele_restriction_id, fm.restriction_level,fm.displayed_restriction, fm.organism_ncbi_tax_id,fm.class, fm.chain_i_name
+    FROM filtered_elution fel
+    INNER JOIN filtered_mhc fm ON fm.mhc_allele_restriction_id = fel.mhc_allele_restriction_id
+    INNER JOIN filtered_epitope_cur fe ON fe.curated_epitope_id = fel.curated_epitope_id);
+```
+
+```{sql connection=con}
+SELECT COUNT(*) FROM epi_mhc_elution;
+```
+
+
+Combine
+
+```{sql connection=con}
+CREATE OR REPLACE ALGORITHM = TEMPTABLE
+VIEW elution_bind
+AS (SELECT * FROM epi_mhc_bind
+    UNION
+    SELECT * FROM epi_mhc_elution);
+```
+
+```{sql connection=con}
+SELECT COUNT(*) FROM elution_bind;
+```
+
+```{sql connection=con}
+CREATE OR REPLACE ALGORITHM = TEMPTABLE
+VIEW final_epi_mhc
+AS (SELECT eb.e_name,eb.e_region_domain_flag,eb.e_ev, eb.e_ref_start, eb.e_ref_end,
+eb.restriction_level, eb.displayed_restriction,eb.organism_ncbi_tax_id, eb.class,eb.chain_i_name, source_antigen_accession, source_organism_org_id,
+description, linear_peptide_seq
+FROM elution_bind eb
+inner join epitope_object eo on eo.object_id = eb.e_object_id
+inner join epitope e on eo.epitope_id = e.epitope_id
+where source_antigen_accession is not null and 
+      source_organism_org_id is not null and
+      linear_peptide_seq is not null and linear_peptide_modification is null);
+```
+
+```{sql connection=con}
+SELECT COUNT(*) FROM final_epi_mhc;
+```
+
+```{sql connection=con}
+SELECT * FROM final_epi_mhc limit 10;
+```
+
+
+
+
+
