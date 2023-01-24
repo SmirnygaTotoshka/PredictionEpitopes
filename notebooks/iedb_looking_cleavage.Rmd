@@ -1,0 +1,121 @@
+---
+title: "3. Поиск сайтов протеолиза белков протеосомой по данным IEDB"
+author: "Антон Смирнов"
+date: "24.01.2023"
+link-citations: true
+output: html_document
+bibliography: references_look_iedb_cleavage.bib
+---
+
+# Введение
+
+The Immune Epitope Database (IEDB)@vita2019 - крупнейшая база данных по Т и В-клеточным эпитопам. Необходимо оценить частоту встречаемости аминокислот на С-конце эпитопа, так как с него как правило не идет процессинг антигена для МНС 1 класса.
+
+Установить соединение с БД, развернутой на локальном сервере.
+
+```{r}
+con = RMySQL::dbConnect(RMySQL::MySQL(),
+                            dbname='iedb',
+                            host='localhost',
+                            port=3306,
+                            user='stotoshka',
+                            password='meowmeow')
+```
+
+Типы экспериментов в БД.
+
+```{sql connection=con}
+SELECT category, count(category) FROM assay_type GROUP BY category;
+```
+
+Нам не нужны эксперименты с MHC и Naturally Processed, так как в них, как правило работают с линейными эпитопами и названия экспериментов соответствуют необходимым нам.
+
+```{sql connection=con}
+SELECT category, assay_type  FROM assay_type at2 WHERE category = 'MHC' ;
+```
+
+```{sql connection=con}
+SELECT category, assay_type  FROM assay_type at2 WHERE category = 'Naturally Processed' ;
+```
+
+Необходимая нам информация содержится в таблицах mhc_elution и mhc_bind и связанных с ними.
+
+```{sql connection=con}
+SELECT DISTINCT at2.category,at2.assay_type FROM mhc_elution me 
+INNER JOIN assay_type at2 ON as_type_id  = at2.assay_type_id;
+```
+
+```{sql connection=con}
+SELECT DISTINCT at2.category,at2.assay_type FROM mhc_bind mb
+INNER JOIN assay_type at2 ON as_type_id  = at2.assay_type_id 
+```
+
+# mhc_bind
+
+Распределение по результатам
+
+```{sql connection=con}
+SELECT as_char_value, COUNT(as_char_value)  FROM mhc_bind GROUP BY as_char_value;
+```
+
+Всего строк в таблице
+
+```{sql connection=con}
+SELECT COUNT(*) FROM mhc_bind;
+```
+
+Отфильтруем строки с пустыми полями
+
+```{sql connection=con}
+CREATE OR REPLACE ALGORITHM = TEMPTABLE
+VIEW filtered_bind
+AS (SELECT mhc_bind_id, reference_id, curated_epitope_id, as_char_value, mhc_allele_restriction_id 
+    FROM mhc_bind
+    WHERE mhc_bind_id IS NOT NULL AND
+          reference_id IS NOT NULL AND
+          curated_epitope_id IS NOT NULL AND
+          as_char_value IS NOT NULL AND
+          mhc_allele_restriction_id IS NOT NULL);
+```
+
+Количество строк
+
+```{sql connection=con}
+SELECT COUNT(*) FROM filtered_bind;
+```
+
+Нам необходима информация о МНС и о эпитопе. Подготовим по отдельности и объединим.
+
+## Эпитопы
+
+```{sql connection=con}
+SELECT e_region_domain_flag, COUNT(e_region_domain_flag) FROM curated_epitope
+GROUP BY e_region_domain_flag;
+```
+
+```{sql connection=con}
+SELECT e_ev, COUNT(e_ev) FROM curated_epitope
+GROUP BY e_ev;
+```
+
+Фильтруем, чтобы не было пустых идентификаторов, был "Exact Epitope" и "Exact match to reference information", "Internal Identifier-no external match available", "Author provided Identifier".
+
+```{sql connection=con}
+CREATE OR REPLACE ALGORITHM = TEMPTABLE
+VIEW filtered_epitope_cur
+AS (SELECT mhc_bind_id, ce.curated_epitope_id, e_name, e_object_id,e_region_domain_flag, e_ev, e_ref_start,e_ref_end
+    FROM curated_epitope ce
+    INNER JOIN filtered_bind fb ON fb.mhc_bind_id = mhc_bind_id
+    WHERE mhc_bind_id IS NOT NULL AND
+          ce.curated_epitope_id IS NOT NULL AND
+          e_name IS NOT NULL AND
+          e_object_id IS NOT NULL AND
+          e_region_domain_flag = 'Exact Epitope' AND
+          e_ev IN ('Exact match to reference information',
+                   'Internal Identifier-no external match available',
+                   'Author provided Identifier'));
+```
+
+```{sql connection=con}
+SELECT COUNT(*) FROM filtered_epitope_cur;
+```
