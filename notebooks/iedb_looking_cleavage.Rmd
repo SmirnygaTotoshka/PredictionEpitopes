@@ -58,6 +58,14 @@ INNER JOIN assay_type at2 ON as_type_id  = at2.assay_type_id
 SELECT as_char_value, COUNT(as_char_value)  FROM mhc_bind GROUP BY as_char_value;
 ```
 
+
+```{sql connection=con}
+SELECT object_type, COUNT(object_type)  FROM object GROUP BY object_type;
+```
+```{sql connection=con}
+SELECT object_sub_type, COUNT(object_sub_type)  FROM object GROUP BY object_sub_type;
+```
+
 Всего строк в таблице
 
 ```{sql connection=con}
@@ -67,8 +75,7 @@ SELECT COUNT(*) FROM mhc_bind;
 Отфильтруем строки с пустыми полями
 
 ```{sql connection=con}
-CREATE OR REPLACE ALGORITHM = TEMPTABLE
-VIEW filtered_bind
+CREATE TABLE filtered_bind
 AS (SELECT mhc_bind_id, reference_id, curated_epitope_id, as_char_value, mhc_allele_restriction_id 
     FROM mhc_bind
     WHERE mhc_bind_id IS NOT NULL AND
@@ -76,6 +83,10 @@ AS (SELECT mhc_bind_id, reference_id, curated_epitope_id, as_char_value, mhc_all
           curated_epitope_id IS NOT NULL AND
           as_char_value IS NOT NULL AND
           mhc_allele_restriction_id IS NOT NULL);
+```
+
+```{sql connection=con}
+CREATE INDEX filtered_bind_index ON filtered_bind (mhc_bind_id,curated_epitope_id,mhc_allele_restriction_id);
 ```
 
 Количество строк
@@ -101,8 +112,7 @@ SELECT COUNT(*) FROM mhc_elution;
 Отфильтруем строки с пустыми полями
 
 ```{sql connection=con}
-CREATE OR REPLACE ALGORITHM = TEMPTABLE
-VIEW filtered_elution
+CREATE TABLE filtered_elution
 AS (SELECT mhc_elution_id, reference_id, curated_epitope_id, as_char_value, mhc_allele_restriction_id, h_organism_id, ant_type, ant_ref_name, ant_object_id, apc_cell_type, apc_tissue_type, apc_origin
     FROM mhc_elution
     WHERE mhc_elution_id IS NOT NULL AND
@@ -112,6 +122,10 @@ AS (SELECT mhc_elution_id, reference_id, curated_epitope_id, as_char_value, mhc_
           mhc_allele_restriction_id IS NOT NULL AND
           h_organism_id = 9606 AND
           ant_type = 'Epitope');
+```
+
+```{sql connection=con}
+CREATE INDEX filtered_elution_index ON filtered_elution (mhc_elution_id,curated_epitope_id,mhc_allele_restriction_id);
 ```
 
 Количество строк
@@ -125,7 +139,7 @@ SELECT COUNT(*) FROM filtered_elution;
 # Эпитопы
 
 ```{sql connection=con}
-SELECT COUNT(*) FROM curated_epitope;
+SELECT DISTINCT COUNT(e_object_id) FROM curated_epitope;
 ```
 
 ```{sql connection=con}
@@ -141,21 +155,24 @@ GROUP BY e_ev;
 Фильтруем, чтобы не было пустых идентификаторов, был "Exact Epitope" и "Exact match to reference information", "Internal Identifier-no external match available", "Author provided Identifier".
 
 ```{sql connection=con}
-CREATE OR REPLACE ALGORITHM = TEMPTABLE
-VIEW filtered_epitope_cur
-AS (SELECT curated_epitope_id, e_name, e_object_id,e_region_domain_flag, e_ev, e_ref_start,e_ref_end
+CREATE TABLE filtered_epitope_cur
+AS (SELECT curated_epitope_id, e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, 'database', name, sequence, organism_name
     FROM curated_epitope
-    WHERE curated_epitope_id IS NOT NULL AND
-          e_name IS NOT NULL AND
-          e_object_id IS NOT NULL AND
-          e_region_domain_flag = 'Exact Epitope' AND
-          e_ev IN ('Exact match to reference information',
-                   'Internal Identifier-no external match available',
-                   'Author provided Identifier'));
+    INNER JOIN epitope_object eo ON eo.object_id = e_object_id
+    INNER JOIN epitope e ON e.epitope_id = eo.epitope_id
+    INNER JOIN source s ON s.accession = source_antigen_accession
+    WHERE e_region_domain_flag = 'Exact Epitope' AND
+          linear_peptide_seq IS NOT NULL AND 
+          linear_peptide_modification IS NULL AND
+          sequence IS NOT NULL);
 ```
 
 ```{sql connection=con}
-SELECT COUNT(*) FROM filtered_epitope_cur;
+CREATE INDEX filtered_epitope_cur_index ON filtered_epitope_cur (curated_epitope_id);
+```
+
+```{sql connection=con}
+SELECT COUNT(curated_epitope_id) FROM filtered_epitope_cur;
 ```
 
 # MHC
@@ -177,8 +194,7 @@ GROUP BY class;
 Нам нужны человеческие (NCBI Taxonomy ID 9606) МНС 1 класса.
 
 ```{sql connection=con}
-CREATE OR REPLACE ALGORITHM = TEMPTABLE
-VIEW filtered_mhc
+CREATE TABLE filtered_mhc
 AS (SELECT mhc_allele_restriction_id, restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
     FROM mhc_allele_restriction
     WHERE mhc_allele_restriction_id IS NOT NULL AND
@@ -186,77 +202,75 @@ AS (SELECT mhc_allele_restriction_id, restriction_level,displayed_restriction, o
           organism_ncbi_tax_id = 9606 AND
           class = 'I');
 ```
+```{sql connection=con}
+CREATE INDEX filtered_mhc_index ON filtered_mhc (mhc_allele_restriction_id);
+```
 
 ```{sql connection=con}
 SELECT COUNT(*) FROM filtered_mhc;
 ```
 
 # BIND TOGETHER
+mhc_bind_id, reference_id, as_char_value, 
+e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, 'database', name, sequence, organism_name, 
+restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
 
 ```{sql connection=con}
-CREATE OR REPLACE ALGORITHM = TEMPTABLE
-VIEW epi_mhc_bind
-AS (SELECT fb.mhc_bind_id, fe.curated_epitope_id, fe.e_name, fe.e_object_id,fe.e_region_domain_flag, fe.e_ev, fe.e_ref_start,fe.e_ref_end,fm.mhc_allele_restriction_id, fm.restriction_level,fm.displayed_restriction, fm.organism_ncbi_tax_id,fm.class, fm.chain_i_name
+CREATE TABLE epi_mhc_bind
+AS (SELECT fb.mhc_bind_id, fb.reference_id, fb.as_char_value, 
+e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, 'database', name, sequence, organism_name, 
+restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
     FROM filtered_bind fb
     INNER JOIN filtered_mhc fm ON fm.mhc_allele_restriction_id = fb.mhc_allele_restriction_id
     INNER JOIN filtered_epitope_cur fe ON fe.curated_epitope_id = fb.curated_epitope_id);
 ```
-
 ```{sql connection=con}
-SELECT COUNT(*) FROM epi_mhc_bind;
+CREATE INDEX epi_mhc_bind_index ON epi_mhc_bind (mhc_bind_id);
+```
+```{sql connection=con}
+SELECT COUNT(mhc_bind_id) FROM epi_mhc_bind;
 ```
 
 ```{sql connection=con}
-CREATE OR REPLACE ALGORITHM = TEMPTABLE
-VIEW epi_mhc_elution
-AS (SELECT fel.mhc_elution_id, fe.curated_epitope_id, fe.e_name, fe.e_object_id,fe.e_region_domain_flag, fe.e_ev, fe.e_ref_start,fe.e_ref_end,fm.mhc_allele_restriction_id, fm.restriction_level,fm.displayed_restriction, fm.organism_ncbi_tax_id,fm.class, fm.chain_i_name
+CREATE TABLE epi_mhc_elution
+AS (SELECT fel.mhc_elution_id, fel.reference_id, fel.as_char_value,
+apc_cell_type, apc_tissue_type, apc_origin,
+e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, 'database', name, sequence, organism_name, 
+restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
     FROM filtered_elution fel
     INNER JOIN filtered_mhc fm ON fm.mhc_allele_restriction_id = fel.mhc_allele_restriction_id
     INNER JOIN filtered_epitope_cur fe ON fe.curated_epitope_id = fel.curated_epitope_id);
 ```
 
 ```{sql connection=con}
-SELECT COUNT(*) FROM epi_mhc_elution;
+CREATE INDEX epi_mhc_elution_index ON epi_mhc_elution (mhc_elution_id);
 ```
 
+```{sql connection=con}
+SELECT COUNT(mhc_elution_id) FROM epi_mhc_elution;
+```
 
 Combine
 
-```{sql connection=con}
-CREATE OR REPLACE ALGORITHM = TEMPTABLE
-VIEW elution_bind
-AS (SELECT * FROM epi_mhc_bind
-    UNION
-    SELECT * FROM epi_mhc_elution);
+```{r echo=F}
+bind.assays = RMySQL::dbReadTable(con, "epi_mhc_bind")
+elution.assays = RMySQL::dbReadTable(con, "epi_mhc_elution")
 ```
 
-```{sql connection=con}
-SELECT COUNT(*) FROM elution_bind;
+```{r}
+table(bind.assays$as_char_value)
 ```
 
-```{sql connection=con}
-CREATE OR REPLACE ALGORITHM = TEMPTABLE
-VIEW final_epi_mhc
-AS (SELECT eb.e_name,eb.e_region_domain_flag,eb.e_ev, eb.e_ref_start, eb.e_ref_end,
-eb.restriction_level, eb.displayed_restriction,eb.organism_ncbi_tax_id, eb.class,eb.chain_i_name, source_antigen_accession, source_organism_org_id,
-description, linear_peptide_seq
-FROM elution_bind eb
-inner join epitope_object eo on eo.object_id = eb.e_object_id
-inner join epitope e on eo.epitope_id = e.epitope_id
-where source_antigen_accession is not null and 
-      source_organism_org_id is not null and
-      linear_peptide_seq is not null and linear_peptide_modification is null);
-```
-
-```{sql connection=con}
-SELECT COUNT(*) FROM final_epi_mhc;
-```
-
-```{sql connection=con}
-SELECT * FROM final_epi_mhc limit 10;
+```{r}
+table(elution.assays$as_char_value)
 ```
 
 
-
-
-
+```{r}
+r = stringr::str_locate_all(bind.assays$sequence, bind.assays$linear_peptide_seq)
+s = sapply(r,nrow)
+match(s[s > 1],s)
+r[1879]
+bind.assays$linear_peptide_seq[1879]
+substr(bind.assays$sequence[1879],354,363)
+```
