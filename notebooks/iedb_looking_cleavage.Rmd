@@ -12,6 +12,12 @@ bibliography: references_look_iedb_cleavage.bib
 The Immune Epitope Database (IEDB)@vita2019 - крупнейшая база данных по Т и В-клеточным эпитопам. Необходимо оценить частоту встречаемости аминокислот на С-конце эпитопа, так как с него как правило не идет процессинг антигена для МНС 1 класса.
 
 Установить соединение с БД, развернутой на локальном сервере.
+```{r}
+library(RMySQL)
+library(dplyr)
+library(stringr)
+```
+
 
 ```{r}
 con = RMySQL::dbConnect(RMySQL::MySQL(),
@@ -156,7 +162,7 @@ GROUP BY e_ev;
 
 ```{sql connection=con}
 CREATE TABLE filtered_epitope_cur
-AS (SELECT curated_epitope_id, e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, 'database', name, sequence, organism_name
+AS (SELECT curated_epitope_id, e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, `database`, name, sequence, organism_name
     FROM curated_epitope
     INNER JOIN epitope_object eo ON eo.object_id = e_object_id
     INNER JOIN epitope e ON e.epitope_id = eo.epitope_id
@@ -218,7 +224,7 @@ restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_nam
 ```{sql connection=con}
 CREATE TABLE epi_mhc_bind
 AS (SELECT fb.mhc_bind_id, fb.reference_id, fb.as_char_value, 
-e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, 'database', name, sequence, organism_name, 
+e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, `database`, name, sequence, organism_name, 
 restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
     FROM filtered_bind fb
     INNER JOIN filtered_mhc fm ON fm.mhc_allele_restriction_id = fb.mhc_allele_restriction_id
@@ -235,7 +241,7 @@ SELECT COUNT(mhc_bind_id) FROM epi_mhc_bind;
 CREATE TABLE epi_mhc_elution
 AS (SELECT fel.mhc_elution_id, fel.reference_id, fel.as_char_value,
 apc_cell_type, apc_tissue_type, apc_origin,
-e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, 'database', name, sequence, organism_name, 
+e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, `database`, name, sequence, organism_name, 
 restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
     FROM filtered_elution fel
     INNER JOIN filtered_mhc fm ON fm.mhc_allele_restriction_id = fel.mhc_allele_restriction_id
@@ -253,9 +259,14 @@ SELECT COUNT(mhc_elution_id) FROM epi_mhc_elution;
 Combine
 
 ```{r echo=F}
-bind.assays = RMySQL::dbReadTable(con, "epi_mhc_bind")
-elution.assays = RMySQL::dbReadTable(con, "epi_mhc_elution")
+bind.assays = RMySQL::dbReadTable(con, "epi_mhc_bind") %>% select(-mhc_bind_id)
+elution.assays = RMySQL::dbReadTable(con, "epi_mhc_elution")%>% select(-one_of("mhc_elution_id","apc_cell_type","apc_tissue_type","apc_origin"))
+all.assays = rbind.data.frame(bind.assays,elution.assays)
 ```
+```{r}
+sum(is.na(all.assays$reference_id))
+```
+
 
 ```{r}
 table(bind.assays$as_char_value)
@@ -273,4 +284,42 @@ match(s[s > 1],s)
 r[1879]
 bind.assays$linear_peptide_seq[1879]
 substr(bind.assays$sequence[1879],354,363)
+```
+
+Берем С-концевые аминокислоты эпитопов и +1 после неё, разделив на положительные и отрицательные случаи
+
+```{r}
+neg.bind = subset.data.frame(bind.assays, as_char_value == "Negative")[,c("linear_peptide_seq","sequence")]
+pos.bind = subset.data.frame(bind.assays, as_char_value != "Negative")[,c("linear_peptide_seq","sequence")]
+neg.elution = subset.data.frame(elution.assays, as_char_value == "Negative")[,c("linear_peptide_seq","sequence")]
+pos.elution = subset.data.frame(elution.assays, as_char_value != "Negative")[,c("linear_peptide_seq","sequence")]
+```
+```{r}
+write.csv2(all.assays,"../data/source/all_assays.csv",row.names = F)
+```
+
+```{r}
+locations = stringr::str_locate_all(all.assays$sequence, all.assays$linear_peptide_seq)
+
+```
+```{r}
+C.terms = lapply(seq_along(locations),function(i, seq){
+    str_sub(all.assays$sequence[i],locations[[i]][,"end"],locations[[i]][,"end"]+1)
+})
+```
+
+```{r}
+pairs = unlist(C.terms)
+V1 = str_sub(pairs,1,1)
+V2 = str_sub(pairs,2,2)
+pairs.df = cbind.data.frame(V1,V2)
+```
+
+```{r}
+print(round(table(pairs.df$V1) / nrow(pairs.df), 5))
+plot(round(table(pairs.df$V1) / nrow(pairs.df), 5))
+```
+
+```{r}
+round(table(pairs.df$V2) / nrow(pairs.df), 5)
 ```
