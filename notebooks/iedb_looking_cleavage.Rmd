@@ -3,21 +3,28 @@ title: "3. Поиск сайтов протеолиза белков проте�
 author: "Антон Смирнов"
 date: "24.01.2023"
 link-citations: true
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
 bibliography: references_look_iedb_cleavage.bib
 ---
 
 # Введение
 
-The Immune Epitope Database (IEDB)@vita2019 - крупнейшая база данных по Т и В-клеточным эпитопам. Необходимо оценить частоту встречаемости аминокислот на С-конце эпитопа, так как с него как правило не идет процессинг антигена для МНС 1 класса.
+The Immune Epitope Database (IEDB)@vita2019 - крупнейшая база данных по Т и В-клеточным эпитопам. Необходимо оценить частоту встречаемости аминокислот на С-конце эпитопа, так как с него как правило не идет процессинг антигена для МНС 1 класса и его можно считать сайтом разрезания протеасомы.
 
-Установить соединение с БД, развернутой на локальном сервере.
 ```{r}
 library(RMySQL)
 library(dplyr)
 library(stringr)
 ```
 
+#Определение необходимых источников данных и условий фильтрации
+
+Установить соединение с БД, развернутой на локальном сервере.
 
 ```{r}
 con = RMySQL::dbConnect(RMySQL::MySQL(),
@@ -64,10 +71,10 @@ INNER JOIN assay_type at2 ON as_type_id  = at2.assay_type_id
 SELECT as_char_value, COUNT(as_char_value)  FROM mhc_bind GROUP BY as_char_value;
 ```
 
-
 ```{sql connection=con}
 SELECT object_type, COUNT(object_type)  FROM object GROUP BY object_type;
 ```
+
 ```{sql connection=con}
 SELECT object_sub_type, COUNT(object_sub_type)  FROM object GROUP BY object_sub_type;
 ```
@@ -208,6 +215,7 @@ AS (SELECT mhc_allele_restriction_id, restriction_level,displayed_restriction, o
           organism_ncbi_tax_id = 9606 AND
           class = 'I');
 ```
+
 ```{sql connection=con}
 CREATE INDEX filtered_mhc_index ON filtered_mhc (mhc_allele_restriction_id);
 ```
@@ -216,10 +224,7 @@ CREATE INDEX filtered_mhc_index ON filtered_mhc (mhc_allele_restriction_id);
 SELECT COUNT(*) FROM filtered_mhc;
 ```
 
-# BIND TOGETHER
-mhc_bind_id, reference_id, as_char_value, 
-e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, 'database', name, sequence, organism_name, 
-restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
+# Соединим вместе
 
 ```{sql connection=con}
 CREATE TABLE epi_mhc_bind
@@ -230,9 +235,11 @@ restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_nam
     INNER JOIN filtered_mhc fm ON fm.mhc_allele_restriction_id = fb.mhc_allele_restriction_id
     INNER JOIN filtered_epitope_cur fe ON fe.curated_epitope_id = fb.curated_epitope_id);
 ```
+
 ```{sql connection=con}
 CREATE INDEX epi_mhc_bind_index ON epi_mhc_bind (mhc_bind_id);
 ```
+
 ```{sql connection=con}
 SELECT COUNT(mhc_bind_id) FROM epi_mhc_bind;
 ```
@@ -256,17 +263,21 @@ CREATE INDEX epi_mhc_elution_index ON epi_mhc_elution (mhc_elution_id);
 SELECT COUNT(mhc_elution_id) FROM epi_mhc_elution;
 ```
 
-Combine
+# Обработка данных
 
 ```{r echo=F}
 bind.assays = RMySQL::dbReadTable(con, "epi_mhc_bind") %>% select(-mhc_bind_id)
 elution.assays = RMySQL::dbReadTable(con, "epi_mhc_elution")%>% select(-one_of("mhc_elution_id","apc_cell_type","apc_tissue_type","apc_origin"))
 all.assays = rbind.data.frame(bind.assays,elution.assays)
 ```
+
+Для каждой записи есть ссылка на источник.
+
 ```{r}
 sum(is.na(all.assays$reference_id))
 ```
 
+Распределение результатов экспериментов
 
 ```{r}
 table(bind.assays$as_char_value)
@@ -276,35 +287,26 @@ table(bind.assays$as_char_value)
 table(elution.assays$as_char_value)
 ```
 
-
 ```{r}
-r = stringr::str_locate_all(bind.assays$sequence, bind.assays$linear_peptide_seq)
-s = sapply(r,nrow)
-match(s[s > 1],s)
-r[1879]
-bind.assays$linear_peptide_seq[1879]
-substr(bind.assays$sequence[1879],354,363)
+table(all.assays$as_char_value)
 ```
 
 Берем С-концевые аминокислоты эпитопов и +1 после неё, разделив на положительные и отрицательные случаи
 
 ```{r}
-neg.bind = subset.data.frame(bind.assays, as_char_value == "Negative")[,c("linear_peptide_seq","sequence")]
-pos.bind = subset.data.frame(bind.assays, as_char_value != "Negative")[,c("linear_peptide_seq","sequence")]
-neg.elution = subset.data.frame(elution.assays, as_char_value == "Negative")[,c("linear_peptide_seq","sequence")]
-pos.elution = subset.data.frame(elution.assays, as_char_value != "Negative")[,c("linear_peptide_seq","sequence")]
-```
-```{r}
-write.csv2(all.assays,"../data/source/all_assays.csv",row.names = F)
+neg.assays = subset.data.frame(all.assays, as_char_value == "Negative")[,c("linear_peptide_seq","sequence")]
+pos.assays = subset.data.frame(all.assays, as_char_value != "Negative")[,c("linear_peptide_seq","sequence")]
 ```
 
-```{r}
-locations = stringr::str_locate_all(all.assays$sequence, all.assays$linear_peptide_seq)
+## Положительные случаи
 
+```{r}
+locations = stringr::str_locate_all(pos.assays$sequence, pos.assays$linear_peptide_seq)
 ```
+
 ```{r}
 C.terms = lapply(seq_along(locations),function(i, seq){
-    str_sub(all.assays$sequence[i],locations[[i]][,"end"],locations[[i]][,"end"]+1)
+    str_sub(pos.assays$sequence[i],locations[[i]][,"end"],locations[[i]][,"end"]+1)
 })
 ```
 
@@ -316,10 +318,104 @@ pairs.df = cbind.data.frame(V1,V2)
 ```
 
 ```{r}
-print(round(table(pairs.df$V1) / nrow(pairs.df), 5))
+probs = data.frame(matrix(0,nrow = 20,ncol = 20))
+colnames(probs) = unlist(str_split("ACDEFGHIKLMNPQRSTVWY",pattern = ""))
+epitopes = unique(pos.assays$linear_peptide_seq)
+print(length(epitopes))
+for (i in seq_len(nrow(probs))) {
+  p = table(sapply(epitopes,str_sub,i,i))
+  for (j in colnames(probs)) {
+      probs[i,j] = p[j]
+  }
+}
+probs = probs / length(epitopes)
+head(probs)
+```
+
+```{python}
+import logomaker
+import matplotlib.pyplot as plt
+
+probs = r.probs
+fig,ax = plt.subplots(figsize = (10,6))
+ax.set_title("IEDB positive epitopes")
+logo = logomaker.Logo(probs.iloc[0:15,:], color_scheme = "chemistry", ax = ax)
+fig.tight_layout()
+plt.show()
+```
+
+Можно заметить, что на N-конце распределение остатков более менее равномерное, когда на C-конце преобладают гидрофобные и основные остатки.
+
+```{r}
 plot(round(table(pairs.df$V1) / nrow(pairs.df), 5))
 ```
 
 ```{r}
-round(table(pairs.df$V2) / nrow(pairs.df), 5)
+plot(round(table(pairs.df$V2) / nrow(pairs.df), 5))
 ```
+
+Из этих двух графиков видно, что не так важна какая аминокислота идет после сайта разрезания, важно что разрезание идет по гидрофобным и положительно заряженным аминокислотам.
+
+
+## Отрицательные случаи
+
+```{r}
+locations = stringr::str_locate_all(neg.assays$sequence, neg.assays$linear_peptide_seq)
+```
+
+```{r}
+C.terms = lapply(seq_along(locations),function(i, seq){
+    str_sub(neg.assays$sequence[i],locations[[i]][,"end"],locations[[i]][,"end"]+1)
+})
+```
+
+```{r}
+pairs = unlist(C.terms)
+V1 = str_sub(pairs,1,1)
+V2 = str_sub(pairs,2,2)
+pairs.df = cbind.data.frame(V1,V2)
+```
+
+```{r}
+probs = data.frame(matrix(0,nrow = 20,ncol = 20))
+colnames(probs) = unlist(str_split("ACDEFGHIKLMNPQRSTVWY",pattern = ""))
+epitopes = unique(neg.assays$linear_peptide_seq)
+print(length(epitopes))
+for (i in seq_len(nrow(probs))) {
+  p = table(sapply(epitopes,str_sub,i,i))
+  for (j in colnames(probs)) {
+      probs[i,j] = p[j]
+  }
+}
+probs = probs / length(epitopes)
+probs
+```
+
+```{python}
+import logomaker
+import matplotlib.pyplot as plt
+
+probs = r.probs
+print(probs.head())
+fig,ax = plt.subplots(figsize = (10,6))
+ax.set_title("IEDB negative epitopes")
+logo = logomaker.Logo(probs.iloc[0:10,:], color_scheme = "chemistry", ax = ax)
+fig.tight_layout()
+plt.show()
+```
+
+```{r}
+plot(round(table(pairs.df$V1) / nrow(pairs.df), 5))
+```
+
+```{r}
+plot(round(table(pairs.df$V2) / nrow(pairs.df), 5))
+```
+
+Для отрицательных случаев получились похожие результаты.
+
+Удалить созданные промежуточные таблицы
+```{sql connection=con}
+DROP TABLE IF EXISTS filtered_bind, filtered_elution, filtered_epitope_cur,filtered_mhc, epi_mhc_bind,epi_mhc_elution;
+```
+
