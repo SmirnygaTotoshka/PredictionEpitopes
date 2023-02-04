@@ -4,7 +4,7 @@ author: "Антон Смирнов"
 date: "02.11.2022"
 link-citations: true
 output: html_document
-bibliography: references_look_ms_data.bib
+bibliography: bib/references_look_ms_data.bib
 ---
 
 Датасет взят из статьи[@specht2020]

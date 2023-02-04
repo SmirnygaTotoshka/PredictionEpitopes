@@ -9,14 +9,14 @@ output:
     toc_float:
       collapsed: false
       smooth_scroll: false
-bibliography: references_look_iedb_cleavage.bib
+bibliography: bib/references_look_iedb_cleavage.bib
 ---
 
 # Введение
 
 The Immune Epitope Database (IEDB)@vita2019 - крупнейшая база данных по Т и В-клеточным эпитопам. Необходимо оценить частоту встречаемости аминокислот на С-конце эпитопа, так как с него как правило не идет процессинг антигена для МНС 1 класса и его можно считать сайтом разрезания протеасомы.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(RMySQL)
 library(dplyr)
 library(stringr)
@@ -265,7 +265,7 @@ SELECT COUNT(mhc_elution_id) FROM epi_mhc_elution;
 
 # Обработка данных
 
-```{r echo=F}
+```{r message=FALSE, warning=FALSE}
 bind.assays = RMySQL::dbReadTable(con, "epi_mhc_bind") %>% select(-mhc_bind_id)
 elution.assays = RMySQL::dbReadTable(con, "epi_mhc_elution")%>% select(-one_of("mhc_elution_id","apc_cell_type","apc_tissue_type","apc_origin"))
 all.assays = rbind.data.frame(bind.assays,elution.assays)
@@ -347,11 +347,11 @@ plt.show()
 Можно заметить, что на N-конце распределение остатков более менее равномерное, когда на C-конце преобладают гидрофобные и основные остатки.
 
 ```{r}
-plot(round(table(pairs.df$V1) / nrow(pairs.df), 5))
+plot(round(table(pairs.df$V1) / nrow(pairs.df), 5),ylab = "Частота", xlab = "Аминокислота")
 ```
 
 ```{r}
-plot(round(table(pairs.df$V2) / nrow(pairs.df), 5))
+plot(round(table(pairs.df$V2) / nrow(pairs.df), 5),ylab = "Частота", xlab = "Аминокислота")
 ```
 
 Из этих двух графиков видно, что не так важна какая аминокислота идет после сайта разрезания, важно что разрезание идет по гидрофобным и положительно заряженным аминокислотам.
@@ -388,7 +388,7 @@ for (i in seq_len(nrow(probs))) {
   }
 }
 probs = probs / length(epitopes)
-probs
+head(probs)
 ```
 
 ```{python}
@@ -396,7 +396,6 @@ import logomaker
 import matplotlib.pyplot as plt
 
 probs = r.probs
-print(probs.head())
 fig,ax = plt.subplots(figsize = (10,6))
 ax.set_title("IEDB negative epitopes")
 logo = logomaker.Logo(probs.iloc[0:10,:], color_scheme = "chemistry", ax = ax)
@@ -405,11 +404,11 @@ plt.show()
 ```
 
 ```{r}
-plot(round(table(pairs.df$V1) / nrow(pairs.df), 5))
+plot(round(table(pairs.df$V1) / nrow(pairs.df), 5),ylab = "Частота", xlab = "Аминокислота")
 ```
 
 ```{r}
-plot(round(table(pairs.df$V2) / nrow(pairs.df), 5))
+plot(round(table(pairs.df$V2) / nrow(pairs.df), 5),ylab = "Частота", xlab = "Аминокислота")
 ```
 
 Для отрицательных случаев получились похожие результаты.
