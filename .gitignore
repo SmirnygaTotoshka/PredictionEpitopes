@@ -8,3 +8,4 @@ html_reports/*
 logs/*
 notebooks/.ipynb_checkpoints/*
 renv*
+/.quarto/

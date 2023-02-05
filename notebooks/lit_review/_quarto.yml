@@ -1,0 +1,47 @@
+project:
+  type: book
+
+book:
+  title: "Предсказание антигенов по последовательностям белка"
+  author: "Антон Смирнов"
+  date: today
+  date-format: "MMM D, YYYY"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - part: "Обзор литературы"
+      chapters:
+        - mhc.qmd
+        - processing1.qmd
+        - processing2.qmd
+        - software.qmd
+    - references.qmd
+
+bibliography: references.bib
+csl: gost.csl
+toc: true
+toc-depth: 3
+toc-title: "Оглавление"
+fontsize: 12pt
+linestretch: 1.5
+geometry:
+  - top=10mm
+  - left=20mm
+  - right=20mm
+  - heightrounded
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: report
+    pdf-engine: xelatex
+    header-includes: |
+      \usepackage[utf8]{inputenc}
+      \usepackage[american,russian]{babel}
+      \usepackage{hyperref}  
+      \usepackage{unicode-math}
+mainfont: Arial
+monofont: Arial
+sansfont: Arial
+editor: visual
+
