@@ -5,6 +5,7 @@ date: "Feb 16, 2023"
 date-format: "MMM D, YYYY"
 toc: true
 toc-depth: 3
+tbl-cap-location: top
 toc-title: "Оглавление"
 fontsize: 14pt
 engine: knitr
@@ -72,6 +73,8 @@ mysql --version
 library(RMySQL)
 library(dplyr)
 library(stringr)
+library(knitr)
+library(vroom)
 ```
 
 Подключимся к базе данных
@@ -98,13 +101,25 @@ SELECT DISTINCT category FROM assay_type;
 В данный момент на не интересуют эксперименты на В-лимфоцитах. Посмотрим, какие эксперименты проводят на Т-клетках.
 
 ```{sql connection=con}
+#| output.var: "tcell.assays"
 SELECT DISTINCT assay_type FROM assay_type WHERE category = 'T Cell';
+```
+
+```{r}
+#| echo: false
+kable(tcell.assays)
 ```
 
 Эти эксперименты связаны с детекцией распознавания антигена Т-клеточным рецептором. В данный момент они нам скорее всего не подходят, потому что эти эксперименты не ставили задачу определения связывания эпитопа и HLA. Они могут внести сильное смещение в прогноз, так как содержат большое количество положительных примеров.
 
 ```{sql connection=con}
+#| output.var: "mhc.assays"
 SELECT DISTINCT assay_type FROM assay_type WHERE category = 'MHC';
+```
+
+```{r}
+#| echo: false
+kable(mhc.assays)
 ```
 
 ```{sql connection=con}
@@ -114,13 +129,25 @@ SELECT DISTINCT assay_type FROM assay_type WHERE category = 'Naturally Processed
 Типы экспериментов 'MHC' и 'Naturally Procecessed', так как методы, содержащиеся в них, направлены на определение связывания эпитопа и MHC.
 
 ```{sql connection=con}
+#| output.var: "mhc.elution.assays"
 SELECT DISTINCT at2.category,at2.assay_type FROM mhc_elution me 
 INNER JOIN assay_type at2 ON as_type_id  = at2.assay_type_id;
 ```
 
+```{r}
+#| echo: false
+kable(mhc.elution.assays)
+```
+
 ```{sql connection=con}
+#| output.var: "mhc.bind.assays"
 SELECT DISTINCT at2.category,at2.assay_type FROM mhc_bind mb
 INNER JOIN assay_type at2 ON as_type_id  = at2.assay_type_id 
+```
+
+```{r}
+#| echo: false
+kable(mhc.bind.assays)
 ```
 
 Данные типы находятся в таблицах ***mhc_bind*** и ***mhc_elution***.
@@ -129,9 +156,11 @@ INNER JOIN assay_type at2 ON as_type_id  = at2.assay_type_id
 
 Необходимо, чтобы присутствовала информация об аллеле HLA, эпитопе, источнике и результате эксперимента.
 
-```{sql connection=con}
+```{sql connection=con, eval = F}
 CREATE TABLE filtered_bind
-AS (SELECT reference_id, curated_epitope_id, as_char_value, as_location, category, assay_type,units,as_num_value,as_inequality,as_comments, mhc_allele_restriction_id 
+AS (SELECT reference_id, curated_epitope_id, as_char_value,
+as_location, category, assay_type,units,
+as_num_value,as_inequality,as_comments, mhc_allele_restriction_id 
     FROM mhc_bind
     INNER JOIN assay_type ON as_type_id = assay_type_id
     WHERE reference_id IS NOT NULL AND
@@ -144,7 +173,7 @@ AS (SELECT reference_id, curated_epitope_id, as_char_value, as_location, categor
 
 [^1]: MySQL не поддерживает индексацию представлений, поэтому я вынужден создавать таблицы.
 
-```{sql connection=con}
+```{sql connection=con, eval = F}
 CREATE INDEX filtered_bind_index ON filtered_bind (curated_epitope_id,mhc_allele_restriction_id);
 ```
 
@@ -158,9 +187,14 @@ SELECT COUNT(*) FROM filtered_bind;
 
 Отфильтруем строки с пустыми полями
 
-```{sql connection=con}
+```{sql connection=con, eval = F}
 CREATE TABLE filtered_elution
-AS (SELECT reference_id, curated_epitope_id, as_char_value, as_location, category, assay_type, as_num_value, as_inequality, units, as_num_subjects, as_num_responded, as_response_frequency, as_comments, as_immunization_comments,h_sex, h_age, mhc_allele_restriction_id, h_organism_id, ant_type, ant_ref_name, ant_object_id, apc_cell_type, apc_tissue_type, apc_origin
+AS (SELECT reference_id, curated_epitope_id, as_char_value, as_location, 
+category, assay_type, as_num_value, as_inequality, units, 
+as_num_subjects, as_num_responded, as_response_frequency, as_comments,
+as_immunization_comments,h_sex, h_age, mhc_allele_restriction_id,
+h_organism_id, ant_type, ant_ref_name, ant_object_id, apc_cell_type,
+apc_tissue_type, apc_origin
     FROM mhc_elution
     INNER JOIN assay_type ON as_type_id = assay_type_id
     WHERE reference_id IS NOT NULL AND
@@ -169,7 +203,7 @@ AS (SELECT reference_id, curated_epitope_id, as_char_value, as_location, categor
           mhc_allele_restriction_id IS NOT NULL);
 ```
 
-```{sql connection=con}
+```{sql connection=con, eval = F}
 CREATE INDEX filtered_elution_index ON filtered_elution (curated_epitope_id,mhc_allele_restriction_id);
 ```
 
@@ -182,3 +216,102 @@ SELECT COUNT(*) FROM filtered_elution;
 ## Подготовка mhc_restrinction и epitopes
 
 Также необходимо к имеющимся таблицам присоединить информацию о MHC аллелях и эпитопах. Делаю раздельно в связи с долгим временем выполнения, если делать вместе.
+
+Необходимо, что последовательность была линейная, без модификаций и была в наличии референсная последовательность.
+
+```{sql connection=con, eval = F}
+CREATE TABLE filtered_epitope_cur
+AS (SELECT curated_epitope_id, e_name, 
+source_antigen_accession, description ,e_region_domain_flag,
+e_ev, linear_peptide_seq, e_ref_start,
+e_ref_end, `database`, name, sequence, organism_name
+    FROM curated_epitope
+    INNER JOIN epitope_object eo ON eo.object_id = e_object_id
+    INNER JOIN epitope e ON e.epitope_id = eo.epitope_id
+    INNER JOIN source s ON s.accession = source_antigen_accession
+    WHERE linear_peptide_seq IS NOT NULL AND 
+          linear_peptide_modification IS NULL AND
+          sequence IS NOT NULL);
+```
+
+```{sql connection=con, eval = F}
+CREATE INDEX filtered_epitope_cur_index ON filtered_epitope_cur (curated_epitope_id);
+```
+
+```{sql connection=con}
+SELECT COUNT(curated_epitope_id) FROM filtered_epitope_cur;
+```
+
+Нам нужны человеческие (NCBI Taxonomy ID 9606) МНС 1 класса.
+
+```{sql connection=con, eval = F}
+CREATE TABLE filtered_mhc
+AS (SELECT mhc_allele_restriction_id, 
+restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
+    FROM mhc_allele_restriction
+    WHERE restriction_level = 'complete molecule' AND
+          organism_ncbi_tax_id = 9606 AND
+          class = 'I');
+```
+
+```{sql connection=con, eval = F}
+CREATE INDEX filtered_mhc_index ON filtered_mhc (mhc_allele_restriction_id);
+```
+
+```{sql connection=con}
+SELECT COUNT(*) FROM filtered_mhc;
+```
+
+## Объедним вместе
+
+```{sql connection=con,eval = F}
+CREATE TABLE epi_mhc_bind
+AS (SELECT fb.curated_epitope_id, fb.mhc_allele_restriction_id, reference_id, as_char_value, as_location, 
+category, assay_type,units,as_num_value,as_inequality,as_comments,
+e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, 
+e_ref_start,e_ref_end, `database`, name, sequence, organism_name, 
+restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
+    FROM filtered_bind fb
+    INNER JOIN filtered_mhc fm ON fm.mhc_allele_restriction_id = fb.mhc_allele_restriction_id
+    INNER JOIN filtered_epitope_cur fe ON fe.curated_epitope_id = fb.curated_epitope_id);
+```
+
+```{sql connection=con,eval = F}
+CREATE INDEX epi_mhc_bind_index ON epi_mhc_bind (curated_epitope_id,mhc_allele_restriction_id);
+```
+
+```{sql connection=con}
+SELECT COUNT(*) FROM epi_mhc_bind;
+```
+
+```{sql connection=con, eval = F}
+CREATE TABLE epi_mhc_elution
+AS (SELECT reference_id, fel.curated_epitope_id, as_char_value, as_location, 
+category, assay_type, as_num_value, as_inequality, units, 
+as_num_subjects, as_num_responded, as_response_frequency, as_comments,
+as_immunization_comments,h_sex, h_age, fel.mhc_allele_restriction_id,
+h_organism_id, ant_type, ant_ref_name, ant_object_id, apc_cell_type,
+apc_tissue_type, apc_origin,
+e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, `database`, name, sequence, organism_name, 
+restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
+    FROM filtered_elution fel
+    INNER JOIN filtered_mhc fm ON fm.mhc_allele_restriction_id = fel.mhc_allele_restriction_id
+    INNER JOIN filtered_epitope_cur fe ON fe.curated_epitope_id = fel.curated_epitope_id);
+```
+
+```{sql connection=con,eval = F}
+CREATE INDEX epi_mhc_elution_index ON epi_mhc_elution (curated_epitope_id,mhc_allele_restriction_id);
+```
+
+```{sql connection=con}
+SELECT COUNT(*) FROM epi_mhc_elution;
+```
+
+Сохраним данные
+```{r,eval = F}
+bind.assays = RMySQL::dbReadTable(con, "epi_mhc_bind")
+elution.assays = RMySQL::dbReadTable(con, "epi_mhc_elution")
+write.table(bind.assays, "../data/source/iedb_bind_assays.tsv", sep = "\t",row.names = F,fileEncoding = "UTF-8")
+write.table(elution.assays, "../data/source/iedb_elution_assays.tsv", sep = "\t",row.names = F,fileEncoding = "UTF-8")
+```
+
