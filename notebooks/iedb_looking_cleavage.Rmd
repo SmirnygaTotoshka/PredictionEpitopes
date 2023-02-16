@@ -356,7 +356,6 @@ plot(round(table(pairs.df$V2) / nrow(pairs.df), 5),ylab = "Частота", xlab
 
 Из этих двух графиков видно, что не так важна какая аминокислота идет после сайта разрезания, важно что разрезание идет по гидрофобным и положительно заряженным аминокислотам.
 
-
 ## Отрицательные случаи
 
 ```{r}
@@ -414,7 +413,7 @@ plot(round(table(pairs.df$V2) / nrow(pairs.df), 5),ylab = "Частота", xlab
 Для отрицательных случаев получились похожие результаты.
 
 Удалить созданные промежуточные таблицы
+
 ```{sql connection=con}
 DROP TABLE IF EXISTS filtered_bind, filtered_elution, filtered_epitope_cur,filtered_mhc, epi_mhc_bind,epi_mhc_elution;
 ```
-

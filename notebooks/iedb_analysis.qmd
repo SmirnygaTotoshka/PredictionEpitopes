@@ -1,0 +1,184 @@
+---
+title: "Исследование базы данных Immune Epitope Database на предмет необходимой информации для моделирования процессинга антигенов для HLA первого класса"
+author: "Антон Смирнов"
+date: "Feb 16, 2023"
+date-format: "MMM D, YYYY"
+toc: true
+toc-depth: 3
+toc-title: "Оглавление"
+fontsize: 14pt
+engine: knitr
+linestretch: 1.5
+geometry:
+  - top=10mm
+  - left=20mm
+  - right=20mm
+  - heightrounded
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: report
+    pdf-engine: xelatex
+    header-includes: |
+      \usepackage[utf8]{inputenc}
+      \usepackage[american,russian]{babel}
+      \usepackage{hyperref}  
+      \usepackage{unicode-math}
+mainfont: Arial
+monofont: Arial
+sansfont: Arial
+editor: visual
+---
+
+# Введение
+
+Immune Epitope Database представляет из себя крупнейшую базу данных и базу знаний о Т- и В- клеточных эпитопах. Она курируется Национальным институтом аллергии и инфекционных болезней США. Количество информации в ней на 16 февраля 2023 года представлено в таблице 1.
+
+| Характеристика           | Количество |
+|--------------------------|------------|
+| Peptidic Epitopes        | 1,554,329  |
+| Non-Peptidic Epitopes    | 3,168      |
+| T Cell Assays            | 453,372    |
+| B Cell Assays            | 1,378,855  |
+| MHC Ligand Assays        | 4,697,592  |
+| Epitope Source Organisms | 4,337      |
+| Restricting MHC Alleles  | 983        |
+| References               | 23,554     |
+
+: Метрики БД
+
+Дамп базы данных был скачан с сайта iedb.org и развернут на локальном сервере MySQL.
+
+```{r, include=F}
+#Для корректной работы других языков
+1+1
+```
+
+```{bash}
+mysql --version
+```
+
+Скрипт восстановления БД.
+
+    mysql -u stotoshka -p
+    mysql> create database iedb;
+    mysql> use iedb;
+    mysql> source <path to sql_script>;
+
+Необходимые библиотеки
+
+```{r message=FALSE, warning=FALSE}
+library(RMySQL)
+library(dplyr)
+library(stringr)
+```
+
+Подключимся к базе данных
+
+```{r}
+con = RMySQL::dbConnect(RMySQL::MySQL(),
+                            dbname='iedb',
+                            host='localhost',
+                            port=3306,
+                            user='stotoshka',
+                            password='meowmeow')
+```
+
+# Подготовка данных
+
+## Поиск расположения необходимых данных
+
+Для начала посмотрим каких типов эксперименты хранятся в этой базе данных.
+
+```{sql connection=con}
+SELECT DISTINCT category FROM assay_type;
+```
+
+В данный момент на не интересуют эксперименты на В-лимфоцитах. Посмотрим, какие эксперименты проводят на Т-клетках.
+
+```{sql connection=con}
+SELECT DISTINCT assay_type FROM assay_type WHERE category = 'T Cell';
+```
+
+Эти эксперименты связаны с детекцией распознавания антигена Т-клеточным рецептором. В данный момент они нам скорее всего не подходят, потому что эти эксперименты не ставили задачу определения связывания эпитопа и HLA. Они могут внести сильное смещение в прогноз, так как содержат большое количество положительных примеров.
+
+```{sql connection=con}
+SELECT DISTINCT assay_type FROM assay_type WHERE category = 'MHC';
+```
+
+```{sql connection=con}
+SELECT DISTINCT assay_type FROM assay_type WHERE category = 'Naturally Processed';
+```
+
+Типы экспериментов 'MHC' и 'Naturally Procecessed', так как методы, содержащиеся в них, направлены на определение связывания эпитопа и MHC.
+
+```{sql connection=con}
+SELECT DISTINCT at2.category,at2.assay_type FROM mhc_elution me 
+INNER JOIN assay_type at2 ON as_type_id  = at2.assay_type_id;
+```
+
+```{sql connection=con}
+SELECT DISTINCT at2.category,at2.assay_type FROM mhc_bind mb
+INNER JOIN assay_type at2 ON as_type_id  = at2.assay_type_id 
+```
+
+Данные типы находятся в таблицах ***mhc_bind*** и ***mhc_elution***.
+
+## Подготовка mhc_bind
+
+Необходимо, чтобы присутствовала информация об аллеле HLA, эпитопе, источнике и результате эксперимента.
+
+```{sql connection=con}
+CREATE TABLE filtered_bind
+AS (SELECT reference_id, curated_epitope_id, as_char_value, as_location, category, assay_type,units,as_num_value,as_inequality,as_comments, mhc_allele_restriction_id 
+    FROM mhc_bind
+    INNER JOIN assay_type ON as_type_id = assay_type_id
+    WHERE reference_id IS NOT NULL AND
+          curated_epitope_id IS NOT NULL AND
+          as_char_value IS NOT NULL AND
+          mhc_allele_restriction_id IS NOT NULL);
+```
+
+Создадим индекс для быстродействия.[^1]
+
+[^1]: MySQL не поддерживает индексацию представлений, поэтому я вынужден создавать таблицы.
+
+```{sql connection=con}
+CREATE INDEX filtered_bind_index ON filtered_bind (curated_epitope_id,mhc_allele_restriction_id);
+```
+
+Количество строк
+
+```{sql connection=con}
+SELECT COUNT(*) FROM filtered_bind;
+```
+
+## Подготовка mhc_elution
+
+Отфильтруем строки с пустыми полями
+
+```{sql connection=con}
+CREATE TABLE filtered_elution
+AS (SELECT reference_id, curated_epitope_id, as_char_value, as_location, category, assay_type, as_num_value, as_inequality, units, as_num_subjects, as_num_responded, as_response_frequency, as_comments, as_immunization_comments,h_sex, h_age, mhc_allele_restriction_id, h_organism_id, ant_type, ant_ref_name, ant_object_id, apc_cell_type, apc_tissue_type, apc_origin
+    FROM mhc_elution
+    INNER JOIN assay_type ON as_type_id = assay_type_id
+    WHERE reference_id IS NOT NULL AND
+          curated_epitope_id IS NOT NULL AND
+          as_char_value IS NOT NULL AND
+          mhc_allele_restriction_id IS NOT NULL);
+```
+
+```{sql connection=con}
+CREATE INDEX filtered_elution_index ON filtered_elution (curated_epitope_id,mhc_allele_restriction_id);
+```
+
+Количество строк
+
+```{sql connection=con}
+SELECT COUNT(*) FROM filtered_elution;
+```
+
+## Подготовка mhc_restrinction и epitopes
+
+Также необходимо к имеющимся таблицам присоединить информацию о MHC аллелях и эпитопах. Делаю раздельно в связи с долгим временем выполнения, если делать вместе.

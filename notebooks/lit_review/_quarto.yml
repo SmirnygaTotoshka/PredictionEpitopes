@@ -22,7 +22,7 @@ csl: gost.csl
 toc: true
 toc-depth: 3
 toc-title: "Оглавление"
-fontsize: 12pt
+fontsize: 14pt
 linestretch: 1.5
 geometry:
   - top=10mm
@@ -32,6 +32,8 @@ geometry:
 format:
   html:
     theme: cosmo
+  docx: 
+    reference-doc: "vkr-2022.docx"
   pdf:
     documentclass: report
     pdf-engine: xelatex
