@@ -4,7 +4,7 @@
 .Ruserdata
 .Rprofile
 data/source/*
-html_reports/*
+reports/*
 logs/*
 notebooks/.ipynb_checkpoints/*
 renv*

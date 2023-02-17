@@ -308,10 +308,124 @@ SELECT COUNT(*) FROM epi_mhc_elution;
 ```
 
 Сохраним данные
+
 ```{r,eval = F}
 bind.assays = RMySQL::dbReadTable(con, "epi_mhc_bind")
 elution.assays = RMySQL::dbReadTable(con, "epi_mhc_elution")
 write.table(bind.assays, "../data/source/iedb_bind_assays.tsv", sep = "\t",row.names = F,fileEncoding = "UTF-8")
 write.table(elution.assays, "../data/source/iedb_elution_assays.tsv", sep = "\t",row.names = F,fileEncoding = "UTF-8")
+```
+
+# Анализ bind assays
+
+```{r,echo=F}
+bind.assays = vroom("../data/source/iedb_bind_assays.tsv",delim = "\t") %>% as.data.frame()
+str(bind.assays)
+```
+
+Все ли записи имеют ссылку на источник?
+
+```{r,echo=F}
+sum(is.na(bind.assays$reference_id)) == 0
+```
+
+Все ли эксперименты имеют запись о результате?
+
+```{r,echo=F}
+sum(is.na(bind.assays$as_char_value)) == 0
+```
+
+Все ли последовательности валидные?
+
+::: panel-tabset
+#### Эпитопы
+
+```{r,echo=F}
+sum(grepl("[ACDEFGHIKLMNPQRSTVWYU]",bind.assays$linear_peptide_seq)) == nrow(bind.assays)
+```
+
+#### Их источники
+
+```{r,echo=F}
+sum(grepl("[ACDEFGHIKLMNPQRSTVWYU]",bind.assays$linear_peptide_seq)) == nrow(bind.assays)
+```
+#### Все эпитопы можно найти в их источнике?
+```{r,echo=F}
+ind = seq_len(nrow(bind.assays))
+has.epitope = sapply(ind,function(i){
+  grepl(bind.assays$linear_peptide_seq[i],bind.assays$sequence[i],fixed = T)
+  })
+sum(has.epitope) == nrow(bind.assays)
+```
+:::
+
+Отфильтруем несовпадения
+```{r,echo=F}
+print(paste("Количество строк до",dim(bind.assays)[1]))
+bind.assays = bind.assays[has.epitope,]
+print(paste("Количество строк после",dim(bind.assays)[1]))
+```
+
+
+Распределение результатов экпериментов.
+
+```{r,echo=F}
+kable(table(bind.assays$as_char_value))
+```
+
+Сделаем два уровня значений результатов: положительный и отрицательный.
+
+```{r,echo=F}
+bind.assays[grep("Positive", bind.assays$as_char_value),"as_char_value"] = "Positive"
+kable(table(bind.assays$as_char_value), col.names = c("Value","Freq"),format = "pipe")
+```
+
+Распределение по типам экспериментов в процентах.
+
+```{r,echo=F}
+kable(round(table(bind.assays$category) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"))
+```
+
+```{r,echo=F}
+kable(round(table(bind.assays$assay_type) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"))
+```
+
+Как много записей имеют замерянное значение?
+
+```{r,echo=F}
+round(sum(!is.na(bind.assays$as_num_value)) / nrow(bind.assays) * 100,2)
+```
+
+Сколько из них имеют точное значение и каков исход?
+
+```{r,echo=F}
+eq.val = bind.assays[grepl("=",bind.assays$as_inequality,fixed = T),c("as_char_value","as_num_value","category","chain_i_name")]
+print(nrow(eq.val))
+kable(round(table(eq.val$as_char_value) / nrow(eq.val) * 100,2),col.names = c("Value","Procent"))
+```
+
+Данные об эпитопах
+```{r,echo=F}
+kable(round(table(bind.assays$e_ev) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"))
+```
+Фильтровать по этому критерию не считаю нужным, так как все имеющиеся эпитопы находятся в референсной последовательности
+```{r,echo=F}
+kable(round(table(bind.assays$e_region_domain_flag) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"))
+```
+Имеет смысл оставить записи, в которых представлена точная последовательность эпитопа. 
+```{r,echo=F}
+print(paste("Количество строк до",dim(bind.assays)[1]))
+bind.assays = bind.assays[grepl("Exact Epitope", bind.assays$e_region_domain_flag,fixed = T),]
+print(paste("Количество строк после",dim(bind.assays)[1]))
+```
+
+Комментарии к экспериментам
+```{r,echo=F}
+print(paste("Количество",length(unique(bind.assays$as_comments))))
+```
+
+Сохраним их в отдельный файл и изучим отдельно
+```{r,echo=F}
+write.table(unique(bind.assays$as_comments),"../data/bind_assay_comments.txt")
 ```
 
