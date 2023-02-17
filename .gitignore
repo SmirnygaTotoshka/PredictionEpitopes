@@ -9,3 +9,6 @@ logs/*
 notebooks/.ipynb_checkpoints/*
 renv*
 /.quarto/
+*.html
+*.pdf
+*.docx
