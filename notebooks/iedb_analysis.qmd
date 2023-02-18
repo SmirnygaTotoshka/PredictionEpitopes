@@ -51,12 +51,46 @@ Immune Epitope Database представляет из себя крупнейш�
 
 Дамп базы данных был скачан с сайта iedb.org и развернут на локальном сервере MySQL.
 
-```{r, include=F}
-#Для корректной работы других языков
-1+1
+```{r echo=F,message=FALSE, warning=FALSE}
+library(RMySQL)
+library(dplyr)
+library(stringr)
+library(knitr)
+library(vroom)
+library(ggplot2)
+
+setwd("/home/stotoshka/Documents/Epitops/PredictionEpitopes")
 ```
 
-```{bash}
+## Версии используемых библиотек
+
+### R
+```{r,echo = F}
+print(R.version.string)
+
+print(paste("RMySQL",packageVersion("RMySQL")))
+print(paste("dplyr",packageVersion("dplyr")))
+print(paste("stringr",packageVersion("stringr")))
+print(paste("knitr",packageVersion("knitr")))
+print(paste("vroom",packageVersion("vroom")))
+print(paste("ggplot2",packageVersion("ggplot2")))
+```
+
+### python
+```{python, echo = F}
+import sys
+import logomaker
+import matplotlib
+import matplotlib.pyplot as plt
+
+print("Python\n" + sys.version)
+print("logomaker 0.8")
+print("matplotlib " + matplotlib.__version__)
+
+```
+
+### MySQL
+```{bash, echo = F}
 mysql --version
 ```
 
@@ -66,16 +100,6 @@ mysql --version
     mysql> create database iedb;
     mysql> use iedb;
     mysql> source <path to sql_script>;
-
-Необходимые библиотеки
-
-```{r message=FALSE, warning=FALSE}
-library(RMySQL)
-library(dplyr)
-library(stringr)
-library(knitr)
-library(vroom)
-```
 
 Подключимся к базе данных
 
@@ -152,280 +176,224 @@ kable(mhc.bind.assays)
 
 Данные типы находятся в таблицах ***mhc_bind*** и ***mhc_elution***.
 
-## Подготовка mhc_bind
+## Получение данных
 
-Необходимо, чтобы присутствовала информация об аллеле HLA, эпитопе, источнике и результате эксперимента.
+Скрипт *iedb_create_mhc_tables.sql* содержит описание первичной подготовки таблиц.
 
-```{sql connection=con, eval = F}
-CREATE TABLE filtered_bind
-AS (SELECT reference_id, curated_epitope_id, as_char_value,
-as_location, category, assay_type,units,
-as_num_value,as_inequality,as_comments, mhc_allele_restriction_id 
-    FROM mhc_bind
-    INNER JOIN assay_type ON as_type_id = assay_type_id
-    WHERE reference_id IS NOT NULL AND
-          curated_epitope_id IS NOT NULL AND
-          as_char_value IS NOT NULL AND
-          mhc_allele_restriction_id IS NOT NULL);
-```
+Критерии фильтрации следующие:
 
-Создадим индекс для быстродействия.[^1]
+-   mhc_bind и mhc_elution
 
-[^1]: MySQL не поддерживает индексацию представлений, поэтому я вынужден создавать таблицы.
+    -   Должен быть ИД публикации
 
-```{sql connection=con, eval = F}
-CREATE INDEX filtered_bind_index ON filtered_bind (curated_epitope_id,mhc_allele_restriction_id);
-```
+    -   Должен быть ИД эпитопа
 
-Количество строк
+    -   Должен быть исход эксперимента
 
-```{sql connection=con}
-SELECT COUNT(*) FROM filtered_bind;
-```
+    -   Должен быть ИД аллеля MHC
 
-## Подготовка mhc_elution
+-   для эпитопов
 
-Отфильтруем строки с пустыми полями
+    -   Должна быть линейная последовательность эпитопа
 
-```{sql connection=con, eval = F}
-CREATE TABLE filtered_elution
-AS (SELECT reference_id, curated_epitope_id, as_char_value, as_location, 
-category, assay_type, as_num_value, as_inequality, units, 
-as_num_subjects, as_num_responded, as_response_frequency, as_comments,
-as_immunization_comments,h_sex, h_age, mhc_allele_restriction_id,
-h_organism_id, ant_type, ant_ref_name, ant_object_id, apc_cell_type,
-apc_tissue_type, apc_origin
-    FROM mhc_elution
-    INNER JOIN assay_type ON as_type_id = assay_type_id
-    WHERE reference_id IS NOT NULL AND
-          curated_epitope_id IS NOT NULL AND
-          as_char_value IS NOT NULL AND
-          mhc_allele_restriction_id IS NOT NULL);
-```
+    -   Эта последовательность не должна содержать модификаций
 
-```{sql connection=con, eval = F}
-CREATE INDEX filtered_elution_index ON filtered_elution (curated_epitope_id,mhc_allele_restriction_id);
-```
+    -   Должна быть последовательность белка-источника
 
-Количество строк
+-   для аллеля МНС
 
-```{sql connection=con}
-SELECT COUNT(*) FROM filtered_elution;
-```
+    -   аллель должен быть человеческий
 
-## Подготовка mhc_restrinction и epitopes
+    -   аллель должен быть первого класса МНС
 
-Также необходимо к имеющимся таблицам присоединить информацию о MHC аллелях и эпитопах. Делаю раздельно в связи с долгим временем выполнения, если делать вместе.
+    -   аллель должен быть записан в формате HLA-(ген)\*(аллельная группа):(белковый продукт)
 
-Необходимо, что последовательность была линейная, без модификаций и была в наличии референсная последовательность.
+::: panel-tabset
+**Количество строк в таблицах**
 
-```{sql connection=con, eval = F}
-CREATE TABLE filtered_epitope_cur
-AS (SELECT curated_epitope_id, e_name, 
-source_antigen_accession, description ,e_region_domain_flag,
-e_ev, linear_peptide_seq, e_ref_start,
-e_ref_end, `database`, name, sequence, organism_name
-    FROM curated_epitope
-    INNER JOIN epitope_object eo ON eo.object_id = e_object_id
-    INNER JOIN epitope e ON e.epitope_id = eo.epitope_id
-    INNER JOIN source s ON s.accession = source_antigen_accession
-    WHERE linear_peptide_seq IS NOT NULL AND 
-          linear_peptide_modification IS NULL AND
-          sequence IS NOT NULL);
-```
+#### mhc_bind
 
-```{sql connection=con, eval = F}
-CREATE INDEX filtered_epitope_cur_index ON filtered_epitope_cur (curated_epitope_id);
-```
-
-```{sql connection=con}
-SELECT COUNT(curated_epitope_id) FROM filtered_epitope_cur;
-```
-
-Нам нужны человеческие (NCBI Taxonomy ID 9606) МНС 1 класса.
-
-```{sql connection=con, eval = F}
-CREATE TABLE filtered_mhc
-AS (SELECT mhc_allele_restriction_id, 
-restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
-    FROM mhc_allele_restriction
-    WHERE restriction_level = 'complete molecule' AND
-          organism_ncbi_tax_id = 9606 AND
-          class = 'I');
-```
-
-```{sql connection=con, eval = F}
-CREATE INDEX filtered_mhc_index ON filtered_mhc (mhc_allele_restriction_id);
-```
-
-```{sql connection=con}
-SELECT COUNT(*) FROM filtered_mhc;
-```
-
-## Объедним вместе
-
-```{sql connection=con,eval = F}
-CREATE TABLE epi_mhc_bind
-AS (SELECT fb.curated_epitope_id, fb.mhc_allele_restriction_id, reference_id, as_char_value, as_location, 
-category, assay_type,units,as_num_value,as_inequality,as_comments,
-e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, 
-e_ref_start,e_ref_end, `database`, name, sequence, organism_name, 
-restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
-    FROM filtered_bind fb
-    INNER JOIN filtered_mhc fm ON fm.mhc_allele_restriction_id = fb.mhc_allele_restriction_id
-    INNER JOIN filtered_epitope_cur fe ON fe.curated_epitope_id = fb.curated_epitope_id);
-```
-
-```{sql connection=con,eval = F}
-CREATE INDEX epi_mhc_bind_index ON epi_mhc_bind (curated_epitope_id,mhc_allele_restriction_id);
-```
-
-```{sql connection=con}
+```{sql connection=con, echo = F}
 SELECT COUNT(*) FROM epi_mhc_bind;
 ```
 
-```{sql connection=con, eval = F}
-CREATE TABLE epi_mhc_elution
-AS (SELECT reference_id, fel.curated_epitope_id, as_char_value, as_location, 
-category, assay_type, as_num_value, as_inequality, units, 
-as_num_subjects, as_num_responded, as_response_frequency, as_comments,
-as_immunization_comments,h_sex, h_age, fel.mhc_allele_restriction_id,
-h_organism_id, ant_type, ant_ref_name, ant_object_id, apc_cell_type,
-apc_tissue_type, apc_origin,
-e_name, source_antigen_accession, description ,e_region_domain_flag, e_ev, linear_peptide_seq, e_ref_start,e_ref_end, `database`, name, sequence, organism_name, 
-restriction_level,displayed_restriction, organism_ncbi_tax_id,class, chain_i_name
-    FROM filtered_elution fel
-    INNER JOIN filtered_mhc fm ON fm.mhc_allele_restriction_id = fel.mhc_allele_restriction_id
-    INNER JOIN filtered_epitope_cur fe ON fe.curated_epitope_id = fel.curated_epitope_id);
-```
+#### mhc_elution
 
-```{sql connection=con,eval = F}
-CREATE INDEX epi_mhc_elution_index ON epi_mhc_elution (curated_epitope_id,mhc_allele_restriction_id);
-```
-
-```{sql connection=con}
+```{sql connection=con, echo = F}
 SELECT COUNT(*) FROM epi_mhc_elution;
-```
-
-Сохраним данные
-
-```{r,eval = F}
-bind.assays = RMySQL::dbReadTable(con, "epi_mhc_bind")
-elution.assays = RMySQL::dbReadTable(con, "epi_mhc_elution")
-write.table(bind.assays, "../data/source/iedb_bind_assays.tsv", sep = "\t",row.names = F,fileEncoding = "UTF-8")
-write.table(elution.assays, "../data/source/iedb_elution_assays.tsv", sep = "\t",row.names = F,fileEncoding = "UTF-8")
-```
-
-# Анализ bind assays
-
-```{r,echo=F}
-bind.assays = vroom("../data/source/iedb_bind_assays.tsv",delim = "\t") %>% as.data.frame()
-str(bind.assays)
-```
-
-Все ли записи имеют ссылку на источник?
-
-```{r,echo=F}
-sum(is.na(bind.assays$reference_id)) == 0
-```
-
-Все ли эксперименты имеют запись о результате?
-
-```{r,echo=F}
-sum(is.na(bind.assays$as_char_value)) == 0
-```
-
-Все ли последовательности валидные?
-
-::: panel-tabset
-#### Эпитопы
-
-```{r,echo=F}
-sum(grepl("[ACDEFGHIKLMNPQRSTVWYU]",bind.assays$linear_peptide_seq)) == nrow(bind.assays)
-```
-
-#### Их источники
-
-```{r,echo=F}
-sum(grepl("[ACDEFGHIKLMNPQRSTVWYU]",bind.assays$linear_peptide_seq)) == nrow(bind.assays)
-```
-#### Все эпитопы можно найти в их источнике?
-```{r,echo=F}
-ind = seq_len(nrow(bind.assays))
-has.epitope = sapply(ind,function(i){
-  grepl(bind.assays$linear_peptide_seq[i],bind.assays$sequence[i],fixed = T)
-  })
-sum(has.epitope) == nrow(bind.assays)
 ```
 :::
 
-Отфильтруем несовпадения
+# Анализ bind assays
+
+Скрипт *iedb_clean_mhc_bind.R* производит вторичную очистку данных, полученных ранее, по следующим критериям:
+
+1. У каждой записи должен быть источник
+2. У каждой записи должен быть исход эксперимента
+3. Последовательности должны быть записаны однобуквенным кодом для аминокислот
+4. Эпитоп должен находиться в референсной последовательности
+5. Эпитоп должен быть полным. Это не должен быть участок антигенного сайта или частью большего эпитопа.
+6. Информация в комментариях не должна противоречить исходу эксперимента 
+7. Результаты должны быть получены экспериментально, не быть предсказанными
+8. Эпитопы должны быть иммуногенными
+9. Не должно быть дефицита по TAP
+10. Все HLA аллели должны быть записаны в формате, позволяющем однозначно идентифицировать молекулу
+
+
 ```{r,echo=F}
-print(paste("Количество строк до",dim(bind.assays)[1]))
-bind.assays = bind.assays[has.epitope,]
-print(paste("Количество строк после",dim(bind.assays)[1]))
+bind.assays = vroom("../data/source/iedb_bind_assays_clean.tsv",show_col_types = FALSE) %>% as.data.frame()
+print(paste("Количество строк",nrow(bind.assays)))
+```
+
+## Эксперименты
+```{r,echo=F}
+kable(table(bind.assays$as_char_value), col.names = c("Value","Number"),format = "pipe", caption = "Распределение исходов экспериментов")
+```
+
+```{r,echo=F}
+kable(round(table(bind.assays$category) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"), caption = "Категория экспериментов")
+```
+
+```{r,echo=F}
+kable(round(table(bind.assays$assay_type) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"), caption = "Виды экспериментов")
+```
+
+```{r,echo=F}
+kable(table(bind.assays$as_char_value), col.names = c("Value","Number"),format = "pipe", caption = "Распределение исходов экспериментов")
+```
+
+## Измерянные метрики
+
+Некоторые эксперименты имеют точно измерянную метрику. Посмотрим, какие метрики используются, их распределение
+```{r,echo=F}
+eq.val = bind.assays[grepl("=",bind.assays$as_inequality,fixed = T) & !is.na(bind.assays$as_num_value),c("as_char_value","as_num_value","units","assay_type")]
+print(paste("Количество строк",nrow(eq.val)))
+```
+
+```{r,echo=F}
+kable(table(eq.val[,c("assay_type",
+                      "units")],useNA = "always"),format = "pipe", caption = "Ед.измерения")
+```
+
+**Для нМ**
+```{r,echo=F}
+eq.val.nM = subset.data.frame(eq.val, units == "nM")
+#log(x+pseudocount) чтобы не было log(0)
+eq.val.nM$log_num_val = log10(eq.val.nM$as_num_value+0.00001)
+ggplot(eq.val.nM, aes(x=as_char_value, y=log_num_val, fill=as_char_value)) +
+ geom_violin()+
+  labs(title="Measured value distribution",x="Outcome", y = "Value, log10(nM)")+
+  geom_boxplot(width=0.1)+scale_fill_manual(values=c("#999999", "#E69F00"))
 ```
 
 
-Распределение результатов экпериментов.
-
+**Для минут**
 ```{r,echo=F}
-kable(table(bind.assays$as_char_value))
+eq.val.min = subset.data.frame(eq.val, units == "min")
+eq.val.min$log_num_val = log10(eq.val.min$as_num_value+0.00001)
+ggplot(eq.val.min, aes(x=as_char_value, y=log_num_val, fill=as_char_value)) +
+ geom_violin()+
+  labs(title="Measured value distribution",x="Outcome", y = "Value, log10(min)")+
+  geom_boxplot(width=0.1)+scale_fill_manual(values=c("#999999", "#E69F00"))
 ```
 
-Сделаем два уровня значений результатов: положительный и отрицательный.
 
+**Для ангстрём**
 ```{r,echo=F}
-bind.assays[grep("Positive", bind.assays$as_char_value),"as_char_value"] = "Positive"
-kable(table(bind.assays$as_char_value), col.names = c("Value","Freq"),format = "pipe")
+eq.val.a = subset.data.frame(eq.val, units == "angstroms")
+ggplot(eq.val.a, aes(x=as_char_value, y=as_num_value, fill=as_char_value)) +
+ geom_violin()+
+  labs(title="Measured value distribution",x="Outcome", y = "Value, A")+
+  geom_boxplot(width=0.1)+scale_fill_manual(values=c("red"))
 ```
 
-Распределение по типам экспериментов в процентах.
 
+**Для °C**
 ```{r,echo=F}
-kable(round(table(bind.assays$category) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"))
+eq.val.C = subset.data.frame(eq.val, units == "°C")
+ggplot(eq.val.C, aes(x=as_char_value, y=as_num_value, fill=as_char_value)) +
+ geom_violin()+
+  labs(title="Measured value distribution",x="Outcome", y = "Value, C")+
+  geom_boxplot(width=0.1)+scale_fill_manual(values=c("#999999", "#E69F00"))
 ```
 
-```{r,echo=F}
-kable(round(table(bind.assays$assay_type) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"))
+## Распределение длины эпитопов и аминокислотного состава
+
+```{r,echo=F, warning=F}
+bind.assays$len.epitope = sapply(bind.assays$linear_peptide_seq, str_length)
+
+ggplot(bind.assays) + geom_bar(aes(x = len.epitope,fill = as_char_value), position = "dodge") + scale_y_log10() + scale_x_continuous(limits = c(6, 20)) + labs(x = "Epitope length", title = "Epitope size distribution", y = "log10(count)")
 ```
 
-Как много записей имеют замерянное значение?
-
-```{r,echo=F}
-round(sum(!is.na(bind.assays$as_num_value)) / nrow(bind.assays) * 100,2)
+```{r, echo = F}
+#| output.var: "probs_pos"
+bind.pos = subset.data.frame(bind.assays, as_char_value == "Positive")
+probs = data.frame(matrix(0,nrow = 20,ncol = 20))
+colnames(probs) = unlist(str_split("ACDEFGHIKLMNPQRSTVWY",pattern = ""))
+epitopes = unique(bind.pos$linear_peptide_seq)
+print(paste("Положительные случаи, уникальные эпитопы",length(epitopes),"шт."))
+for (i in seq_len(nrow(probs))) {
+  p = table(sapply(epitopes,str_sub,i,i))
+  for (j in colnames(probs)) {
+    if(is.na(p[j])){
+      probs[i,j] = 0
+    }
+    else{
+      probs[i,j] = p[j]
+    }
+  }
+}
+probs_pos = probs / length(epitopes)
+```
+```{r, echo = F}
+#| output.var: "probs_neg"
+bind.neg = subset.data.frame(bind.assays, as_char_value == "Negative")
+probs = data.frame(matrix(0,nrow = 20,ncol = 20))
+colnames(probs) = unlist(str_split("ACDEFGHIKLMNPQRSTVWY",pattern = ""))
+epitopes = unique(bind.neg$linear_peptide_seq)
+print(paste("Отрицательные случаи, уникальные эпитопы",length(epitopes),"шт."))
+for (i in seq_len(nrow(probs))) {
+  p = table(sapply(epitopes,str_sub,i,i))
+  for (j in colnames(probs)) {
+    if(is.na(p[j])){
+      probs[i,j] = 0
+    }
+    else{
+      probs[i,j] = p[j]
+    }
+  }
+}
+probs_neg = probs / length(epitopes)
 ```
 
-Сколько из них имеют точное значение и каков исход?
+```{python, echo = F}
+probs_pos = r.probs_pos
+probs_neg = r.probs_neg
 
-```{r,echo=F}
-eq.val = bind.assays[grepl("=",bind.assays$as_inequality,fixed = T),c("as_char_value","as_num_value","category","chain_i_name")]
-print(nrow(eq.val))
-kable(round(table(eq.val$as_char_value) / nrow(eq.val) * 100,2),col.names = c("Value","Procent"))
-```
-
-Данные об эпитопах
-```{r,echo=F}
-kable(round(table(bind.assays$e_ev) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"))
-```
-Фильтровать по этому критерию не считаю нужным, так как все имеющиеся эпитопы находятся в референсной последовательности
-```{r,echo=F}
-kable(round(table(bind.assays$e_region_domain_flag) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"))
-```
-Имеет смысл оставить записи, в которых представлена точная последовательность эпитопа. 
-```{r,echo=F}
-print(paste("Количество строк до",dim(bind.assays)[1]))
-bind.assays = bind.assays[grepl("Exact Epitope", bind.assays$e_region_domain_flag,fixed = T),]
-print(paste("Количество строк после",dim(bind.assays)[1]))
+fig,ax = plt.subplots(2, figsize = (10,12))
+ax[0].set_title("IEDB positive epitopes")
+ax[1].set_title("IEDB negative epitopes")
+logo_pos = logomaker.Logo(probs_pos.iloc[0:12,:], color_scheme = "chemistry", ax = ax[0])
+logo_neg = logomaker.Logo(probs_neg.iloc[0:12,:], color_scheme = "chemistry", ax = ax[1])
+fig.tight_layout()
+plt.show()
 ```
 
-Комментарии к экспериментам
-```{r,echo=F}
-print(paste("Количество",length(unique(bind.assays$as_comments))))
+## Виды - источники эпитопов
+```{r, echo = F}
+print(paste("Всего видов",length(unique(bind.assays$organism_name))))
 ```
 
-Сохраним их в отдельный файл и изучим отдельно
-```{r,echo=F}
-write.table(unique(bind.assays$as_comments),"../data/bind_assay_comments.txt")
+```{r, echo = F}
+kable(sort(round(table(bind.assays$organism_name,useNA = "always") / nrow(bind.assays) * 100,2),decreasing = T)[1:10],format = "pipe", caption = "Топ-10 видов")
+```
+## Распределение аллелей HLA
+```{r, echo = F}
+print(paste("Всего аллелей",length(unique(bind.assays$chain_i_name))))
 ```
 
+```{r, echo = F}
+kable(sort(round(table(bind.assays$chain_i_name,useNA = "always") / nrow(bind.assays) * 100,2),decreasing = T)[1:10],format = "pipe", caption = "Топ-10 аллелей")
+```
+
+# Анализ elution assays
