@@ -99,22 +99,3 @@ print(paste("Количество строк после",dim(bind.assays)[1]))
 vroom_write(bind.assays, "data/source/iedb_bind_assays_clean.tsv")
 
 #----------------------------------------------------------------
-
-bind.assays = bind.assays[has.epitope,]
-print(paste("Количество строк после",dim(bind.assays)[1]))
-
-kable(table(bind.assays$as_char_value))
-
-bind.assays[grep("Positive", bind.assays$as_char_value),"as_char_value"] = "Positive"
-kable(table(bind.assays$as_char_value), col.names = c("Value","Freq"),format = "pipe")
-
-kable(round(table(bind.assays$category) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"))
-kable(round(table(bind.assays$assay_type) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"))
-round(sum(!is.na(bind.assays$as_num_value)) / nrow(bind.assays) * 100,2)
-eq.val = bind.assays[grepl("=",bind.assays$as_inequality,fixed = T),c("as_char_value","as_num_value","category","chain_i_name")]
-print(nrow(eq.val))
-kable(round(table(eq.val$as_char_value) / nrow(eq.val) * 100,2),col.names = c("Value","Procent"))
-
-length(unique(bind.assays$organism_name))
-length(unique(bind.assays$chain_i_name))
-sum(grepl("^HLA-[ABC]\\*\\d{2}:\\d{2}$",bind.assays$chain_i_name)) == nrow(bind.assays)

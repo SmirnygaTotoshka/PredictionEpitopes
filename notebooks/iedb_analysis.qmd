@@ -59,7 +59,6 @@ library(knitr)
 library(vroom)
 library(ggplot2)
 
-setwd("/home/stotoshka/Documents/Epitops/PredictionEpitopes")
 ```
 
 ## Версии используемых библиотек
