@@ -102,7 +102,7 @@ mysql --version
 
 Подключимся к базе данных
 
-```{r}
+```{r,echo=FALSE}
 con = RMySQL::dbConnect(RMySQL::MySQL(),
                             dbname='iedb',
                             host='localhost',
@@ -257,10 +257,6 @@ kable(round(table(bind.assays$category) / nrow(bind.assays) * 100,2),col.names =
 kable(round(table(bind.assays$assay_type) / nrow(bind.assays) * 100,2),col.names = c("Value","Procent"), caption = "Виды экспериментов")
 ```
 
-```{r,echo=F}
-kable(table(bind.assays$as_char_value), col.names = c("Value","Number"),format = "pipe", caption = "Распределение исходов экспериментов")
-```
-
 ## Измерянные метрики
 
 Некоторые эксперименты имеют точно измерянную метрику. Посмотрим, какие метрики используются, их распределение
@@ -384,7 +380,7 @@ print(paste("Всего видов",length(unique(bind.assays$organism_name))))
 ```
 
 ```{r, echo = F}
-kable(sort(round(table(bind.assays$organism_name,useNA = "always") / nrow(bind.assays) * 100,2),decreasing = T)[1:10],format = "pipe", caption = "Топ-10 видов")
+kable(sort(round(table(bind.assays$organism_name,useNA = "always") / nrow(bind.assays) * 100,2),decreasing = T)[1:10], col.names = c("Вид","Процент"),format = "pipe", caption = "Топ-10 видов")
 ```
 ## Распределение аллелей HLA
 ```{r, echo = F}
@@ -392,7 +388,194 @@ print(paste("Всего аллелей",length(unique(bind.assays$chain_i_name))
 ```
 
 ```{r, echo = F}
-kable(sort(round(table(bind.assays$chain_i_name,useNA = "always") / nrow(bind.assays) * 100,2),decreasing = T)[1:10],format = "pipe", caption = "Топ-10 аллелей")
+kable(sort(round(table(bind.assays$chain_i_name,useNA = "always") / nrow(bind.assays) * 100,2),decreasing = T)[1:10], col.names = c("Аллель","Процент"),format = "pipe", caption = "Топ-10 аллелей")
 ```
 
 # Анализ elution assays
+
+Скрипт *iedb_clean_mhc_elution.R* производит вторичную очистку данных, полученных ранее, по тем же критериям. Однако помимо этого обнаружились эксперименты, где проводился нокаут ERAP1 с помощью миРНК. Эти эксперименты были выделены в отдельный датасет.
+
+
+```{r,echo=F}
+elution.assays = vroom("../data/source/iedb_elution_assays_clean.tsv",show_col_types = FALSE) %>% as.data.frame()
+print(paste("Количество строк",nrow(elution.assays)))
+```
+
+## Эксперименты
+```{r,echo=F, warning=F}
+kable(table(elution.assays$as_char_value), col.names = c("Value","Number"),format = "pipe", caption = "Распределение исходов экспериментов")
+```
+
+```{r,echo=F}
+kable(round(table(elution.assays$category) / nrow(elution.assays) * 100,2),col.names = c("Value","Procent"), caption = "Категория экспериментов")
+```
+
+```{r,echo=F}
+kable(round(table(elution.assays$assay_type) / nrow(elution.assays) * 100,2),col.names = c("Value","Procent"), caption = "Виды экспериментов")
+```
+
+## Половозрастная характеристика испытуемых
+
+У этих экспериментов отсутствует какое-либо замерянное значение. Однако есть некоторые данные по полу и возрасту испытуемых. 
+
+```{r,echo=F, warning = F}
+age_sex = subset.data.frame(elution.assays, !is.na(h_sex) & !is.na(h_age),select = c('h_sex','h_age'))
+age_sex$h_age = str_remove(age_sex$h_age,"years")
+age_sex$h_age = str_remove(age_sex$h_age,"years-old")
+age_sex$h_age = str_remove(age_sex$h_age,"year")
+age_sex$h_age = str_remove(age_sex$h_age,"Adult")
+age_sex$h_age = str_remove(age_sex$h_age,"old")
+age_sex$h_age = str_remove(age_sex$h_age,"middle-aged")
+age_sex$h_age = str_remove(age_sex$h_age,"30-50")
+age_sex$h_age = as.numeric(age_sex$h_age)
+age_sex = age_sex[!is.na(age_sex$h_age),]
+print(paste("Количество записей",nrow(age_sex)))
+kable(round(table(age_sex$h_sex) / nrow(age_sex) * 100),2,caption = "Распределение по полу")
+ggplot(age_sex, aes(x=h_sex, y=h_age, fill=h_sex)) +
+  labs(title="Age distribution",x="Sex", y = "Age, year")+
+  geom_boxplot(width=0.1)+scale_fill_manual(values=c("#999999", "#E69F00"))
+```
+
+## Информация по антиген-презентирующим клеткам
+
+```{r,echo=F}
+kable(round(table(elution.assays$apc_cell_type) / nrow(elution.assays) * 100,2),col.names = c("Value","Procent"), caption = "Типы АПК")
+```
+
+```{r,echo=F}
+kable(round(table(elution.assays$apc_tissue_type) / nrow(elution.assays) * 100,2),col.names = c("Value","Procent"), caption = "Ткань")
+```
+
+```{r,echo=F}
+kable(round(table(elution.assays$apc_origin) / nrow(elution.assays) * 100,2),col.names = c("Value","Procent"), caption = "Происхождение клеток")
+```
+
+## Распределение длины эпитопов и аминокислотного состава
+
+```{r,echo=F, warning=F}
+elution.assays$len.epitope = sapply(elution.assays$linear_peptide_seq, str_length)
+
+ggplot(elution.assays) + geom_bar(aes(x = len.epitope,fill = as_char_value), position = "dodge") + scale_y_log10() + scale_x_continuous(limits = c(6, 20)) + labs(x = "Epitope length", title = "Epitope size distribution", y = "log10(count)")
+```
+
+```{r, echo = F}
+#| output.var: "probs_pos"
+elution.pos = subset.data.frame(elution.assays, as_char_value == "Positive")
+probs = data.frame(matrix(0,nrow = 20,ncol = 20))
+colnames(probs) = unlist(str_split("ACDEFGHIKLMNPQRSTVWY",pattern = ""))
+epitopes = unique(elution.pos$linear_peptide_seq)
+print(paste("Положительные случаи, уникальные эпитопы",length(epitopes),"шт."))
+for (i in seq_len(nrow(probs))) {
+  p = table(sapply(epitopes,str_sub,i,i))
+  for (j in colnames(probs)) {
+    if(is.na(p[j])){
+      probs[i,j] = 0
+    }
+    else{
+      probs[i,j] = p[j]
+    }
+  }
+}
+probs_pos = probs / length(epitopes)
+```
+
+```{r, echo = F}
+#| output.var: "probs_neg"
+elution.neg = subset.data.frame(elution.assays, as_char_value == "Negative")
+probs = data.frame(matrix(0,nrow = 20,ncol = 20))
+colnames(probs) = unlist(str_split("ACDEFGHIKLMNPQRSTVWY",pattern = ""))
+epitopes = unique(elution.neg$linear_peptide_seq)
+print(paste("Отрицательные случаи, уникальные эпитопы",length(epitopes),"шт."))
+for (i in seq_len(nrow(probs))) {
+  p = table(sapply(epitopes,str_sub,i,i))
+  for (j in colnames(probs)) {
+    if(is.na(p[j])){
+      probs[i,j] = 0
+    }
+    else{
+      probs[i,j] = p[j]
+    }
+  }
+}
+probs_neg = probs / length(epitopes)
+```
+
+```{python, echo = F}
+probs_pos = r.probs_pos
+probs_neg = r.probs_neg
+
+fig,ax = plt.subplots(2, figsize = (10,12))
+ax[0].set_title("IEDB positive epitopes")
+ax[1].set_title("IEDB negative epitopes")
+logo_pos = logomaker.Logo(probs_pos.iloc[0:12,:], color_scheme = "chemistry", ax = ax[0])
+logo_neg = logomaker.Logo(probs_neg.iloc[0:12,:], color_scheme = "chemistry", ax = ax[1])
+fig.tight_layout()
+plt.show()
+```
+
+## Виды - источники эпитопов
+```{r, echo = F}
+print(paste("Всего видов",length(unique(elution.assays$organism_name))))
+```
+
+```{r, echo = F}
+kable(sort(round(table(elution.assays$organism_name,useNA = "always") / nrow(elution.assays) * 100,2),decreasing = T)[1:10], col.names = c("Вид","Процент"),format = "pipe", caption = "Топ-10 видов")
+```
+## Распределение аллелей HLA
+```{r, echo = F}
+print(paste("Всего аллелей",length(unique(elution.assays$chain_i_name))))
+```
+
+```{r, echo = F}
+kable(sort(round(table(elution.assays$chain_i_name,useNA = "always") / nrow(elution.assays) * 100,2),decreasing = T)[1:10], col.names = c("Аллель","Процент"),format = "pipe", caption = "Топ-10 аллелей")
+```
+
+# Объединенный датасет
+
+```{r, echo=FALSE}
+columns = c("as_char_value", "linear_peptide_seq","source_antigen_accession","database","name","sequence","organism_name", "chain_i_name")
+bind = bind.assays %>% select(all_of(columns))
+elution = elution.assays %>% select(all_of(columns))
+combined = rbind.data.frame(bind, elution)
+print(paste("Количество строк",nrow(combined)))
+print(paste("Количество уникальных эпитопов",length(unique(combined$linear_peptide_seq))))
+print(paste("Количество уникальных HLA аллелей",length(unique(combined$chain_i_name))))
+```
+
+```{r}
+#| echo: false
+df = data.frame(round(table(combined$as_char_value) / nrow(combined) * 100,2))
+colnames(df) = c("as_char_value", "Procent")
+df$label = paste0(df$Procent,"%")
+ggplot(df, aes(x = "", y = Procent, fill = as_char_value)) +
+  geom_col()  +
+  geom_text(aes(label = label),size = 3,
+            position = position_stack(vjust = 0.5))+
+  guides(fill = guide_legend(title = "Outcome")) +
+  coord_polar(theta = "y")
+```
+
+```{r, echo=F}
+combined.stat = combined %>% group_by(chain_i_name) %>% 
+  summarise(n_epi = length(linear_peptide_seq),
+            unique_epi = length(unique(linear_peptide_seq)),
+            unique_species = length(unique(organism_name))) %>% arrange(.by_group = T)
+```
+
+
+```{r, echo=F,warning=F}
+kable(combined.stat[order(combined.stat$n_epi,decreasing=TRUE)[1:10],],caption = "Топ-10 представленных аллелей")
+```
+```{r, echo=F,warning=F}
+kable(combined.stat[order(combined.stat$n_epi,decreasing=F)[1:10],],caption = "10 наименее представленных аллелей")
+```
+
+# Приложение
+## Полная статистика
+```{r, echo = F}
+kable(combined %>% group_by(chain_i_name, as_char_value) %>% 
+  summarise(n_epi = length(linear_peptide_seq),
+            unique_epi = length(unique(linear_peptide_seq)),
+            unique_species = length(unique(organism_name))) %>% arrange(.by_group = T))
+```
+

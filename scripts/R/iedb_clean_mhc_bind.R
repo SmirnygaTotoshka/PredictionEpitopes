@@ -15,17 +15,17 @@ print(paste("vroom",packageVersion("vroom")))
 setwd("/home/stotoshka/Documents/Epitops/PredictionEpitopes")
 
 # Подклюение БД и выгрузка данных
-con = RMySQL::dbConnect(RMySQL::MySQL(),
-                        dbname='iedb',
-                        host='localhost',
-                        port=3306,
-                        user='stotoshka',
-                        password='meowmeow')
-
-bind.assays = RMySQL::dbReadTable(con, "epi_mhc_bind")
-elution.assays = RMySQL::dbReadTable(con, "epi_mhc_elution")
-vroom_write(bind.assays,"data/source/iedb_bind_assays.tsv")
-vroom_write(elution.assays, "data/source/iedb_elution_assays.tsv")
+# con = RMySQL::dbConnect(RMySQL::MySQL(),
+#                         dbname='iedb',
+#                         host='localhost',
+#                         port=3306,
+#                         user='stotoshka',
+#                         password='meowmeow')
+# 
+# bind.assays = RMySQL::dbReadTable(con, "epi_mhc_bind")
+# elution.assays = RMySQL::dbReadTable(con, "epi_mhc_elution")
+# vroom_write(bind.assays,"data/source/iedb_bind_assays.tsv")
+# vroom_write(elution.assays, "data/source/iedb_elution_assays.tsv")
 
 #Bind assays
 
@@ -66,11 +66,11 @@ write.table(unique(bind.assays$as_comments),"data/bind_assay_comments.txt")
 kable(table(subset(bind.assays,grepl("did not",bind.assays$as_comments,fixed = T), select = "as_char_value")),caption = "did not")
 kable(table(subset(bind.assays,grepl("bad",bind.assays$as_comments,fixed = T), select = "as_char_value")),caption = "bad")
 #7
-kable(table(subset(bind.assays,grepl("was predicted",bind.assays$as_comments,fixed = T), select = "as_char_value")),caption = "was predicted")
+kable(table(subset(bind.assays,grepl("predict",bind.assays$as_comments,ignore.case = T), select = "as_char_value")),caption = "predict")
 #8
 kable(table(subset(bind.assays,grepl("non-immunogenic",bind.assays$as_comments,fixed = T), select = "as_char_value")),caption = "non-immunogenic")
 #9
-kable(table(subset(bind.assays,grepl("TAP-deficient",bind.assays$as_comments,fixed = T), select = "as_char_value")),caption = "non-immunogenic")
+kable(table(subset(bind.assays,grepl("TAP-deficient",bind.assays$as_comments,fixed = T), select = "as_char_value")),caption = "TAP-deficient")
 #10
 sum(grepl("^HLA-[ABC]\\*\\d{2}:\\d{2}$",bind.assays$chain_i_name)) == nrow(bind.assays)
 
@@ -90,7 +90,7 @@ tap.def = bind.assays[grepl("TAP-deficient",bind.assays$as_comments,fixed = T),]
 vroom_write(tap.def,"data/tap_def_bind.csv")
 
 bind.assays = bind.assays[!grepl("TAP-deficient",bind.assays$as_comments,fixed = T),]
-bind.assays = bind.assays[!grepl("was predicted",bind.assays$as_comments,fixed = T),]
+bind.assays = bind.assays[!grepl("predict",bind.assays$as_comments,ignore.case = T),]
 bind.assays = bind.assays[!grepl("non-immunogenic",bind.assays$as_comments,fixed = T),]
 
 print(paste("Количество строк после",dim(bind.assays)[1]))
