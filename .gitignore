@@ -4,12 +4,13 @@
 .Ruserdata
 .Rprofile
 data/source/*
+notebooks/lit_review/_book/*
 reports/*
 logs/*
 notebooks/.ipynb_checkpoints/*
 renv*
-/.quarto/
-*.html
-*.pdf
-*.docx
+notebooks/lit_review/.quarto/
+.html
+.pdf
+.docx
 .ipynb_checkpoints/*

@@ -14,7 +14,6 @@ book:
       chapters:
         - mhc.qmd
         - processing1.qmd
-        - processing2.qmd
         - software.qmd
     - references.qmd
 
