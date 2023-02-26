@@ -90,9 +90,9 @@ erap1.silencing = elution.assays[grepl("ERAP1 silencing",elution.assays$as_comme
 vroom_write(tap.def,"data/tap_def_elution.csv")
 vroom_write(erap1.silencing,"data/erap_silence_elution.csv")
 
-elution.assays = elution.assays[!grepl("TAP-deficient",elution.assays$as_comments,fixed = T),]
+elution.assays = elution.assays[!grepl("TAP deficient",elution.assays$as_comments,fixed = T),]
 elution.assays = elution.assays[!grepl("predict",elution.assays$as_comments,ignore.case = T),]
-elution.assays = elution.assays[!grepl("non-immunogenic",elution.assays$as_comments,fixed = T),]
+elution.assays = elution.assays[!grepl("ERAP1 silencing",elution.assays$as_comments,fixed = T),]
 elution.assays = elution.assays[grepl("^HLA-[ABC]\\*\\d{2}:\\d{2}$",elution.assays$chain_i_name),]
 
 print(paste("Количество строк после",dim(elution.assays)[1]))

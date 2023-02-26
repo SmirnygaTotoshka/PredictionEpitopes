@@ -64,6 +64,7 @@ library(ggplot2)
 ## Версии используемых библиотек
 
 ### R
+
 ```{r,echo = F}
 print(R.version.string)
 
@@ -76,6 +77,7 @@ print(paste("ggplot2",packageVersion("ggplot2")))
 ```
 
 ### python
+
 ```{python, echo = F}
 import sys
 import logomaker
@@ -89,6 +91,7 @@ print("matplotlib " + matplotlib.__version__)
 ```
 
 ### MySQL
+
 ```{bash, echo = F}
 mysql --version
 ```
@@ -227,17 +230,16 @@ SELECT COUNT(*) FROM epi_mhc_elution;
 
 Скрипт *iedb_clean_mhc_bind.R* производит вторичную очистку данных, полученных ранее, по следующим критериям:
 
-1. У каждой записи должен быть источник
-2. У каждой записи должен быть исход эксперимента
-3. Последовательности должны быть записаны однобуквенным кодом для аминокислот
-4. Эпитоп должен находиться в референсной последовательности
-5. Эпитоп должен быть полным. Это не должен быть участок антигенного сайта или частью большего эпитопа.
-6. Информация в комментариях не должна противоречить исходу эксперимента 
-7. Результаты должны быть получены экспериментально, не быть предсказанными
-8. Эпитопы должны быть иммуногенными
-9. Не должно быть дефицита по TAP
+1.  У каждой записи должен быть источник
+2.  У каждой записи должен быть исход эксперимента
+3.  Последовательности должны быть записаны однобуквенным кодом для аминокислот
+4.  Эпитоп должен находиться в референсной последовательности
+5.  Эпитоп должен быть полным. Это не должен быть участок антигенного сайта или частью большего эпитопа.
+6.  Информация в комментариях не должна противоречить исходу эксперимента
+7.  Результаты должны быть получены экспериментально, не быть предсказанными
+8.  Эпитопы должны быть иммуногенными
+9.  Не должно быть дефицита по TAP
 10. Все HLA аллели должны быть записаны в формате, позволяющем однозначно идентифицировать молекулу
-
 
 ```{r,echo=F}
 bind.assays = vroom("../data/source/iedb_bind_assays_clean.tsv",show_col_types = FALSE) %>% as.data.frame()
@@ -245,6 +247,7 @@ print(paste("Количество строк",nrow(bind.assays)))
 ```
 
 ## Эксперименты
+
 ```{r,echo=F}
 kable(table(bind.assays$as_char_value), col.names = c("Value","Number"),format = "pipe", caption = "Распределение исходов экспериментов")
 ```
@@ -260,6 +263,7 @@ kable(round(table(bind.assays$assay_type) / nrow(bind.assays) * 100,2),col.names
 ## Измерянные метрики
 
 Некоторые эксперименты имеют точно измерянную метрику. Посмотрим, какие метрики используются, их распределение
+
 ```{r,echo=F}
 eq.val = bind.assays[grepl("=",bind.assays$as_inequality,fixed = T) & !is.na(bind.assays$as_num_value),c("as_char_value","as_num_value","units","assay_type")]
 print(paste("Количество строк",nrow(eq.val)))
@@ -271,6 +275,7 @@ kable(table(eq.val[,c("assay_type",
 ```
 
 **Для нМ**
+
 ```{r,echo=F}
 eq.val.nM = subset.data.frame(eq.val, units == "nM")
 #log(x+pseudocount) чтобы не было log(0)
@@ -281,8 +286,8 @@ ggplot(eq.val.nM, aes(x=as_char_value, y=log_num_val, fill=as_char_value)) +
   geom_boxplot(width=0.1)+scale_fill_manual(values=c("#999999", "#E69F00"))
 ```
 
-
 **Для минут**
+
 ```{r,echo=F}
 eq.val.min = subset.data.frame(eq.val, units == "min")
 eq.val.min$log_num_val = log10(eq.val.min$as_num_value+0.00001)
@@ -292,8 +297,8 @@ ggplot(eq.val.min, aes(x=as_char_value, y=log_num_val, fill=as_char_value)) +
   geom_boxplot(width=0.1)+scale_fill_manual(values=c("#999999", "#E69F00"))
 ```
 
-
 **Для ангстрём**
+
 ```{r,echo=F}
 eq.val.a = subset.data.frame(eq.val, units == "angstroms")
 ggplot(eq.val.a, aes(x=as_char_value, y=as_num_value, fill=as_char_value)) +
@@ -302,8 +307,8 @@ ggplot(eq.val.a, aes(x=as_char_value, y=as_num_value, fill=as_char_value)) +
   geom_boxplot(width=0.1)+scale_fill_manual(values=c("red"))
 ```
 
-
 **Для °C**
+
 ```{r,echo=F}
 eq.val.C = subset.data.frame(eq.val, units == "°C")
 ggplot(eq.val.C, aes(x=as_char_value, y=as_num_value, fill=as_char_value)) +
@@ -340,6 +345,7 @@ for (i in seq_len(nrow(probs))) {
 }
 probs_pos = probs / length(epitopes)
 ```
+
 ```{r, echo = F}
 #| output.var: "probs_neg"
 bind.neg = subset.data.frame(bind.assays, as_char_value == "Negative")
@@ -375,6 +381,7 @@ plt.show()
 ```
 
 ## Виды - источники эпитопов
+
 ```{r, echo = F}
 print(paste("Всего видов",length(unique(bind.assays$organism_name))))
 ```
@@ -382,7 +389,9 @@ print(paste("Всего видов",length(unique(bind.assays$organism_name))))
 ```{r, echo = F}
 kable(sort(round(table(bind.assays$organism_name,useNA = "always") / nrow(bind.assays) * 100,2),decreasing = T)[1:10], col.names = c("Вид","Процент"),format = "pipe", caption = "Топ-10 видов")
 ```
+
 ## Распределение аллелей HLA
+
 ```{r, echo = F}
 print(paste("Всего аллелей",length(unique(bind.assays$chain_i_name))))
 ```
@@ -395,13 +404,13 @@ kable(sort(round(table(bind.assays$chain_i_name,useNA = "always") / nrow(bind.as
 
 Скрипт *iedb_clean_mhc_elution.R* производит вторичную очистку данных, полученных ранее, по тем же критериям. Однако помимо этого обнаружились эксперименты, где проводился нокаут ERAP1 с помощью миРНК. Эти эксперименты были выделены в отдельный датасет.
 
-
 ```{r,echo=F}
 elution.assays = vroom("../data/source/iedb_elution_assays_clean.tsv",show_col_types = FALSE) %>% as.data.frame()
 print(paste("Количество строк",nrow(elution.assays)))
 ```
 
 ## Эксперименты
+
 ```{r,echo=F, warning=F}
 kable(table(elution.assays$as_char_value), col.names = c("Value","Number"),format = "pipe", caption = "Распределение исходов экспериментов")
 ```
@@ -416,7 +425,7 @@ kable(round(table(elution.assays$assay_type) / nrow(elution.assays) * 100,2),col
 
 ## Половозрастная характеристика испытуемых
 
-У этих экспериментов отсутствует какое-либо замерянное значение. Однако есть некоторые данные по полу и возрасту испытуемых. 
+У этих экспериментов отсутствует какое-либо замерянное значение. Однако есть некоторые данные по полу и возрасту испытуемых.
 
 ```{r,echo=F, warning = F}
 age_sex = subset.data.frame(elution.assays, !is.na(h_sex) & !is.na(h_age),select = c('h_sex','h_age'))
@@ -514,6 +523,7 @@ plt.show()
 ```
 
 ## Виды - источники эпитопов
+
 ```{r, echo = F}
 print(paste("Всего видов",length(unique(elution.assays$organism_name))))
 ```
@@ -521,7 +531,9 @@ print(paste("Всего видов",length(unique(elution.assays$organism_name))
 ```{r, echo = F}
 kable(sort(round(table(elution.assays$organism_name,useNA = "always") / nrow(elution.assays) * 100,2),decreasing = T)[1:10], col.names = c("Вид","Процент"),format = "pipe", caption = "Топ-10 видов")
 ```
+
 ## Распределение аллелей HLA
+
 ```{r, echo = F}
 print(paste("Всего аллелей",length(unique(elution.assays$chain_i_name))))
 ```
@@ -562,20 +574,21 @@ combined.stat = combined %>% group_by(chain_i_name) %>%
             unique_species = length(unique(organism_name))) %>% arrange(.by_group = T)
 ```
 
-
 ```{r, echo=F,warning=F}
 kable(combined.stat[order(combined.stat$n_epi,decreasing=TRUE)[1:10],],caption = "Топ-10 представленных аллелей")
 ```
+
 ```{r, echo=F,warning=F}
 kable(combined.stat[order(combined.stat$n_epi,decreasing=F)[1:10],],caption = "10 наименее представленных аллелей")
 ```
 
 # Приложение
+
 ## Полная статистика
+
 ```{r, echo = F}
 kable(combined %>% group_by(chain_i_name, as_char_value) %>% 
   summarise(n_epi = length(linear_peptide_seq),
             unique_epi = length(unique(linear_peptide_seq)),
             unique_species = length(unique(organism_name))) %>% arrange(.by_group = T))
 ```
-

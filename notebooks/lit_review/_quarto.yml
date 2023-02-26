@@ -3,11 +3,12 @@ project:
 
 book:
   title: "Предсказание антигенов по последовательностям белка"
-  author: "Антон Смирнов"
+  author: "Смирнов Антон Сергеевич"
   date: today
   date-format: "MMM D, YYYY"
   chapters:
     - index.qmd
+    - abbreviatures.qmd
     - intro.qmd
     - part: "Обзор литературы"
       chapters:

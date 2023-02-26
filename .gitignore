@@ -12,3 +12,4 @@ renv*
 *.html
 *.pdf
 *.docx
+.ipynb_checkpoints/*
