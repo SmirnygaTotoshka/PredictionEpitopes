@@ -18,7 +18,7 @@ book:
     - references.qmd
 
 bibliography: references.bib
-csl: gost.csl
+csl: gost2.csl
 toc: true
 toc-depth: 3
 toc-title: "Оглавление"
@@ -32,6 +32,8 @@ geometry:
 format:
   html:
     theme: cosmo
+    grid:
+      sidebar-width: 350px
   docx: 
     reference-doc: "vkr-2022.docx"
   pdf:

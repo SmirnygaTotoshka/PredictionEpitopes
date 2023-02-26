@@ -1,4 +1,4 @@
 - source: project
   quarto-pub:
     - id: 20298f8a-123f-4547-85cd-c56a0ab0a3cb
-      url: 'https://quartopub.com/sites/stotoshka/prediction-epitopes'
+      url: 'https://stotoshka.quarto.pub/prediction-epitopes'
