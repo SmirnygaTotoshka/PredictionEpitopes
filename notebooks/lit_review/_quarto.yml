@@ -15,6 +15,21 @@ book:
         - mhc.qmd
         - processing1.qmd
         - software.qmd
+    - part: "Материалы и методы"
+      chapters: 
+        - concept.qmd
+        - databases.qmd
+        - modelling.qmd
+    - part: "Результаты"
+      chapters: 
+        - proteasome.qmd
+        - tap.qmd
+        - pMHC.qmd
+        - together.qmd
+        - web-service.qmd
+    - conclusion.qmd
+    - discussion.qmd
+    - appendix.qmd
     - references.qmd
 
 bibliography: references.bib
