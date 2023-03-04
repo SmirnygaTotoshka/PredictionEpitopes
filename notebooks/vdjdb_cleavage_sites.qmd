@@ -1,0 +1,422 @@
+---
+title: "2. Поиск сайтов протеолиза белков протеосомой по данным VDJdb."
+author: "Смирнов Антон Сергеевич"
+date: "Jan 20, 2023"
+date-format: "MMM D, YYYY"
+toc: true
+toc-depth: 3
+tbl-cap-location: top
+toc-title: "Оглавление"
+fontsize: 14pt
+engine: knitr
+linestretch: 1.5
+geometry:
+  - top=10mm
+  - left=20mm
+  - right=20mm
+  - heightrounded
+format:
+  pdf:
+    documentclass: report
+    pdf-engine: xelatex
+    header-includes: |
+      \usepackage[utf8]{inputenc}
+      \usepackage[american,russian]{babel}
+      \usepackage{hyperref}  
+      \usepackage{unicode-math}
+mainfont: Arial
+monofont: Arial
+sansfont: Arial
+editor: visual
+---
+
+# Предварительные настройки
+
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import json
+from datetime import datetime
+from urllib.error import HTTPError
+from Bio import Entrez, SeqIO
+from io import StringIO
+import logomaker
+import re
+```
+
+**Всегда говори NCBI кто ты**
+
+```{python}
+Entrez.email = "anton.smirnov.9910@gmail.com"
+Entrez.api_key = "67a161eb14f134f9d7e50e111f957429f808"
+
+# Print iterations progress
+def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
+    """
+    Call in a loop to create terminal progress bar
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        prefix      - Optional  : prefix string (Str)
+        suffix      - Optional  : suffix string (Str)
+        decimals    - Optional  : positive number of decimals in percent complete (Int)
+        length      - Optional  : character length of bar (Int)
+        fill        - Optional  : bar fill character (Str)
+        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
+    """
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
+    # Print New Line on Complete
+    if iteration == total:
+        print()
+        
+def isCorrectSequence(seq):
+    alphabet = list("ACDEFGHIKLMNPQRSTVWY")
+    seq = seq.strip()
+    for i in range(0,len(seq)):
+        if seq[i] not in alphabet:
+            return False
+    return True
+```
+
+Для описания сайтов разрезания берем С-конец эпитопа. Для полноты картины нужна аминокислота, следующая после С-конца эпитопа. Для этого нужна референсная последовательность и большая часть кода посвящена их извлечению.
+
+```{python}
+vdjdb = pd.read_csv("../data/source/VDJdb-2022-11-13-22-41.tsv", sep = "\t", header=0)
+vdjdb.head()
+```
+
+```{python}
+len(vdjdb['Epitope'].unique())
+```
+
+## Первичная фильтрация
+
+Сайты разрезания ищем только для человеческих МНС 1 класса
+
+```{python}
+vdjdb_filtered = vdjdb[vdjdb["MHC class"] == "MHCI"]
+vdjdb_filtered.shape
+```
+
+
+```{python}
+vdjdb_filtered = vdjdb_filtered[vdjdb_filtered["Species"] == "HomoSapiens"]
+vdjdb_filtered.shape
+```
+Оставляем с нормально записанной последовательностью и не пустыми полями про источник
+
+```{python}
+vdjdb_filtered = vdjdb_filtered[vdjdb_filtered["Epitope"].apply(isCorrectSequence)]
+vdjdb_filtered.shape
+```
+
+
+```{python}
+vdjdb_filtered = vdjdb_filtered[~vdjdb_filtered["Epitope gene"].isna()]
+vdjdb_filtered.shape
+```
+
+```{python}
+vdjdb_filtered = vdjdb_filtered[~vdjdb_filtered["Epitope species"].isna()]
+vdjdb_filtered.shape
+```
+
+
+```{python}
+vdjdb_filtered = vdjdb_filtered[~vdjdb_filtered["Reference"].isna()]
+vdjdb_filtered.shape
+```
+## Очистка
+
+### Названия генов
+
+```{python}
+print(vdjdb_filtered["Epitope gene"].unique())
+```
+Исключим синтетические конструкты
+
+```{python}
+vdjdb_filtered = vdjdb_filtered[vdjdb_filtered["Epitope gene"] != "synthetic"]
+vdjdb_filtered.shape
+```
+Есть ли эпитопы, которые пришли из разных генов?
+
+```{python}
+epitopes = vdjdb_filtered["Epitope"].unique()
+for e in epitopes:
+    v = vdjdb_filtered[vdjdb_filtered["Epitope"] == e]
+    if len(v["Epitope gene"].unique()) > 1:
+        print(f"{e} {v['Epitope gene'].unique()}")
+```
+
+Исправляем аннотацию
+```{python}
+vdjdb_filtered.loc[vdjdb_filtered["Epitope gene"].str.contains("RT"),"Epitope gene"] = "Pol"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope gene"].str.contains("NY-ESO"),"Epitope gene"] = "NY-ESO-1"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope gene"].str.contains("P53"),"Epitope gene"] = "TP53"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope gene"].str.contains("p53"),"Epitope gene"] = "TP53"
+```
+
+### Названия видов
+```{python}
+print(vdjdb_filtered["Epitope species"].unique())
+```
+Исключим синтетические конструкты
+
+
+```{python}
+vdjdb_filtered = vdjdb_filtered[vdjdb_filtered["Epitope species"] != "synthetic"]
+vdjdb_filtered.shape
+```
+Исправляем аннотацию
+
+```{python}
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("HIV"),"Epitope species"] = "HIV-1"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("HSV-2"),"Epitope species"] = "HSV2"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("EBV"),"Epitope species"] = "Human gammaherpesvirus 4"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("CMV"),"Epitope species"] = "Human betaherpesvirus 5"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("HomoSapiens"),"Epitope species"] = "Homo sapiens"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("SaccharomycesCerevisiae"),"Epitope species"] = "Saccharomyces cerevisiae"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("StreptomycesKanamyceticus"),"Epitope species"] = "Streptomyces kanamyceticus"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("M.tuberculosis"),"Epitope species"] = "Mycobacterium tuberculosis"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("HPV"),"Epitope species"] = "Human papillomavirus"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("DENV1"),"Epitope species"] = "Dengue virus 1"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("DENV2"),"Epitope species"] = "Dengue virus 2"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("InfluenzaA"),"Epitope species"] = "Influenza A virus"
+vdjdb_filtered.loc[vdjdb_filtered["Epitope species"].str.contains("MCPyV"),"Epitope species"] = "Merkel cell polyomavirus"
+```
+
+
+```{python}
+vdjdb_filtered = vdjdb_filtered[vdjdb_filtered["Epitope species"] != "DENV3/4"]
+```
+
+
+```{python}
+print(vdjdb_filtered["Epitope species"].unique())
+```
+
+## Описательная статистика
+```{python}
+vdjdb_filtered["Epitope species"].value_counts().reset_index().loc[0:4]
+```
+
+
+```{python}
+vdjdb_filtered["Species"].value_counts()
+```
+
+
+```{python}
+vdjdb_filtered["Epitope gene"].value_counts()
+```
+
+
+```{python}
+vdjdb_filtered["Score"].value_counts()
+```
+
+
+```{python}
+print(max(vdjdb_filtered["Epitope"].str.len()))
+```
+
+```{python}
+epitopes = vdjdb_filtered["Epitope"].unique()
+```
+
+
+```{python}
+len(epitopes)
+```
+
+
+```{python}
+probs = pd.DataFrame(np.zeros_like(0,shape = (20,20)), index = list("ACDEFGHIKLMNPQRSTVWY"))
+for i in epitopes:
+    amk = list(i)
+    for j,a in enumerate(amk):
+        probs.loc[a,j] += 1
+probs = probs.T / len(epitopes)
+probs
+```
+
+
+```{python}
+#logo = logomaker.Logo(probs,color_scheme = "chemistry")
+fig,ax = plt.subplots(figsize = (10,6))
+ax.set_title("VDJdb epitopes")
+logo = logomaker.Logo(probs.iloc[0:11,:], color_scheme = "chemistry", ax = ax)
+fig.tight_layout()
+plt.show()
+```
+
+
+```{python}
+vdjdb_filtered["Epitope"].str.len().median()
+```
+
+Ожидается, что большинство эпитопов имеют в качестве сайта разрезания лейцин или валин, так как они более представлены в датасете. Но в целом, наблюдается более менее равномерное распределение аминокислот на каждой позиции.
+
+## Поиск референсных последовательностей
+
+Формирования множества запросов
+```{python}
+uni_gene_spec = vdjdb_filtered[["Epitope gene","Epitope species"]].drop_duplicates()
+uni_gene_spec.shape
+```
+
+
+```{python}
+queries = set()
+for i in uni_gene_spec.index:
+    s = f"({uni_gene_spec.loc[i, 'Epitope gene']}) AND (\"{uni_gene_spec.loc[i, 'Epitope species']}\" [Organism])"
+    queries.add(s)
+print(len(queries))
+```
+Проверка на то, что запросы ищут все эпитопы
+
+```{python}
+epi_ids = []
+epi_num = 0
+for k, q in enumerate(queries):
+    gene = re.split("\((.*?)\)",q)[1]
+    organism = re.split("\"",q)[1]
+    epi = list(vdjdb_filtered.loc[(vdjdb_filtered["Epitope gene"] == gene) &
+                                (vdjdb_filtered["Epitope species"] == organism), "Epitope"].unique())
+    epi_num += len(epi)
+    for e in epi:
+        #print(e)
+        epi_id = e#f"{e}_{gene}_{organism}"
+        if epi_id not in epi_ids: 
+            epi_ids.append(epi_id)
+        else:
+            print(epi_id)
+print(f"ids {len(epi_ids)} epi_total {len(epitopes)} epi_num {epi_num}")
+```
+
+Ищет и сохраняет последовательности на NCBI Protein, если в ней найден эпитоп. Код выполняется некоторое время. Готовый файл называется vdjdb_seqs.fasta в папке data. Не запускайте этот блок без необходимости.
+```{python, eval = F}
+seqs = {}
+tries = 10
+total = len(queries)
+failed_queries = {}
+epi_failed = 0
+printProgressBar(0,total,length = 40, suffix = f"failed: 0 success: 0")
+with open("../data/vdjdb_seqs_ref_new.fasta","w") as fasta:
+    for k, q in enumerate(queries):
+        gene = re.split("\((.*?)\)",q)[1]
+        organism = re.split("\"",q)[1]
+        epi = list(vdjdb_filtered.loc[(vdjdb_filtered["Epitope gene"] == gene) &
+                                (vdjdb_filtered["Epitope species"] == organism), "Epitope"].unique())
+        search_res = Entrez.read(Entrez.esearch(db="protein", retmax=100, term=q))["IdList"]
+        if organism == "SARS-CoV-2":
+            # количество последовательностей для ковида очень велико
+            search_res = Entrez.read(Entrez.esearch(db="protein", retmax=20000, term=q))["IdList"]
+        handle = Entrez.efetch(id = ",".join(search_res), db = "protein", rettype="fasta", retmode="text")
+        fasta_io = StringIO(handle.read())
+        for record in SeqIO.parse(fasta_io, "fasta"):
+            for e in epi:
+                if e in record.seq:
+                    epi_id = f"{e}_{gene}_{organism}"
+                    record.id = epi_id
+                    seqs[epi_id] = record.seq
+                    SeqIO.write(record, fasta, "fasta")
+                    epi.remove(e)
+            if len(epi) == 0:
+                break
+        if len(epi) != 0:
+            failed_queries[q] = {"epi":epi,"max_epi":f"{len(epi)}"}
+            epi_failed += len(epi)
+        printProgressBar(k,total, suffix = f"failed: {epi_failed} success:{len(seqs.values())}",length = 40)
+```
+# Результаты
+При повторном запуске блокнота, используйте этот код
+```{python}
+seqs = {}
+success_epitopes = []
+with open("../data/vdjdb_seqs.fasta", "r") as fasta:
+    for record in SeqIO.parse(fasta, "fasta"):
+        seqs[record.id] = record.seq
+        success_epitopes.append(re.split("_",record.id)[0])
+print(len(seqs.keys()))
+```
+
+
+```{python}
+failed_epitopes = vdjdb_filtered[~vdjdb_filtered["Epitope"].isin(success_epitopes)]
+failed_epitopes.shape
+```
+
+
+```{python}
+failed_stat = failed_epitopes[["Epitope","Epitope gene","Epitope species"]].drop_duplicates()
+failed_stat.shape
+```
+
+
+```{python}
+failed_stat.head()
+```
+
+Большинство ненайденных эпитопов - человеческие и нового короновируса. Возможно эпитопы являются довольно редкими вариантами.
+
+```{python}
+failed_stat["Epitope species"].value_counts()
+```
+
+
+```{python}
+all_stat = vdjdb_filtered[["Epitope","Epitope gene","Epitope species"]].drop_duplicates()
+all_stat["Epitope species"].value_counts()
+```
+
+
+```{python}
+combinations = {}
+ff = {}
+for key, seq in seqs.items():
+    e = re.split("_",key)[0]
+    e_start = seq.find(e)
+    #print(f"{e_start} {len(seq)}")
+    #print(seq[e_start + len(e)])
+    if e_start + len(e) < len(seq):
+        C_end = seq[e_start + len(e)]
+    else:
+        ff[e] = key
+        continue
+    combinations[e] = e[-1] + C_end
+df_comb = pd.DataFrame.from_dict(combinations, orient = "index",columns = ["Comb"])
+print(df_comb.shape)
+df_comb.head()
+```
+
+Часть эпитопов равна по величине референсу
+```{python}
+ff
+```
+
+
+```{python}
+success_stat = vdjdb_filtered.loc[vdjdb_filtered["Epitope"].isin(success_epitopes) & (~vdjdb_filtered["Epitope"].isin(ff.keys())),["Epitope","Epitope gene","Epitope species"]].drop_duplicates()
+success_stat.shape
+```
+Частоты встречаемости аминокислот в N-конце сайта разрезания
+
+```{python}
+(success_stat["Epitope"].str[-1].value_counts().sort_index() / len(success_stat.index)).plot.bar()
+```
+
+```{python}
+df_comb.value_counts()
+```
+Тот же график для С-конца сайта
+```{python}
+(df_comb["Comb"].str[1].value_counts().sort_index() / len(df_comb.index)).plot.bar()
+```
+
+**Можно сделать вывод, что не так важна аминокислота, идущая после сайта связывания, как перед ним.**
