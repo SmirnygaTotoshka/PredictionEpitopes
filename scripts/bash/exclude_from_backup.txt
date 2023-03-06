@@ -1,0 +1,7 @@
+PredictionEpitopes/.RData
+PredictionEpitopes/.Rhistory
+PredictionEpitopes/.RData/*
+PredictionEpitopes/.Rproj.user/*
+PredictionEpitopes/.git/*
+PredictionEpitopes/.Ruserdata
+PredictionEpitopes/.Rprofile

@@ -19,8 +19,8 @@ setwd("/home/stotoshka/Documents/Epitops/PredictionEpitopes")
 #                         dbname='iedb',
 #                         host='localhost',
 #                         port=3306,
-#                         user='stotoshka',
-#                         password='meowmeow')
+#                         user='root',
+#                         password='meow_root')
 
 # elution.assays = RMySQL::dbReadTable(con, "epi_mhc_bind")
 # elution.assays = RMySQL::dbReadTable(con, "epi_mhc_elution")
