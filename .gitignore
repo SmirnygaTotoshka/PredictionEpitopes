@@ -6,7 +6,9 @@
 .html
 .pdf
 .docx
+.idea
 data/source/*
+scripts/java/PASSExperiments/out
 data/bind_train_dataset/*
 notebooks/lit_review/_book/*
 logs/*

@@ -15,11 +15,11 @@ CREATE TABLE ConverterConfig(
   id int NOT NULL AUTO_INCREMENT,
   input varchar(1000) NOT NULL,
   output varchar(1000) NOT NULL,
-  column varchar(50) NOT NULL,
+  `column` varchar(50) NOT NULL,
   charged bool,
   alphabet int,
   threads tinyint,
-  separator char(1),
+  `separator` char(1),
   filename varchar(50),
   delete_tmp bool,
   PRIMARY KEY (id),
@@ -30,7 +30,7 @@ CREATE TABLE ModelConfig(
   id int NOT NULL AUTO_INCREMENT,
   workdir varchar(1000) NOT NULL,
   base_name varchar(100) NOT NULL,
-  data varchar(100) NOT NULL,
+  `data` varchar(100) NOT NULL,
   activity_column varchar(100) NOT NULL,
   exclude varchar(100),
   output varchar(100) NOT NULL,
@@ -59,10 +59,10 @@ CREATE TABLE Results(
   activity varchar(200) NOT NULL,
   iap float NOT NULL,
   fiveCV float,
-  twentCV float,
+  twentyCV float,
   looCV float,
   PRIMARY KEY (id),
-  FOREIGN KEY (model_id) REFERENCES Models(id),
+  FOREIGN KEY (model_id) REFERENCES Models(id)
 );
 
 CREATE INDEX converter_config_index ON ConverterConfig (id);
