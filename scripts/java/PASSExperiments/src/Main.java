@@ -35,10 +35,11 @@ public class Main {
             if (file.exists()){
                 JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader(file));
                 CommonSettings settings = new CommonSettings(jo);
+                System.out.println(settings);
                 System.out.println("---------------------------------------------------");
                 System.out.println("Preparing");
                 System.out.println(new Date());
-                //prepare(settings);
+                prepare(settings);
                 System.out.println("---------------------------------------------------");
                 JSONArray converter_array = (JSONArray) jo.get("converter_configs");
                 JSONArray model_array = (JSONArray) jo.get("model_configs");
@@ -58,7 +59,7 @@ public class Main {
                         System.out.println(modelConfigs[i]);
                     }
                     System.out.println("---------------------------------------------------");
-                    Task task = new Task(settings, converterConfigs, modelConfigs);
+                    Task task = new Task(0,settings, converterConfigs, modelConfigs);
                     task.execute();
                 }
             }
@@ -92,10 +93,9 @@ public class Main {
         String[] folders = settings.getLaunchStructure();
         System.out.println("Create launch structure");
         for (String f: folders) {
-            String path = settings.getWorkDir() + File.separator + f;
-            File dir = new File(path);
-            if (dir.exists() && !settings.isOverwrite()) throw new IOException(path + " is exists!");
-            else if (!dir.mkdir() && !settings.isOverwrite()) throw new IOException("Cannot create " + path);
+            File dir = new File(f);
+            if (dir.exists() && !settings.isOverwrite()) throw new IOException(f + " is exists!");
+            else if (!dir.mkdir() && !dir.exists()) throw new IOException("Cannot create " + f);
         }
         System.out.println("Copy data for launch");
         for (File f: dataSource.listFiles()) {

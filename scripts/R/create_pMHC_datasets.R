@@ -109,8 +109,8 @@ negative.stat = negative %>% group_by(activity) %>%
 filtered.positive = positive %>% filter(activity %in% positive.stat$activity)
 filtered.negative = negative %>% filter(activity %in% negative.stat$activity)
 
-vroom_write(filtered.positive, paste0("data/bind_train_dataset/combined/filtered.positive.csv"),delim = ";")
-vroom_write(filtered.negative, paste0("data/bind_train_dataset/combined/filtered.negative.csv"),delim = ";")
+vroom_write(filtered.positive, paste0("data/bind_train_dataset/combined/filtered_positive.csv"),delim = ";")
+vroom_write(filtered.negative, paste0("data/bind_train_dataset/combined/filtered_negative.csv"),delim = ";")
 
 set.seed(9)#my basketball player number
 filtered.positive$activity = as.factor(filtered.positive$activity)

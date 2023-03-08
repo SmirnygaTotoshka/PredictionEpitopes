@@ -1,6 +1,11 @@
 import org.json.simple.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class ConverterConfig {
@@ -123,6 +128,23 @@ public class ConverterConfig {
 
     public void setDelete_tmp(boolean delete_tmp) {
         this.delete_tmp = delete_tmp;
+    }
+
+    public void write(String path, CommonSettings settings) throws IOException {
+        JSONObject jo = new JSONObject();
+        jo.put("input",CommonSettings.WINDOWS_HOME_PATH + File.separator + settings.getDataDestDir() +  File.separator + input);
+        jo.put("output",CommonSettings.WINDOWS_HOME_PATH +  File.separator + settings.getOutputPath() +  File.separator + output);
+        jo.put("column",column);
+        jo.put("charged",charged);
+        jo.put("alphabet",alphabet.toString());
+        jo.put("threads",threads);
+        jo.put("separator",Character.toString(separator));
+        jo.put("filename",filename);
+        jo.put("delete_tmp",delete_tmp);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+        writer.write(jo.toJSONString().replaceAll("\\\\",""));
+        System.out.println(jo.toJSONString().replaceAll("\\\\",""));
+        writer.close();
     }
 
     @Override

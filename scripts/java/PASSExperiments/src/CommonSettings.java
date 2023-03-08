@@ -5,8 +5,9 @@ import java.security.PublicKey;
 
 public class CommonSettings {
 
-    public static final String WINDOWS_PASS_PATH = "C:\\Users\\SmirnygaTotoshka\\Desktop\\OLMPASS";
-    public static final String WINDOWS_HOME_PATH = "C:\\Users\\SmirnygaTotoshka\\Desktop\\diplom";
+
+    public static final String WINDOWS_PASS_PATH = "C:/Users/SmirnygaTotoshka/Desktop/OLMPASS";
+    public static String WINDOWS_HOME_PATH = "C:/Users/SmirnygaTotoshka/Desktop";
     private String workDir;
     private String dataSourceDir;
     private String dataDestDir;
@@ -24,6 +25,7 @@ public class CommonSettings {
 
     public CommonSettings(JSONObject jo) {
         this.workDir = (String) jo.get("work_dir");
+        WINDOWS_HOME_PATH = WINDOWS_HOME_PATH + File.separator + this.workDir.substring(this.workDir.indexOf(",share=")+7);
         this.dataSourceDir = (String) jo.get("data_source_dir");
         this.dataDestDir = (String) jo.get("data_dest_dir");
         this.SARpath = (String) jo.get("sar");
@@ -75,8 +77,16 @@ public class CommonSettings {
         return workDir + File.separator + logPath;
     }
 
-    public String getConverterPath(){
-        return workDir + File.separator + scriptsPath + File.separator + "SeqToSDF.py";
+    public String getAbsoluteConfigPath(){
+        return workDir + File.separator + configs;
+    }
+
+    public String getWinConfigPath(){
+        return WINDOWS_HOME_PATH +  File.separator + configs;
+    }
+
+    public String getConverterWinPath(){
+        return WINDOWS_HOME_PATH +  File.separator + scriptsPath + "/SeqToSDF.py";
     }
 
     public String[] getLaunchStructure(){
@@ -89,6 +99,7 @@ public class CommonSettings {
                 workDir + File.separator + configs,
         };
     }
+
     @Override
     public String toString() {
         return "CommonSettings{" +

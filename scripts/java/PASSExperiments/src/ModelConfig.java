@@ -1,5 +1,9 @@
 import org.json.simple.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class ModelConfig {
     private long min_base_level;
     private long max_base_level;
@@ -65,5 +69,11 @@ public class ModelConfig {
                 ", output='" + output + '\'' +
                 ", fiveCV=" + fiveCV +
                 '}';
+    }
+
+    public void write(String path, CommonSettings settings, long level)throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+        writer.write("BaseCreate=" + level + ";" + model_name + "\n");
+        writer.write("BaseAddNewData=" + level + ";" + model_name + "\n");
     }
 }
