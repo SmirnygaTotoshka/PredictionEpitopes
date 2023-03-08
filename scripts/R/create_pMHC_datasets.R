@@ -109,6 +109,9 @@ negative.stat = negative %>% group_by(activity) %>%
 filtered.positive = positive %>% filter(activity %in% positive.stat$activity)
 filtered.negative = negative %>% filter(activity %in% negative.stat$activity)
 
+vroom_write(filtered.positive, paste0("data/bind_train_dataset/combined/filtered.positive.csv"),delim = ";")
+vroom_write(filtered.negative, paste0("data/bind_train_dataset/combined/filtered.negative.csv"),delim = ";")
+
 set.seed(9)#my basketball player number
 filtered.positive$activity = as.factor(filtered.positive$activity)
 filtered.negative$activity = as.factor(filtered.negative$activity)
@@ -161,6 +164,7 @@ for (a in levels(combined$allele)) {
     if (!dir.exists(PATH)){
       dir.create(PATH)
     }
+    vroom_write(allele.data, paste0(PATH,"/",allele.name.for.file,".csv"),delim = ";")
     idx = createFolds(allele.data$activity, k = 5, returnTrain = T)
     for (i in 1:5) {
       train = allele.data[idx[[i]],]
@@ -176,3 +180,4 @@ for (a in levels(combined$allele)) {
       failed.alleles = c(failed.alleles, a)
   }
 }
+write.table(failed.alleles, "data/failed_alleles.csv", row.names = F,col.names = F)
