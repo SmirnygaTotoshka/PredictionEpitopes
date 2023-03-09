@@ -8,40 +8,29 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class Task {
+public abstract class Task implements Runnable{
 
-    private int id;
-    private Config config;
-    private Runtime runtime = Runtime.getRuntime();
+    protected File[] files;
 
-    private Session session;
+    protected int id;
+    protected Config config;
+    //private Runtime runtime = Runtime.getRuntime();
 
-    public Task(int id,Config config) throws JSchException {
+    public Task(int id,Config config, File[] files){
         this.id = id;
         this.config = config;
-        JSch jsch = new JSch();
-        String host = "192.168.0.10";
-        String user = "SmirnygaTotoshka";
-        String password = "linageenddo1";
-
-        this.session = jsch.getSession(user, host, 22);
-        Properties con = new Properties();
-        con.put("StrictHostKeyChecking", "no");
-        this.session.setConfig(con);
-        this.session.setPassword(password);
-        this.session.connect();
+        this.files = files;
     }
 //  "work_dir": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/combined"
 
-    public void convert(File[] converter_configs_paths) throws IOException, InterruptedException {
-        for (File c : converter_configs_paths) {
-            File out = new File(config.getConverter_output() + File.separator + c.getName().substring(0,c.getName().indexOf('.')) + ".sdf");
+ /*   public void convert(File converter_config) throws IOException, InterruptedException {
+            File out = new File(config.getConverter_output() + File.separator + converter_config.getName().substring(0,converter_config.getName().indexOf('.')) + ".sdf");
             if (!out.exists()) {
-                System.out.println(c.getAbsolutePath());
+                System.out.println(converter_config.getAbsolutePath());
                 Process converter = runtime.exec(new String[]{
                         "/home/stotoshka/Soft/anaconda3/envs/research/bin/python",
                         config.getConverter(),
-                        c.getAbsolutePath()
+                        converter_config.getAbsolutePath()
                 });
                 BufferedReader r = new BufferedReader(new InputStreamReader(converter.getInputStream()));
                 String line;
@@ -53,7 +42,6 @@ public class Task {
             else {
                 System.out.println("Already converted.");
             }
-        }
     }
 
     public void copySDFToRemote() throws IOException {
@@ -68,7 +56,7 @@ public class Task {
                 System.out.println(f.getAbsolutePath() + " is copied");
             }
         }
-    }
+    }*/
 
     public void execute() throws IOException {
         for (String model: config.getModel_names()) {
@@ -77,7 +65,7 @@ public class Task {
                 String win_dir = config.remotePathToWin(config.getRemote_work_dir()).replaceAll("/","\\");
                 String win_path = win_dir + "\\" + cfg.getName();
                 String command = Config.WINDOWS_PASS_PATH + "\\" + "OLMPASSdoSAR.exe " + win_path;
-                exec(command);
+                boolean success = exec(command);
             }
         }
 
@@ -114,7 +102,19 @@ public class Task {
 
     private boolean exec(String command){
         Channel channel = null;
+        Session session = null;
         try{
+            JSch jsch = new JSch();
+            String host = "192.168.0.10";
+            String user = "SmirnygaTotoshka";
+            String password = "linageenddo1";
+
+            session = jsch.getSession(user, host, 22);
+            Properties con = new Properties();
+            con.put("StrictHostKeyChecking", "no");
+            session.setConfig(con);
+            session.setPassword(password);
+            session.connect();
             channel = session.openChannel("exec");
             ((ChannelExec)channel).setCommand(command);
             channel.setInputStream(null);
@@ -136,16 +136,19 @@ public class Task {
                 bufferedReader.close();
                 inputReader.close();
             }catch(IOException ex){
+                System.out.println(ex);
                 ex.printStackTrace();
             }
             return true;
         }
         catch(Exception ex){
+            System.out.println(ex);
             ex.printStackTrace();
             return false;
         }
         finally {
             channel.disconnect();
+            session.disconnect();
         }
     }
 
@@ -155,4 +158,26 @@ public class Task {
 
         }*/
     }
+
+   /* @Override
+    public void run() {
+        int model_name = 0;
+        int type = 1;
+        int fold = 2;
+        int level = 3;
+        int extension = 4;
+        for (File model: files) {
+            String[] name_parts = model.getName().split("_");
+            File convert_file = new File(config.getLocal_configs() + File.separator + name_parts[model_name] + name_parts[type] + name_parts[fold] + ".json");
+            try {
+                convert(convert_file);
+                copySDFToRemote();
+                execute();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }*/
 }

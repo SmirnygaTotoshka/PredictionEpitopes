@@ -161,51 +161,70 @@ public class Config {
     private void createConverterConfigs() throws IOException {
         for (String model: model_names) {
             if (fiveCV){
+                String input_path = csv_input + File.separator + model + "_total_total.csv";
+                String config_path = local_configs + File.separator + model + "_total_total.json";
+                writeConverterConfig(input_path, config_path);
+                for (int i = 1; i < 6; i++) {
+                    String input_path_train = csv_input + File.separator + model + "_train_" + i + ".csv";
+                    String config_path_train = local_configs + File.separator + model + "_train_" + i + ".json";
+                    String input_path_test = csv_input + File.separator + model + "_test_" + i + ".csv";
+                    String config_path_test = local_configs + File.separator + model + "_test_" + i + ".json";
+                    writeConverterConfig(input_path_train, config_path_train);
+                    writeConverterConfig(input_path_test, config_path_test);
+                }
 
             }
             else{
                 String input_path = csv_input + File.separator + model + ".csv";
-                JSONObject jo = new JSONObject();
-                jo.put("input", input_path);
-                jo.put("output", converter_output);
-                jo.put("column", converter_column);
-                jo.put("threads", converter_threads);
                 String config_path = local_configs + File.separator + model + ".json";
-                BufferedWriter writer = new BufferedWriter(new FileWriter(config_path));
-                writer.write(jo.toJSONString().replaceAll("\\\\",""));
-                System.out.println(jo.toJSONString().replaceAll("\\\\",""));
-                writer.close();
+                writeConverterConfig(input_path, config_path);
             }
         }
     }
+
+    private void writeConverterConfig(String input_path, String config_path) throws IOException {
+        JSONObject jo = new JSONObject();
+        jo.put("input", input_path);
+        jo.put("output", converter_output);
+        jo.put("column", converter_column);
+        jo.put("threads", converter_threads);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(config_path));
+        writer.write(jo.toJSONString().replaceAll("\\\\",""));
+        System.out.println(jo.toJSONString().replaceAll("\\\\",""));
+        writer.close();
+    }
+/**TODO train/test and for 2csv config*/
     private void createModelConfigs() throws IOException {
         for (String model: model_names) {
             if (fiveCV){
-
+                for (long level = min_desc_level; level <= max_desc_level ; level++) {
+                    for (int i = 1; i < 6; i++) {
+                        writeExecutionScript(model, "triaan", String.valueOf(i),level);
+                    }
+                    writeExecutionScript(model, "train" , "total", level);
+                }
             }
             else{
-                /*String input_path = csv_input + File.separator + model + ".csv";
-                JSONObject jo = new JSONObject();
-                jo.put("input", input_path);
-                jo.put("output", converter_output);
-                jo.put("column", converter_column);
-                jo.put("threads", converter_threads);*/
                 for (long level = min_desc_level; level <= max_desc_level ; level++) {
-                    String m_name = model + "_" + level + "_" + "total";
-                    String config_path = remote_work_dir + File.separator + m_name + ".txt";
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(config_path));
-                    String win_sdf = (new File(remotePathToWin(remote_data)).getName() + File.separator + model + ".sdf").replaceAll("/","\\\\");
-                    String win_sar = (new File(remotePathToWin(remote_SAR)).getName() + File.separator + m_name).replaceAll("/","\\\\");
-                    writer.write("BaseCreate=" + level + ";" + model + "\n");
-                    writer.write("BaseAddNewData=" + win_sdf + ";" + activity + "\n");
-                    writer.write("BaseSave="+ win_sar + "\n");
-                    writer.write("BaseTraining"+ "\n");
-                    writer.write("BaseValidation"+ "\n");
-                    writer.write("BaseClose");
-                    writer.close();
+                    writeExecutionScript(model,"total" ,"total", level);
                 }
             }
         }
+    }
+
+    public void writeExecutionScript(String model,String mode , String fold,long level) throws IOException {
+        String m_name = model + "_" + level + "_" + fold;
+        String config_path = remote_work_dir + File.separator + m_name + ".txt";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(config_path));
+        String win_sdf = (new File(remotePathToWin(remote_data)).getName() + File.separator + model + ".sdf").replaceAll("/","\\\\");
+        String win_sar = (new File(remotePathToWin(remote_SAR)).getName() + File.separator + m_name).replaceAll("/","\\\\");
+        writer.write("BaseCreate=" + level + ";" + model + "\n");
+        writer.write("BaseAddNewData=" + win_sdf + ";" + activity + "\n");
+        writer.write("BaseSave="+ win_sar + "\n");
+        writer.write("BaseTraining"+ "\n");
+        writer.write("BaseValidation"+ "\n");
+        writer.write("BaseClose");
+        writer.close();
     }
 
     public String remotePathToWin(String path){

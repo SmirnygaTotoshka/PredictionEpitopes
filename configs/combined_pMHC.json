@@ -1,24 +1,24 @@
 {
-  "model_name":["filtered_positive"],
+  "model_name":["HLA-A0101"],
   "method":"PASS",
   "min_desc_level": 6,
   "max_desc_level": 16,
-  "fiveCV":false,
+  "fiveCV": true,
   "activity":"activity",
 
   "local_work_dir": "/home/stotoshka/Documents/Epitops/experiments",
-  "csv_input": "/home/stotoshka/Documents/Epitops/PredictionEpitopes/data/bind_train_dataset/combined",
+  "csv_input": "/home/stotoshka/Documents/Epitops/PredictionEpitopes/data/bind_train_dataset/by_alleles",
   "converter": "/home/stotoshka/Documents/Epitops/PredictionEpitopes/scripts/python/SeqToSDF.py",
   "converter_output": "/home/stotoshka/Documents/Epitops/experiments/SDF",
   "converter_threads": 10,
   "converter_column": "epitope",
   "local_configs": "/home/stotoshka/Documents/Epitops/experiments/configs",
 
-  "remote_work_dir": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/combined",
-  "remote_data": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/combined/sdf",
-  "remote_SAR": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/combined/sar",
-  "remote_output": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/combined/output",
+  "remote_work_dir": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/by_alleles",
+  "remote_data": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/by_alleles/sdf",
+  "remote_SAR": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/by_alleles/sar",
+  "remote_output": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/by_alleles/output",
 
-  "threads": 2,
+  "threads": 5,
   "overwrite": true
 }

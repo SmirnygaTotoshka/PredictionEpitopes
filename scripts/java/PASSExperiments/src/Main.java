@@ -11,7 +11,9 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 public class Main {
 
@@ -41,13 +43,25 @@ public class Main {
                 System.out.println(new Date());
                 settings.prepare();
                 System.out.println("---------------------------------------------------");
-                for (String model: settings.getModel_names()) {
-                    File[] convert_configs = new File(settings.getLocal_configs()).listFiles((dir,name) -> name.contains(model));
-                    Task task = new Task(0, settings);
-                    task.convert(convert_configs);
-                    task.copySDFToRemote();
-                    task.execute();
+                Distributor distributor = new Distributor();
+                ArrayList<File[]> converter_files = distributor.distribute(settings.getLocal_configs(),settings.getThreads(), ".json");
+                ConveterTask[] conveterTasks = new ConveterTask[converter_files.size()];
+                Thread[] converterThreads = new Thread[converter_files.size()];
+                CountDownLatch latch = new CountDownLatch(converter_files.size());
+                for (int i = 0; i < conveterTasks.length; i++) {
+                    conveterTasks[i] = new ConveterTask(i, settings, converter_files.get(i), latch);
+                    converterThreads[i] = new Thread(conveterTasks[i]);
+                    converterThreads[i].start();
                 }
+                latch.await();
+              /*  Task[] tasks = new Task[Math.toIntExact(settings.getThreads())];
+                Thread[] threads = new Thread[tasks.length];
+                ArrayList<File[]> files = distributor.distribute();
+                for (int i = 0; i < tasks.length; i++) {
+                    tasks[i].setFiles(files.get(i));
+                    threads[i] = new Thread(tasks[i]);
+                    threads[i].join();
+                }*/
 
                 /*JSONArray converter_array = (JSONArray) jo.get("converter_configs");
                 JSONArray model_array = (JSONArray) jo.get("model_configs");
@@ -81,9 +95,9 @@ public class Main {
         }
         catch (ParseException e) {
             System.out.println("Failed parse " + e);
-        } catch (JSchException e) {
+        } /*catch (JSchException e) {
             throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        }*/ catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
             con.close();

@@ -109,8 +109,8 @@ negative.stat = negative %>% group_by(activity) %>%
 filtered.positive = positive %>% filter(activity %in% positive.stat$activity)
 filtered.negative = negative %>% filter(activity %in% negative.stat$activity)
 
-vroom_write(filtered.positive, paste0("data/bind_train_dataset/combined/filtered_positive.csv"),delim = ";")
-vroom_write(filtered.negative, paste0("data/bind_train_dataset/combined/filtered_negative.csv"),delim = ";")
+vroom_write(filtered.positive, paste0("data/bind_train_dataset/combined/positive_total_total.csv"),delim = ";")
+vroom_write(filtered.negative, paste0("data/bind_train_dataset/combined/negative_total_total.csv"),delim = ";")
 
 set.seed(9)#my basketball player number
 filtered.positive$activity = as.factor(filtered.positive$activity)
@@ -157,14 +157,15 @@ combined$allele = as.factor(combined$allele)
 failed.alleles = c()
 for (a in levels(combined$allele)) {
   allele.name.for.file = str_remove_all(a,"[*:]")
-  PATH = paste0("data/bind_train_dataset/by_alleles/",allele.name.for.file)
+  #PATH = paste0("data/bind_train_dataset/by_alleles/",allele.name.for.file)
+  PATH = "data/bind_train_dataset/by_alleles/"
   print(a)
   allele.data = subset(combined, allele == a)
   if(length(unique(allele.data$activity)) == 2){
-    if (!dir.exists(PATH)){
-      dir.create(PATH)
-    }
-    vroom_write(allele.data, paste0(PATH,"/",allele.name.for.file,".csv"),delim = ";")
+    # if (!dir.exists(PATH)){
+    #   dir.create(PATH)
+    # }
+    vroom_write(allele.data, paste0(PATH,"/",allele.name.for.file,"_total_total",".csv"),delim = ";")
     idx = createFolds(allele.data$activity, k = 5, returnTrain = T)
     for (i in 1:5) {
       train = allele.data[idx[[i]],]
