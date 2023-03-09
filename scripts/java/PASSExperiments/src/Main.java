@@ -34,14 +34,22 @@ public class Main {
             File file = new File(args[0]);
             if (file.exists()){
                 JSONObject jo = (JSONObject) new JSONParser().parse(new FileReader(file));
-                CommonSettings settings = new CommonSettings(jo);
+                Config settings = new Config(jo);
                 System.out.println(settings);
                 System.out.println("---------------------------------------------------");
                 System.out.println("Preparing");
                 System.out.println(new Date());
-                prepare(settings);
+                settings.prepare();
                 System.out.println("---------------------------------------------------");
-                JSONArray converter_array = (JSONArray) jo.get("converter_configs");
+                for (String model: settings.getModel_names()) {
+                    File[] convert_configs = new File(settings.getLocal_configs()).listFiles((dir,name) -> name.contains(model));
+                    Task task = new Task(0, settings);
+                    task.convert(convert_configs);
+                    task.copySDFToRemote();
+                    task.execute();
+                }
+
+                /*JSONArray converter_array = (JSONArray) jo.get("converter_configs");
                 JSONArray model_array = (JSONArray) jo.get("model_configs");
                 if (converter_array.size() != model_array.size()) throw new IOException("Number converter tasks != Number model tasks");
                 else {
@@ -61,7 +69,7 @@ public class Main {
                     System.out.println("---------------------------------------------------");
                     Task task = new Task(0,settings, converterConfigs, modelConfigs);
                     task.execute();
-                }
+                }*/
             }
             else throw new IOException("Config file doesn`t exist");
         }
@@ -74,7 +82,9 @@ public class Main {
         catch (ParseException e) {
             System.out.println("Failed parse " + e);
         } catch (JSchException e) {
-            System.out.println("Failed launch " + e);
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             con.close();
             try {
@@ -84,48 +94,8 @@ public class Main {
             } catch (IOException e) {
                 System.out.println("Failed close " + e);
             }
+            System.exit(0);
         }
     }
 
-    private static void prepare(CommonSettings settings) throws IOException{
-        File dataSource = new File(settings.getDataSourceDir());
-        if (!dataSource.exists()) throw new IOException("Data source dir isn`t exist!");
-        String[] folders = settings.getLaunchStructure();
-        System.out.println("Create launch structure");
-        for (String f: folders) {
-            File dir = new File(f);
-            if (dir.exists() && !settings.isOverwrite()) throw new IOException(f + " is exists!");
-            else if (!dir.mkdir() && !dir.exists()) throw new IOException("Cannot create " + f);
-        }
-        System.out.println("Copy data for launch");
-        for (File f: dataSource.listFiles()) {
-            Path src = f.toPath();
-            Path dst = new File(settings.getWorkDir() + File.separator + settings.getDataDestDir() + File.separator + f.getName()).toPath();
-            File dstFile = dst.toFile();
-            if (dstFile.exists()){
-                System.out.println(dst + " is exists");
-            }
-            else{
-                System.out.println(src + "\t" + dst);
-                Files.copy(src, dst);
-            }
-        }
-        System.out.println("Copy scripts for launch");
-        String[] scripts_source_paths = new String[]{
-                "/home/stotoshka/Documents/Epitops/PredictionEpitopes/scripts/python/SeqToSDF.py"
-        };
-        for (String s: scripts_source_paths) {
-            File f = new File(s);
-            Path src = f.toPath();
-            Path dst = new File(settings.getWorkDir() + File.separator + settings.getScriptsPath() + File.separator + f.getName()).toPath();
-            File dstFile = dst.toFile();
-            if (dstFile.exists()){
-                System.out.println(dst + " is exists");
-            }
-            else{
-                System.out.println(src + "\t" + dst);
-                Files.copy(src, dst);
-            }
-        }
-    }
 }

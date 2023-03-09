@@ -1,5 +1,5 @@
 {
-  "model_name":["combined_positive", "combined_negative"],
+  "model_name":["filtered_positive"],
   "method":"PASS",
   "min_desc_level": 6,
   "max_desc_level": 16,
@@ -8,13 +8,13 @@
 
   "local_work_dir": "/home/stotoshka/Documents/Epitops/experiments",
   "csv_input": "/home/stotoshka/Documents/Epitops/PredictionEpitopes/data/bind_train_dataset/combined",
+  "converter": "/home/stotoshka/Documents/Epitops/PredictionEpitopes/scripts/python/SeqToSDF.py",
   "converter_output": "/home/stotoshka/Documents/Epitops/experiments/SDF",
-  "converter_threads": 5,
+  "converter_threads": 10,
   "converter_column": "epitope",
   "local_configs": "/home/stotoshka/Documents/Epitops/experiments/configs",
 
   "remote_work_dir": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/combined",
-  "remote_configs": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/combined/configs",
   "remote_data": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/combined/sdf",
   "remote_SAR": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/combined/sar",
   "remote_output": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/combined/output",

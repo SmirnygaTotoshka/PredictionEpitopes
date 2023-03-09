@@ -5,9 +5,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Config {
 
+    public static final String WINDOWS_PASS_PATH = "C:\\Users\\SmirnygaTotoshka\\Desktop\\OLMPASS";
+    public static final String WINDOWS_HOME_PATH = "C:\\Users\\SmirnygaTotoshka\\Desktop";
     private String[] model_names;
     private String method;
     private long min_desc_level, max_desc_level;
@@ -21,7 +24,6 @@ public class Config {
     private String converter_column;
     private String local_configs;
     private String remote_work_dir;
-    private String remote_configs;
     private String remote_data;
     private String remote_SAR;
     private String remote_output;
@@ -29,6 +31,12 @@ public class Config {
     private long threads;
 
     private boolean overwrite;
+
+    private String converter;
+
+    public String getConverter() {
+        return converter;
+    }
 
     public Config(JSONObject jo){
         JSONArray array = (JSONArray) jo.get("model_name");
@@ -49,10 +57,10 @@ public class Config {
         this.converter_column = (String) jo.get("converter_column");
         this.local_configs = (String) jo.get("local_configs");
         this.remote_work_dir = (String) jo.get("remote_work_dir");
-        this.remote_configs = (String) jo.get("remote_configs");
         this.remote_data = (String) jo.get("remote_data");
         this.remote_SAR = (String) jo.get("remote_SAR");
         this.remote_output = (String) jo.get("remote_output");
+        this.converter = (String) jo.get("converter");
         this.threads = (long) jo.get("threads");
         this.overwrite = (boolean) jo.get("overwrite");
 
@@ -110,9 +118,6 @@ public class Config {
         return remote_work_dir;
     }
 
-    public String getRemote_configs() {
-        return remote_configs;
-    }
 
     public String getRemote_data() {
         return remote_data;
@@ -140,7 +145,6 @@ public class Config {
                 converter_output,
                 local_configs,
                 remote_work_dir,
-                remote_configs,
                 remote_data,
                 remote_SAR,
                 remote_output
@@ -174,8 +178,63 @@ public class Config {
             }
         }
     }
-    private void createModelConfigs() {
+    private void createModelConfigs() throws IOException {
+        for (String model: model_names) {
+            if (fiveCV){
+
+            }
+            else{
+                /*String input_path = csv_input + File.separator + model + ".csv";
+                JSONObject jo = new JSONObject();
+                jo.put("input", input_path);
+                jo.put("output", converter_output);
+                jo.put("column", converter_column);
+                jo.put("threads", converter_threads);*/
+                for (long level = min_desc_level; level <= max_desc_level ; level++) {
+                    String m_name = model + "_" + level + "_" + "total";
+                    String config_path = remote_work_dir + File.separator + m_name + ".txt";
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(config_path));
+                    String win_sdf = (new File(remotePathToWin(remote_data)).getName() + File.separator + model + ".sdf").replaceAll("/","\\\\");
+                    String win_sar = (new File(remotePathToWin(remote_SAR)).getName() + File.separator + m_name).replaceAll("/","\\\\");
+                    writer.write("BaseCreate=" + level + ";" + model + "\n");
+                    writer.write("BaseAddNewData=" + win_sdf + ";" + activity + "\n");
+                    writer.write("BaseSave="+ win_sar + "\n");
+                    writer.write("BaseTraining"+ "\n");
+                    writer.write("BaseValidation"+ "\n");
+                    writer.write("BaseClose");
+                    writer.close();
+                }
+            }
+        }
     }
 
+    public String remotePathToWin(String path){
+        String pattern = ",share=";
+        return WINDOWS_HOME_PATH + File.separator + path.substring(path.indexOf(pattern)+pattern.length());
+    }
 
+    @Override
+    public String toString() {
+        return "Config{" +
+                "model_names=" + Arrays.toString(model_names) +
+                ", method='" + method + '\'' +
+                ", min_desc_level=" + min_desc_level +
+                ", max_desc_level=" + max_desc_level +
+                ", fiveCV=" + fiveCV +
+                ", activity='" + activity + '\'' +
+                ", local_work_dir='" + local_work_dir + '\'' +
+                ", csv_input='" + csv_input + '\'' +
+                ", converter_output='" + converter_output + '\'' +
+                ", converter_threads=" + converter_threads +
+                ", converter_column='" + converter_column + '\'' +
+                ", local_configs='" + local_configs + '\'' +
+                ", remote_work_dir='" + remote_work_dir + '\'' +
+                ", remote_data='" + remote_data + '\'' +
+                ", remote_SAR='" + remote_SAR + '\'' +
+                ", remote_output='" + remote_output + '\'' +
+                ", threads=" + threads +
+                ", overwrite=" + overwrite +
+                ", converter='" + converter + '\'' +
+                '}';
+    }
 }
