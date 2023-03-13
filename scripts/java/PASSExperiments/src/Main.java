@@ -11,9 +11,8 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.CountDownLatch;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class Main {
 
@@ -26,6 +25,16 @@ public class Main {
 
     public synchronized static Connection getConnection() {
         return con;
+    }
+
+    public static void printModelStatuses(HashMap<String, Model> all_models){
+        for (Model m: all_models.values()) {
+            try {
+                System.out.println(m.getId() + "\t" + m.getStatus() + "\t" + m.isSuccess());
+            } catch (Exception e) {
+                System.out.println(m.getId() + "\t" + m.getStatus() + "\t" + e);
+            }
+        }
     }
 
     public static void main(String[] args) throws SQLException {
@@ -41,19 +50,57 @@ public class Main {
                 System.out.println("---------------------------------------------------");
                 System.out.println("Preparing");
                 System.out.println(new Date());
-                settings.prepare();
+                HashMap<String, Model> all_models = settings.prepare();
                 System.out.println("---------------------------------------------------");
-                Distributor distributor = new Distributor();
-                ArrayList<File[]> converter_files = distributor.distribute(settings.getLocal_configs(),settings.getThreads(), ".json");
-                ConveterTask[] conveterTasks = new ConveterTask[converter_files.size()];
-                Thread[] converterThreads = new Thread[converter_files.size()];
-                CountDownLatch latch = new CountDownLatch(converter_files.size());
-                for (int i = 0; i < conveterTasks.length; i++) {
-                    conveterTasks[i] = new ConveterTask(i, settings, converter_files.get(i), latch);
-                    converterThreads[i] = new Thread(conveterTasks[i]);
-                    converterThreads[i].start();
+
+                printModelStatuses(all_models);
+              /*  System.out.println("Converting");
+                Distributor d = new Distributor();
+                ArrayList<File[]> converter_files = d.distribute(settings.getLocal_configs(),settings.getThreads(), ".json");
+                ExecutorService service = Executors.newFixedThreadPool(converter_files.size());
+                ArrayList<ConveterTask> converters = new ArrayList<>();
+                for (int i = 0; i < converter_files.size(); i++) {
+                    converters.add(new ConveterTask(i, settings, converter_files.get(i)));
                 }
-                latch.await();
+                List<Future<Boolean>> converterTasks = service.invokeAll(converters);
+                for (Future<Boolean> res: converterTasks) {
+                    if (!res.get()) throw new InterruptedException("Unsuccessful complete - Converting");
+                }
+
+                System.out.println("MODEL BUILDING!");
+
+                Distributor d1 = new Distributor();
+                ArrayList<File[]> execution_files = d1.distribute(settings.getRemote_work_dir(),settings.getThreads(), ".txt");
+                service = Executors.newFixedThreadPool(execution_files.size());
+                ArrayList<ExecutionTask> executors = new ArrayList<>();
+                for (int i = 0; i < execution_files.size(); i++) {
+                    executors.add(new ExecutionTask(i, settings, execution_files.get(i)));
+                }
+                List<Future<Boolean>> executionTask = service.invokeAll(executors);
+                for (Future<Boolean> res: executionTask) {
+                    if (!res.get()) throw new InterruptedException("Unsuccessful complete - Execution");
+                }
+
+                if (settings.isFiveCV()) {
+
+                    System.out.println("MODEL 5CV!");
+                    settings.prepareValidation();
+
+                    Distributor d2 = new Distributor();
+                    ArrayList<File[]> validationFiles = d2.distribute(settings.getRemote_work_dir(), settings.getThreads(), ".txt");
+                    service = Executors.newFixedThreadPool(validationFiles.size());
+                    ArrayList<ExecutionTask> validators = new ArrayList<>();
+                    ExecutionTask.PROGRAM_NAME = "OLMPASS2CSV.exe";
+
+                    for (int i = 0; i < validationFiles.size(); i++) {
+                        validators.add(new ExecutionTask(i, settings, validationFiles.get(i)));
+                    }
+                    List<Future<Boolean>> validationTask = service.invokeAll(executors);
+                    for (Future<Boolean> res: validationTask) {
+                        if (!res.get()) throw new InterruptedException("Unsuccessful complete - validation");
+                    }
+                }
+
               /*  Task[] tasks = new Task[Math.toIntExact(settings.getThreads())];
                 Thread[] threads = new Thread[tasks.length];
                 ArrayList<File[]> files = distributor.distribute();
@@ -95,11 +142,11 @@ public class Main {
         }
         catch (ParseException e) {
             System.out.println("Failed parse " + e);
-        } /*catch (JSchException e) {
-            throw new RuntimeException(e);
-        }*/ catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } finally {
+        } /*catch (InterruptedException e) {
+            System.out.println("Failed process " + e);
+        } catch (ExecutionException e) {
+            System.out.println("Failed execution " + e);
+        } */finally {
             con.close();
             try {
                 if (writer != null) {

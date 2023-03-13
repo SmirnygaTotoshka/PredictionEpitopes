@@ -109,6 +109,9 @@ negative.stat = negative %>% group_by(activity) %>%
 filtered.positive = positive %>% filter(activity %in% positive.stat$activity)
 filtered.negative = negative %>% filter(activity %in% negative.stat$activity)
 
+filtered.positive$seq = filtered.positive$epitope
+filtered.negative$seq = filtered.negative$epitope
+
 vroom_write(filtered.positive, paste0("data/bind_train_dataset/combined/positive_total_total.csv"),delim = ";")
 vroom_write(filtered.negative, paste0("data/bind_train_dataset/combined/negative_total_total.csv"),delim = ";")
 

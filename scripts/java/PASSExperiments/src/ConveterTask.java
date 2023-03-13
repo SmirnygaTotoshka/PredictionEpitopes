@@ -1,20 +1,15 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.CountDownLatch;
 
 public class ConveterTask extends Task{
 
     private Runtime runtime;
-    private CountDownLatch latch;
-    public ConveterTask(int id, Config config, File[] files, CountDownLatch latch) {
+
+    public ConveterTask(int id, Config config, File[] files) {
         super(id, config, files);
         this.runtime = Runtime.getRuntime();
-        this.latch = latch;
     }
     private File convert(File converter_config) throws IOException, InterruptedException {
         File out = new File(config.getConverter_output() + File.separator + converter_config.getName().substring(0,converter_config.getName().indexOf('.')) + ".sdf");
@@ -30,7 +25,10 @@ public class ConveterTask extends Task{
             while ((line = r.readLine()) != null) {
                 System.out.println(line);
             }
-            System.out.println(converter.waitFor());
+            if (converter.waitFor() != 0){
+                System.out.println("Error - Converting");
+                throw new InterruptedIOException("Convert code != 0");
+            }
         }
         else {
             System.out.println("Already converted.");
@@ -46,20 +44,46 @@ public class ConveterTask extends Task{
         }
         System.out.println(src.getAbsolutePath() + " is copied");
     }
+
     @Override
-    public void run() {
+    public Boolean call(){
         for (File f: files) {
             try {
                 System.out.println("-----------------------------------------------");
                 System.out.println("Convert " + f.getName());
-                File sdf = convert(f);
+                File sdf = convert(f);//TODO check existence
                 System.out.println("Copy " + sdf.getName());
                 copySDFToRemote(sdf);
             }
             catch (IOException | InterruptedException e) {
-                System.out.println(e);
+                return false;
             }
         }
-        latch.countDown();
+        return check();
+    }
+
+    @Override
+    protected boolean check() {
+        File[] local = new File(config.getConverter_output()).listFiles((file, s) -> s.toLowerCase().endsWith(".sdf"));
+        File[] remote = new File(config.getRemote_data()).listFiles((file, s) -> s.toLowerCase().endsWith(".sdf"));
+
+        for (int i = 0; i < local.length;i++){
+            String local_name = local[i].getName();
+            long local_size = local[i].length();
+            boolean find_exist = false;
+            for (int j = 0; j < remote.length; j++) {
+                String remote_name = remote[j].getName();
+                long remote_size = remote[j].length();
+                if (remote_name.contentEquals(local_name)){
+                    find_exist = true;
+                    if (remote_size != local_size){
+                        return false;
+                    }
+                    else break;
+                }
+            }
+            if (!find_exist) return false;
+        }
+        return true;
     }
 }

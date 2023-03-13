@@ -1,7 +1,14 @@
+package ru.smirnygatotoshka.pass;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -174,7 +181,7 @@ public class Config {
         return overwrite;
     }
 
-    public HashMap<String, Model> prepare() throws IOException {
+    public ObservableList<Model> prepare() throws IOException {
         String[] dirs = new String[]{
                 local_work_dir,
                 converter_output,
@@ -190,153 +197,37 @@ public class Config {
                 if (!f.mkdir()) throw new IOException("Couldn`t create dir " + s);
             }
         }
-        HashMap<String, Model> models = generateModelsDescription();
-        for (Model m: models.values()) {
+        ObservableList<Model> models = generateModelsDescription();
+        for (Model m: models) {
             m.generateConverterConfigs(this);
             m.generatePASSConfigs(this);
         }
         return models;
     }
 
-    private HashMap<String,Model> generateModelsDescription() throws IOException {
-        HashMap<String,Model> models = new HashMap<>();
+    private ObservableList<Model> generateModelsDescription() throws IOException {
+        ObservableList<Model> models = FXCollections.observableArrayList();
         for (String model: model_names) {
             if (fiveCV){
                 for (long level = min_desc_level; level <= max_desc_level ; level++) {
                     for (int i = 1; i < 6; i++) {
                         Model m = new Model(model, Model.VALIDATION_MODE,Integer.toString(i),level);
-                        models.put(m.getId(), m);
+                        models.add(m);
                     }
                     Model m = new Model(model, Model.USUAL_MODE,"total",level);
-                    models.put(m.getId(), m);
+                    models.add(m);
                 }
             }
             else{
                 for (long level = min_desc_level; level <= max_desc_level ; level++) {
                     Model m = new Model(model, Model.USUAL_MODE,"total",level);
-                    models.put(m.getId(), m);
+                    models.add(m);
                 }
             }
         }
         return models;
     }
 
-
-    private void createConverterConfigs() throws IOException {
-        for (String model: model_names) {
-            String input_path = csv_input + File.separator + model + "_total_total.csv";
-            String config_path = local_configs + File.separator + model + "_total_total.json";
-            if (fiveCV){
-                writeConverterConfig(input_path, config_path);
-                for (int i = 1; i < 6; i++) {
-                    String input_path_train = csv_input + File.separator + model + "_train_" + i + ".csv";
-                    String config_path_train = local_configs + File.separator + model + "_train_" + i + ".json";
-                    String input_path_test = csv_input + File.separator + model + "_test_" + i + ".csv";
-                    String config_path_test = local_configs + File.separator + model + "_test_" + i + ".json";
-                    writeConverterConfig(input_path_train, config_path_train);
-                    writeConverterConfig(input_path_test, config_path_test);
-                }
-
-            }
-            else{
-                writeConverterConfig(input_path, config_path);
-            }
-        }
-    }
-
-    public void writeConverterConfig(String input_path, String config_path) throws IOException {
-        JSONObject jo = new JSONObject();
-        jo.put("input", input_path);
-        jo.put("output", converter_output);
-        jo.put("column", converter_column);
-        jo.put("threads", converter_threads);
-        BufferedWriter writer = new BufferedWriter(new FileWriter(config_path));
-        writer.write(jo.toJSONString().replaceAll("\\\\",""));
-        System.out.println(jo.toJSONString().replaceAll("\\\\",""));
-        writer.close();
-    }
-/**
- * TODO train/test and for 2csv config
- *
- * @return
- */
-    private HashMap<String, Model> createModelConfigs() throws IOException {
-        for (String model: model_names) {
-            if (fiveCV){
-                for (long level = min_desc_level; level <= max_desc_level ; level++) {
-                    for (int i = 1; i < 6; i++) {
-                        writeExecutionScriptSAR(model, "train", String.valueOf(i),level);
-                    }
-                    writeExecutionScriptSAR(model, "train" , "total", level);
-                }
-            }
-            else{
-                for (long level = min_desc_level; level <= max_desc_level ; level++) {
-                    writeExecutionScriptSAR(model,"total" ,"total", level);
-                }
-            }
-        }
-        return null;
-    }
-
-    private void createValidationConfigs() throws IOException {
-        for (String model: model_names) {
-            if (fiveCV){
-                for (long level = min_desc_level; level <= max_desc_level ; level++) {
-                    for (int i = 1; i < 6; i++) {
-                        writeExecutionScriptCSV(model,  String.valueOf(i),level);
-                    }
-                }
-            }
-        }
-    }
-
-
-    private void writeExecutionScriptSAR(String model, String mode , String fold, long level) throws IOException {
-        String m_name = model + "_" + mode + "_" + level + "_" + fold;
-        String sdf_name = model + "_" + mode + "_" + fold+ ".sdf";
-        String config_path = remote_work_dir + File.separator + m_name + ".txt";
-        BufferedWriter writer = new BufferedWriter(new FileWriter(config_path));
-        String win_sdf = (new File(remotePathToWin(remote_data)).getName() + File.separator + sdf_name).replaceAll("/","\\\\");
-        String win_sar = (new File(remotePathToWin(remote_SAR)).getName() + File.separator + m_name).replaceAll("/","\\\\");
-        writer.write("BaseCreate=" + level + ";" + m_name + "\n");
-        writer.write("BaseAddNewData=" + win_sdf + ";" + activity + "\n");
-        writer.write("BaseSave="+ win_sar + "\n");
-        writer.write("BaseTraining"+ "\n");
-        writer.write("BaseValidation"+ "\n");
-        writer.write("BaseClose");
-        writer.close();
-    }
-
-    public void prepareValidation() throws IOException{
-        File exec_cfg_dir = new File(remote_exec_configs);
-        if (!exec_cfg_dir.exists()){
-            if (!exec_cfg_dir.mkdir()) throw new IOException("Couldn`t create dir " + exec_cfg_dir);
-        }
-        File[] exec_cfgs = new File(remote_work_dir).listFiles((file, s) -> s.toLowerCase().endsWith(".txt"));
-        for (File c: exec_cfgs) {
-            File dst = new File(exec_cfg_dir.getAbsolutePath() + File.separator + c.getName());
-            if (!dst.exists())
-                Files.move(c.toPath(), dst.toPath());//TODO overwrite
-        }
-        createValidationConfigs();
-    }
-
-    public void writeExecutionScriptCSV(String model, String fold, long level) throws IOException{
-        String sdf_name = model + "_test_" + fold+ ".sdf";
-        String sar_name = model + "_train_" + level + "_" + fold + ".MSAR";
-        String output_name = model + "_test_" + level + "_" + fold + ".csv";
-        String config_path = remote_work_dir + File.separator + model + "_train_" + level + "_" + fold + ".txt";
-        BufferedWriter writer = new BufferedWriter(new FileWriter(config_path));
-        String win_sdf = (new File(remotePathToWin(remote_data)).getName() + File.separator + sdf_name).replaceAll("/","\\\\");
-        String win_sar = (new File(remotePathToWin(remote_SAR)).getName() + File.separator + sar_name).replaceAll("/","\\\\");
-        String win_output = (new File(remotePathToWin(remote_output)).getName() + File.separator + output_name+ ".csv").replaceAll("/","\\\\");
-        writer.write("InputName=" + win_sdf + "\n");
-        writer.write("IdKeyField=" + record_id + "\n");
-        writer.write("BaseName="+ win_sar + "\n");
-        writer.write("OutputName=output/"+ win_output+ "\n");
-        writer.close();
-    }
 
     public String remotePathToWin(String path){
         String pattern = ",share=";
