@@ -11,6 +11,20 @@ import java.util.Collection;
 public class Distributor {
 
     private static volatile Distributor instance;
+
+    private volatile ArrayList<String> executingConverters = new ArrayList<>();
+
+    public void register(String converter_config_name){
+        executingConverters.add(converter_config_name);
+    }
+
+    public void unregister(String converter_config_name){
+        executingConverters.remove(converter_config_name);
+    }
+
+    public boolean isExecute(String converter_config_name){
+        return executingConverters.contains(converter_config_name);
+    }
     private static Object mutex = new Object();
 
     private Distributor() {

@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -131,9 +131,21 @@ public class HelloController {
                 }
             });
             System.out.println("---------------------------------------------------");
-            System.out.println("Converting");
 
-            ArrayList<Model[]> converter_files = distributor.distributeConverterTasks(settings.getThreads());
+            ArrayList<Model[]> models = Distributor.getInstance().distribute(Distributor.getInstance().getAllModels(), settings.getThreads());
+
+            for (int i = 0; i < models.size();i++){
+                Task task = new Task(models.get(i));
+                task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent workerStateEvent) {
+                        status.refresh();
+                    }
+                });
+                new Thread(task).start();
+            }
+
+            /*ArrayList<Model[]> converter_files = distributor.distributeConverterTasks(settings.getThreads());
             ArrayList<ConveterTask> converters = new ArrayList<>();
             for (int i = 0; i < converter_files.size(); i++) {
                 converters.add(new ConveterTask(settings, converter_files.get(i)));
@@ -185,7 +197,7 @@ public class HelloController {
                 });
                 new Thread(converters.get(i)).start();
                 //threadsConverter.get(i).join();
-            }
+            }*/
 
         }
         catch (SQLException | IOException | ParseException e) {
@@ -203,5 +215,11 @@ public class HelloController {
             start.setDisable(false);
         }
     }
-
+    private Model[] slice(ObservableList<Model> input, int start, int end){
+        Model[] slicedArray = new Model[end - start];
+        for (int i = 0; i < slicedArray.length; i++) {
+            slicedArray[i] = input.get(start + i);
+        }
+        return slicedArray;
+    }
 }

@@ -88,6 +88,11 @@ public class ConveterTask extends Task<Void> {
         }
     }
 
+    private void buildModel(){
+
+    }
+
+
     @Override
     public Void call(){
         for (Model m: models) {

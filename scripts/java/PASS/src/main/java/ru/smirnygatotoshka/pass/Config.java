@@ -239,16 +239,16 @@ public class Config {
             if (fiveCV){
                 for (long level = min_desc_level; level <= max_desc_level ; level++) {
                     for (int i = 1; i < 6; i++) {
-                        Model m = new Model(model, Model.VALIDATION_MODE,Integer.toString(i),level);
+                        Model m = new Model(model, Model.VALIDATION_MODE,Integer.toString(i),level, this);
                         models.add(m);
                     }
-                    Model m = new Model(model, Model.USUAL_MODE,"total",level);
+                    Model m = new Model(model, Model.USUAL_MODE,"total",level, this);
                     models.add(m);
                 }
             }
             else{
                 for (long level = min_desc_level; level <= max_desc_level ; level++) {
-                    Model m = new Model(model, Model.USUAL_MODE,"total",level);
+                    Model m = new Model(model, Model.USUAL_MODE,"total",level, this);
                     models.add(m);
                 }
             }
