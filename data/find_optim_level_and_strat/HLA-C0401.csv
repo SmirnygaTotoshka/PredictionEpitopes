@@ -1,0 +1,683 @@
+database;as_char_value;assay_type;source_antigen_accession;epitope;source_name;source_organism_name;activity;seq;allele
+1;Positive;purified MHC/direct/fluorescence;ZP_05241203.1;FRDEAGAIL;hypothetical protein;Listeria monocytogenes FSL R2-503 (Listeria monocytogenes str. FSL R2-503);HLA-C*04:01;FRDEAGAIL;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;EAX59023.1;MMFDAMGAL;3-oxoacyl-(acyl-carrier-protein) synthase I;Vibrio cholerae 2740-80 (Vibrio cholerae str. 2740-80);HLA-C*04:01;MMFDAMGAL;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;P20495.1;KYFDDVTAF;Dual specificity protein phosphatase;Vaccinia virus Copenhagen (Vaccinia virus (strain Copenhagen));HLA-C*04:01;KYFDDVTAF;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;ABV16761.1;YMWECPDFF;raffinose invertase;Escherichia coli O139:H28 str. E24377A;HLA-C*04:01;YMWECPDFF;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;P21092.1;RYWYFAAEL;Protein M2;Vaccinia virus Copenhagen (Vaccinia virus (strain Copenhagen));HLA-C*04:01;RYWYFAAEL;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;AAF44424.1;YFNTHDVYF;ORF FPV080 Transforming growth factor-beta;Fowlpox virus (Avipoxvirus clade A1);HLA-C*04:01;YFNTHDVYF;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;EAY58638.1;LYDAVAALF;hypothetical protein;Mycobacterium tuberculosis C (Mycobacterium tuberculosis str. C);HLA-C*04:01;LYDAVAALF;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;CAA35357.1;QYDPVAALF;HCMVUL83;Human herpesvirus 5 (Human cytomegalovirus);HLA-C*04:01;QYDPVAALF;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;ABV76526.1;FMPESSYLL;hypothetical protein;Rickettsia rickettsii str. 'Sheila Smith' (Rickettsia rickettsii 'Sheila Smith');HLA-C*04:01;FMPESSYLL;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;P20495.1;YFDDVTAFL;Dual specificity protein phosphatase;Vaccinia virus Copenhagen (Vaccinia virus (strain Copenhagen));HLA-C*04:01;YFDDVTAFL;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;CAA24794.1;VYTNAIQYV;unnamed protein product;Human herpesvirus 4 (Epstein Barr virus);HLA-C*04:01;VYTNAIQYV;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;P29165.1;YYPEDPVKL;Genome polyprotein;Yellow fever virus 1899/81 (Yellow fever virus (strain 1899/81));HLA-C*04:01;YYPEDPVKL;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;CAA73940.1;WYDALCVLL;DFFRY;Homo sapiens (human);HLA-C*04:01;WYDALCVLL;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;AAF20092.2;WYDWQQVPF;polyprotein precursor;West Nile virus;HLA-C*04:01;WYDWQQVPF;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;BAC38508.1;TFDVAPSRL;unnamed protein product;Mus musculus (mouse);HLA-C*04:01;TFDVAPSRL;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;EAL57279.1;NFWLNTLLF;probable aminotransferase (degT family) Cj1320;Campylobacter coli RM2228 (Campylobacter coli str. RM2228);HLA-C*04:01;NFWLNTLLF;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;ABG43236.1;FVDTMSIYI;hypothetical protein;Variola virus (small pox virus);HLA-C*04:01;FVDTMSIYI;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;ACD72601.1;YWMGGTTYF;Bacterial surface antigen (D15);Brucella abortus S19 (Brucella abortus str. S19);HLA-C*04:01;YWMGGTTYF;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;ACC81491.1;YWPTEGYEF;flavodoxin;Nostoc punctiforme PCC 73102 (Nostoc sp. PCC 73102);HLA-C*04:01;YWPTEGYEF;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;EDS96878.1;FTDNNELEF;hypothetical protein;Bacillus anthracis str. A0389 (Bacillus anthracis A0389);HLA-C*04:01;FTDNNELEF;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;2110212G;IFDDLQGSL;RNA-dependent RNA polymerase;Marburg marburgvirus (Lake Victoria marburgvirus);HLA-C*04:01;IFDDLQGSL;HLA-C*04:01
+1;Positive;purified MHC;AAA45994.1;KDVALRHVV;pp65;Human herpesvirus 5 (Human cytomegalovirus);HLA-C*04:01;KDVALRHVV;HLA-C*04:01
+1;Positive;purified MHC;AAG31572.1;PYKRIEELL;transcriptional activator Tax;Human T-cell leukemia virus type I (Human T cell leukemia virus type 1);HLA-C*04:01;PYKRIEELL;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;CAD92434.1;FLLENAAYL;protocadherin;Homo sapiens (human);HLA-C*04:01;FLLENAAYL;HLA-C*04:01
+1;Positive;purified MHC/direct/fluorescence;CAD00936.1;FYPEKSTVI;lmo2723;Listeria monocytogenes EGD-e (Listeria monocytogenes EGDe);HLA-C*04:01;FYPEKSTVI;HLA-C*04:01
+1;Positive;purified MHC;QHD43415.1;GFDYVYNPF;orf1ab polyprotein [Severe acute respiratory syndrome coronavirus 2];SARS-CoV2;HLA-C*04:01;GFDYVYNPF;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;FLLENAAYL;NA;NA;HLA-C*04:01;FLLENAAYL;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;FMPESSYLL;NA;NA;HLA-C*04:01;FMPESSYLL;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;FRDEAGAIL;NA;NA;HLA-C*04:01;FRDEAGAIL;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;FTDNNELEF;NA;NA;HLA-C*04:01;FTDNNELEF;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;FVDTMSIYI;NA;NA;HLA-C*04:01;FVDTMSIYI;HLA-C*04:01
+2;Positive;Buus - purified MHC/competitive/fluorescence;NA;FYFNWNTPI;NA;NA;HLA-C*04:01;FYFNWNTPI;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;FYPEKSTVI;NA;NA;HLA-C*04:01;FYPEKSTVI;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;IFDDLQGSL;NA;NA;HLA-C*04:01;IFDDLQGSL;HLA-C*04:01
+2;Positive;Grotenbreg - purified MHC;NA;KDVALRHVV;NA;NA;HLA-C*04:01;KDVALRHVV;HLA-C*04:01
+2;Positive;Buus - purified MHC/competitive/fluorescence;NA;KMFNRASYF;NA;NA;HLA-C*04:01;KMFNRASYF;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;KYFDDVTAF;NA;NA;HLA-C*04:01;KYFDDVTAF;HLA-C*04:01
+2;Positive;kim2014;NA;LMMNGTSAM;NA;NA;HLA-C*04:01;LMMNGTSAM;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;LYDAVAALF;NA;NA;HLA-C*04:01;LYDAVAALF;HLA-C*04:01
+2;Positive;kim2014;NA;LYPTFYCLF;NA;NA;HLA-C*04:01;LYPTFYCLF;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;MMFDAMGAL;NA;NA;HLA-C*04:01;MMFDAMGAL;HLA-C*04:01
+2;Positive;Buus - purified MHC/competitive/fluorescence;NA;MMMSTAVAF;NA;NA;HLA-C*04:01;MMMSTAVAF;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;NFWLNTLLF;NA;NA;HLA-C*04:01;NFWLNTLLF;HLA-C*04:01
+2;Positive;Grotenbreg - purified MHC;NA;PYKRIEELL;NA;NA;HLA-C*04:01;PYKRIEELL;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;QYDPVAALF;NA;NA;HLA-C*04:01;QYDPVAALF;HLA-C*04:01
+2;Positive;kim2014;NA;RLPAYAPLL;NA;NA;HLA-C*04:01;RLPAYAPLL;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;RYWYFAAEL;NA;NA;HLA-C*04:01;RYWYFAAEL;HLA-C*04:01
+2;Positive;Buus - purified MHC/competitive/fluorescence;NA;SYMSTFPLF;NA;NA;HLA-C*04:01;SYMSTFPLF;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;TFDVAPSRL;NA;NA;HLA-C*04:01;TFDVAPSRL;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;VYTNAIQYV;NA;NA;HLA-C*04:01;VYTNAIQYV;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;WYDALCVLL;NA;NA;HLA-C*04:01;WYDALCVLL;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;WYDWQQVPF;NA;NA;HLA-C*04:01;WYDWQQVPF;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;YFDDVTAFL;NA;NA;HLA-C*04:01;YFDDVTAFL;HLA-C*04:01
+2;Positive;Buus - purified MHC/competitive/fluorescence;NA;YFDPANGKF;NA;NA;HLA-C*04:01;YFDPANGKF;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;YFNTHDVYF;NA;NA;HLA-C*04:01;YFNTHDVYF;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;YMWECPDFF;NA;NA;HLA-C*04:01;YMWECPDFF;HLA-C*04:01
+2;Positive;Buus - purified MHC/competitive/fluorescence;NA;YMYDFILRF;NA;NA;HLA-C*04:01;YMYDFILRF;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;YWMGGTTYF;NA;NA;HLA-C*04:01;YWMGGTTYF;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;YWPTEGYEF;NA;NA;HLA-C*04:01;YWPTEGYEF;HLA-C*04:01
+2;Positive;Ph.D. - purified MHC/direct/fluorescence;NA;YYPEDPVKL;NA;NA;HLA-C*04:01;YYPEDPVKL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAG55266.1;YVLNGYTEF;hypothetical protein;Escherichia coli O157:H7 str. EDL933 (Escherichia coli O157:H7 EDL933);!HLA-C*04:01;YVLNGYTEF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABC69064.1;YWDQVTFFY;major outer membrane protein;Campylobacter jejuni;!HLA-C*04:01;YWDQVTFFY;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAQ94606.1;RTWFYRTEF;putative polyphosphate synthetase;Toxoplasma gondii;!HLA-C*04:01;RTWFYRTEF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EDK57179.1;RYAYTSVEF;putative phosphoesterase;Burkholderia mallei JHU (Burkholderia mallei str. JHU);!HLA-C*04:01;RYAYTSVEF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAA69166.1;RYDKSAADL;ORF_f136;Escherichia coli str. K-12 substr. MG1655 (Escherichia coli str. K12 substr. MG1655);!HLA-C*04:01;RYDKSAADL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EAW86629.1;SSDLRSWTF;chromosome 10 open reading frame 10;Homo sapiens (human);!HLA-C*04:01;SSDLRSWTF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAU03913.1;IYYWTAWLI;L-serine dehydratase;Rickettsia typhi str. Wilmington (Rickettsia typhi 'wilmington');!HLA-C*04:01;IYYWTAWLI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABO62284.1;KAIGTVLV;protease;Human immunodeficiency virus 1 (human immunodeficiency virus 1 HIV-1);!HLA-C*04:01;KAIGTVLV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EDS98611.1;YTLNDAPYI;transcriptional regulator, GntR family;Bacillus anthracis str. A0389 (Bacillus anthracis A0389);!HLA-C*04:01;YTLNDAPYI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABJ01631.1;YTTDVNQLY;glycerophosphodiester phosphodiesterase, periplasmic;Escherichia coli APEC O1 (Escherichia coli str. APEC O1);!HLA-C*04:01;YTTDVNQLY;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ACD74140.1;YVDIIGLSV;endoglucanase family protein;Brucella abortus S19 (Brucella abortus str. S19);!HLA-C*04:01;YVDIIGLSV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAL72185.1;YVDIYAASV;1-acylglycerol-3-phosphate O-acyltransferase;Mycobacterium tuberculosis variant bovis BCG str. Pasteur 1173P2 (Mycobacterium bovis BCG Pasteur 1173P2);!HLA-C*04:01;YVDIYAASV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAF20092.2;YVILVGAAF;polyprotein precursor;West Nile virus;!HLA-C*04:01;YVILVGAAF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EDR27344.1;YYSNKVFPI;hypothetical protein;Entamoeba dispar SAW760;!HLA-C*04:01;YYSNKVFPI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EDO90155.1;FPPLAGSDF;nitrite reductase, copper-containing;Burkholderia pseudomallei Pasteur 52237 (Burkholderia pseudomallei str. Pasteur 52237);!HLA-C*04:01;FPPLAGSDF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAZ23786.1;FQPQNGQYI;nucleoprotein;Lymphocytic choriomeningitis mammarenavirus (Lymphocytic choriomeningitis virus);!HLA-C*04:01;FQPQNGQYI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ACB02321.1;FRAPNTREL;conserved protein;Escherichia coli str. K-12 substr. DH10B (Escherichia coli DH10B);!HLA-C*04:01;FRAPNTREL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAC37326.1;MSNEGSYFF;nucleoprotein;Influenza A virus (A/swine/Italy/1509-6/97(H1N1)) (Influenza A virus (swine/Italy/1509-6/97 (H1N1)));!HLA-C*04:01;MSNEGSYFF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ACD88669.1;RYSGFVRTL;polymerase PB2;Influenza A virus (A/turkey/Ohio/313053/2004(H3N2)) (Influenza A virus (A/turkey/OH/313053/04(H3N2)));!HLA-C*04:01;RYSGFVRTL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;NP_066251.1;FRYEFTAPF;L;Zaire ebolavirus (Zaire Ebola virus);!HLA-C*04:01;FRYEFTAPF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAL09399.1;LTDNGYLLY;Sun protein;Francisella tularensis subsp. tularensis FSC198 (Francisella tularensis subsp. tularensis str. FSC198);!HLA-C*04:01;LTDNGYLLY;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;BAC95406.1;MSDWGHITV;evolved beta-D-galactosidase, alpha-subunit;Vibrio vulnificus YJ016 (Vibrio vulnificus str. YJ016);!HLA-C*04:01;MSDWGHITV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;BAA14219.1;QTDNQLAVF;polyprotein;Japanese encephalitis virus (Japanese encephalitis (JE) virus);!HLA-C*04:01;QTDNQLAVF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAF20092.2;RFVLALLAF;polyprotein precursor;West Nile virus;!HLA-C*04:01;RFVLALLAF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAA24820.1;RSDEYVAYY;unnamed protein product;Human herpesvirus 4 (Epstein Barr virus);!HLA-C*04:01;RSDEYVAYY;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAL09463.1;MTDKICWLY;Phosphomannomutase;Francisella tularensis subsp. tularensis FSC198 (Francisella tularensis subsp. tularensis str. FSC198);!HLA-C*04:01;MTDKICWLY;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAB37419.1;MYMALIAAF;polyprotein;Yellow fever virus (Flavivirus febricis);!HLA-C*04:01;MYMALIAAF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;2124409A;LFPELECFF;RNA polymerase;Sin Nombre orthohantavirus (Sin Nombre hantavirus);!HLA-C*04:01;LFPELECFF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAA24806.1;VTDEGTSSF;unnamed protein product;Human herpesvirus 4 (Epstein Barr virus);!HLA-C*04:01;VTDEGTSSF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EAY60176.1;YLAENTFVV;hypothetical protein;Mycobacterium tuberculosis C (Mycobacterium tuberculosis str. C);!HLA-C*04:01;YLAENTFVV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAC51841.1;YLQQNTHTL;ubiquitous TPR motif, Y isoform;Homo sapiens (human);!HLA-C*04:01;YLQQNTHTL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;P16713.2;YQYIFLSFF;Metalloendopeptidase G1;Vaccinia virus WR (Vaccinia virus (strain WR));!HLA-C*04:01;YQYIFLSFF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAQ55250.1;YRWVNLASF;L protein;Argentinian mammarenavirus (Junin arenavirus);!HLA-C*04:01;YRWVNLASF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAL09096.1;RYSNFAWYF;hypothetical membrane protein;Francisella tularensis subsp. tularensis FSC198 (Francisella tularensis subsp. tularensis str. FSC198);!HLA-C*04:01;RYSNFAWYF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EDR17729.1;YFIFVRAIL;hypothetical protein;Bacillus anthracis str. A0488 (Bacillus anthracis A0488);!HLA-C*04:01;YFIFVRAIL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABV82688.1;YFYYNAFHW;ubiquitously transcribed tetratricopeptide repeat protein Y-linked transcript variant 275;Homo sapiens (human);!HLA-C*04:01;YFYYNAFHW;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAL35300.1;IYPEWYFLW;putative ubiquinol-cytochrome C reductase cytochrome B subunit;Campylobacter jejuni subsp. jejuni NCTC 11168 = ATCC 700819;!HLA-C*04:01;IYPEWYFLW;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EDR22496.1;KYAEAFQMV;T-complex protein 1 subunit theta, putative;Entamoeba dispar SAW760;!HLA-C*04:01;KYAEAFQMV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAD09557.1;NTDEIPELI;putative carbohydrate kinase;Salmonella enterica subsp. enterica serovar Typhi;!HLA-C*04:01;NTDEIPELI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ZP_00155697.1;RFEAYGWQV;COG0021: Transketolase;Haemophilus influenzae R2846 (Haemophilus influenzae str. R2846);!HLA-C*04:01;RFEAYGWQV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EDO80457.1;YWLNTPFLV;ABC transporter family protein;Giardia lamblia ATCC 50803;!HLA-C*04:01;YWLNTPFLV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAC85165.2;YYTEDQGQF;polymerase protein;Saaremaa hantavirus (Saaremaa virus);!HLA-C*04:01;YYTEDQGQF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABG70584.1;FMFDSDEAM;ClpB protein;Escherichia coli 536 (Escherichia coli str. 536);!HLA-C*04:01;FMFDSDEAM;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;NP_066251.1;LSDAARLFL;L;Zaire ebolavirus (Zaire Ebola virus);!HLA-C*04:01;LSDAARLFL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAO89328.1;WYYDFHFFV;ser/thr kinase;Vaccinia virus WR (Vaccinia virus (strain WR));!HLA-C*04:01;WYYDFHFFV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EDR87073.1;YAIYTLGEM;major facilitator family transporter;Bacillus anthracis str. A0193 (Bacillus anthracis A0193);!HLA-C*04:01;YAIYTLGEM;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABG18869.1;YAYNSSLLY;membrane protein;Yersinia pestis Nepal516 (Yersinia pestis str. Nepal516);!HLA-C*04:01;YAYNSSLLY;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EAK90464.1;VYWENEVSI;uncharacterized low complexity protein;Cryptosporidium parvum Iowa II;!HLA-C*04:01;VYWENEVSI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAB87908.1;LQPSDTLLF;"glycoprotein G1 and G2 precursor; envelope glycoprotein precursor";Lechiguanas virus (Lechiguanas hantavirus);!HLA-C*04:01;LQPSDTLLF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAB87604.1;LRNIYETEF;RNA polymerase;Laguna Negra orthohantavirus (Laguna Negra hantavirus);!HLA-C*04:01;LRNIYETEF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAP17274.1;MSPDNALIY;Iron transport protein;Shigella flexneri 2a str. 2457T (Shigella flexneri 2a strain 2457T);!HLA-C*04:01;MSPDNALIY;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAC54884.1;TTDDSTSYY;small/secreted glycoprotein;Reston ebolavirus (Ebola virus Reston);!HLA-C*04:01;TTDDSTSYY;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ZP_05774660.1;TYFEEPAAF;putative lipoprotein;Vibrio parahaemolyticus K5030 (Vibrio parahaemolyticus str. K5030);!HLA-C*04:01;TYFEEPAAF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAA24797.1;TYLSSSLFL;unnamed protein product;Human herpesvirus 4 (Epstein Barr virus);!HLA-C*04:01;TYLSSSLFL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAM49754.1;VMPPRTLLL;MHC class I antigen;Pan troglodytes (chimpanzee);!HLA-C*04:01;VMPPRTLLL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABF04218.1;VSITNPFLF;O-antigen polymerase;Shigella flexneri 5 str. 8401;!HLA-C*04:01;VSITNPFLF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;BAC96861.1;VTFGARASF;hypothetical protein;Vibrio vulnificus YJ016 (Vibrio vulnificus str. YJ016);!HLA-C*04:01;VTFGARASF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EAY61762.1;VYAPAGVEL;conserved hypothetical protein;Mycobacterium tuberculosis C (Mycobacterium tuberculosis str. C);!HLA-C*04:01;VYAPAGVEL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EAZ51518.1;TFMGMNVQF;DNA topoisomerase III beta-1, putative;Cryptosporidium parvum Iowa II;!HLA-C*04:01;TFMGMNVQF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAG56721.1;YYGKTPMQI;negative transcriptional regulator of cel operon;Escherichia coli O157:H7 str. EDL933 (Escherichia coli O157:H7 EDL933);!HLA-C*04:01;YYGKTPMQI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABQ71876.1;YYIIETEHL;PE family protein;Mycobacterium tuberculosis H37Ra (Mycobacterium tuberculosis str. H37Ra);!HLA-C*04:01;YYIIETEHL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;Q9IQ47.1;YYLEKANKI;Polymerase acidic protein;Influenza A virus (A/X-31(H3N2)) (Influenza A virus (A/X31(H3N2)));!HLA-C*04:01;YYLEKANKI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EAX32827.1;YYLIKYLHV;putative membrane protein;Coxiella burnetii 'MSU Goat Q177' (Coxiella burnetii str. 'MSU Goat Q177');!HLA-C*04:01;YYLIKYLHV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABV82688.1;YYNAFHWA;ubiquitously transcribed tetratricopeptide repeat protein Y-linked transcript variant 275;Homo sapiens (human);!HLA-C*04:01;YYNAFHWA;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;BAM10948.1;YYNAFQWAI;ubiquitously transcribed tetratricopeptide repeat gene, Y chromosome;Tokudaia muenninki (Okinawa island spiny rat);!HLA-C*04:01;YYNAFQWAI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;BAB62913.1;NTDSSLQSM;guanine nucleotide exchange factor Lbc;Homo sapiens (human);!HLA-C*04:01;NTDSSLQSM;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAK12964.1;LYSRSFWFF;unknown;Campylobacter jejuni;!HLA-C*04:01;LYSRSFWFF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAD03165.1;KLDAWLLPF;hypothetical protein;Salmonella enterica subsp. enterica serovar Typhi;!HLA-C*04:01;KLDAWLLPF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAL25817.1;KVYWAGIEF;membrane associated protein VP24;Zaire ebolavirus (Zaire Ebola virus);!HLA-C*04:01;KVYWAGIEF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;BAB79250.1;KYLPNGDYI;toxS;Vibrio parahaemolyticus;!HLA-C*04:01;KYLPNGDYI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAC85165.2;LFPELDCFF;polymerase protein;Saaremaa hantavirus (Saaremaa virus);!HLA-C*04:01;LFPELDCFF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAB37419.1;SHDVLTVQF;polyprotein;Yellow fever virus (Flavivirus febricis);!HLA-C*04:01;SHDVLTVQF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAA67498.1;SSDDFALIV;polymerase basic protein 1;Influenza A virus (A/Fort Monmouth/1/1947-mouse adapted(H1N1)) (Influenza A virus (A/FM/1/47 (H1N1)));!HLA-C*04:01;SSDDFALIV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;2124409A;SYIRYFTVF;RNA polymerase;Sin Nombre orthohantavirus (Sin Nombre hantavirus);!HLA-C*04:01;SYIRYFTVF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAC85163.1;SYLRRTQSM;nucleocapsid protein;Dobrava-Belgrade orthohantavirus (Dobrava virus);!HLA-C*04:01;SYLRRTQSM;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABX63285.1;SYLTVHQMI;para-aminobenzoate synthase, component I;Brucella canis ATCC 23365 (Brucella canis str. ATCC 23365);!HLA-C*04:01;SYLTVHQMI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABR07701.1;SYSTPALTL;PPE family protein;Mycobacterium tuberculosis F11 (Mycobacterium tuberculosis str. F11);!HLA-C*04:01;SYSTPALTL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAL08072.1;VYYIVVRDF;major facilitator superfamily (MFS) transport protein;Francisella tularensis subsp. tularensis FSC198 (Francisella tularensis subsp. tularensis str. FSC198);!HLA-C*04:01;VYYIVVRDF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EDV62370.1;ITPTIYLLL;putative membrane protein;Escherichia coli B7A (Escherichia coli str. B7A);!HLA-C*04:01;ITPTIYLLL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAD01197.1;IYAAISYMI;putative transport protein;Salmonella enterica subsp. enterica serovar Typhi;!HLA-C*04:01;IYAAISYMI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAD09911.1;IYASRPLDF;hypothetical protein;Salmonella enterica subsp. enterica serovar Typhi str. CT18 (Salmonella enterica subsp. enterica serovar Typhi CT18);!HLA-C*04:01;IYASRPLDF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EAL44276.1;SYFPDSNNV;hypothetical protein;Entamoeba histolytica HM-1:IMSS;!HLA-C*04:01;SYFPDSNNV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAA24836.1;SYGCPTNPF;unnamed protein product;Human herpesvirus 4 (Epstein Barr virus);!HLA-C*04:01;SYGCPTNPF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EDO82224.1;IYDHSRKPF;Cathepsin L precursor;Giardia lamblia ATCC 50803;!HLA-C*04:01;IYDHSRKPF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;XP_001686736.1;TRDPNLAYI;putative clathrin heavy chain;Leishmania major strain Friedlin;!HLA-C*04:01;TRDPNLAYI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABG16375.1;SHDLAPQFL;N-acetyl-gamma-glutamyl-phosphate reductase;Yersinia pestis Nepal516 (Yersinia pestis str. Nepal516);!HLA-C*04:01;SHDLAPQFL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAL35009.1;LLDEPTNHL;ABC transport system ATP-binding protein;Campylobacter jejuni subsp. jejuni NCTC 11168 = ATCC 700819;!HLA-C*04:01;LLDEPTNHL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAO90371.1;MYPFIFFIV;hypothetical membrane spanning protein;Coxiella burnetii RSA 493;!HLA-C*04:01;MYPFIFFIV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABV07431.1;MYTRNLLWL;bacterial extracellular solute-binding protein, family 5;Escherichia coli HS (Escherichia coli str. HS);!HLA-C*04:01;MYTRNLLWL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;P27315.1;NRDVSFQDL;Envelope glycoprotein;Prospect Hill orthohantavirus (Prospect Hill Hantavirus);!HLA-C*04:01;NRDVSFQDL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAC80193.1;NTDDFPLTL;V_segment translation product;Homo sapiens (human);!HLA-C*04:01;NTDDFPLTL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ZP_02448911.1;ISDSAQNMM;putative capsule polysaccharide biosynthesis protein;Burkholderia pseudomallei 91 (Burkholderia pseudomallei str. 91);!HLA-C*04:01;ISDSAQNMM;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EAA22988.1;ISPRNYFTF;NADH dehydrogenase;Plasmodium yoelii yoelii;!HLA-C*04:01;ISPRNYFTF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAD53383.1;STEFIPNLF;terminal protein LMP2B;Human herpesvirus 4 (Epstein Barr virus);!HLA-C*04:01;STEFIPNLF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABI96957.1;SYCNGVREL;orf1a polyprotein;SARS-CoV1;!HLA-C*04:01;SYCNGVREL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EAK87498.1;KIFKVTGEF;large uncharacterized protein;Cryptosporidium parvum Iowa II;!HLA-C*04:01;KIFKVTGEF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAA73940.1;KYFIPVIEI;DFFRY;Homo sapiens (human);!HLA-C*04:01;KYFIPVIEI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;NP_066251.1;RYEFTAPFI;L;Zaire ebolavirus (Zaire Ebola virus);!HLA-C*04:01;RYEFTAPFI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAO86639.1;RYMSKTYNF;RNA dependent RNA polymerase;Andes orthohantavirus (Andes hantavirus);!HLA-C*04:01;RYMSKTYNF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;NP_694847.1;RYNCKCCWF;P-11 protein;Tacaribe mammarenavirus (Tacaribe virus);!HLA-C*04:01;RYNCKCCWF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAB50401.1;RYPIDPFLL;L protein;Lassa mammarenavirus (Lassa virus);!HLA-C*04:01;RYPIDPFLL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAF20092.2;FVDVGVSAL;polyprotein precursor;West Nile virus;!HLA-C*04:01;FVDVGVSAL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;BAA01811.1;FVDVIIIKV;33.6K protein;Vaccinia virus (vaccinia virus VV);!HLA-C*04:01;FVDVIIIKV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EAL15607.1;FVHDSVQYF;conserved hypothetical protein protein;Bacillus cereus G9241 (Bacillus cereus str. G9241);!HLA-C*04:01;FVHDSVQYF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;2110212G;ISDPLTSGL;RNA-dependent RNA polymerase;Marburg marburgvirus (Lake Victoria marburgvirus);!HLA-C*04:01;ISDPLTSGL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAA24806.1;YYFQSGNEI;unnamed protein product;Human herpesvirus 4 (Epstein Barr virus);!HLA-C*04:01;YYFQSGNEI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;NP_828867.1;CTDDNALAY;nsp9-pp1a/pp1ab;SARS-CoV1;!HLA-C*04:01;CTDDNALAY;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAC44034.1;DTDPLPVVF;MPT64;Mycobacterium tuberculosis variant bovis;!HLA-C*04:01;DTDPLPVVF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAC47534.1;DYDDVVHEV;hydroxymethyldihydropterin pyrophosphokinase- dihydropteroate synthase;Toxoplasma gondii;!HLA-C*04:01;DYDDVVHEV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABI96957.1;FADINGKLY;orf1a polyprotein;SARS-CoV1;!HLA-C*04:01;FADINGKLY;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAO89328.1;FYPINDDFY;ser/thr kinase;Vaccinia virus WR (Vaccinia virus (strain WR));!HLA-C*04:01;FYPINDDFY;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABG43283.1;FTDISMSLY;p4a precursor of IMV core protein 4a;Variola virus (small pox virus);!HLA-C*04:01;FTDISMSLY;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;EAA26355.1;FADSDNIAM;unknown;Rickettsia sibirica 246 (Rickettsia sibirica str. 246);!HLA-C*04:01;FADSDNIAM;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;BAC94399.1;AYFLEAQEM;conserved hypothetical protein;Vibrio vulnificus YJ016 (Vibrio vulnificus str. YJ016);!HLA-C*04:01;AYFLEAQEM;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAA69166.1;AYPELACAV;ORF_f136;Escherichia coli str. K-12 substr. MG1655 (Escherichia coli str. K12 substr. MG1655);!HLA-C*04:01;AYPELACAV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;2110212G;FYRNISDPL;RNA-dependent RNA polymerase;Marburg marburgvirus (Lake Victoria marburgvirus);!HLA-C*04:01;FYRNISDPL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;P20988.1;IQNDLITEF;Protein A11;Vaccinia virus Copenhagen (Vaccinia virus (strain Copenhagen));!HLA-C*04:01;IQNDLITEF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAO86639.1;AVEDFLAFF;RNA dependent RNA polymerase;Andes orthohantavirus (Andes hantavirus);!HLA-C*04:01;AVEDFLAFF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ADA76576.1;AYQPTRWFI;3-ketoacyl-(acyl-carrier-protein) reductase;Shigella flexneri 2002017 (Shigella flexneri str. 2002017);!HLA-C*04:01;AYQPTRWFI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAL09359.1;CSDETTLYY;hypothetical protein;Francisella tularensis subsp. tularensis FSC198 (Francisella tularensis subsp. tularensis str. FSC198);!HLA-C*04:01;CSDETTLYY;HLA-C*04:01
+1;Negative;purified MHC;CAD53420.1;VSFIEFVGW;EBNA-3B nuclear protein;Human herpesvirus 4 (Epstein Barr virus);!HLA-C*04:01;VSFIEFVGW;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABV82688.1;FYYNAFHWA;ubiquitously transcribed tetratricopeptide repeat protein Y-linked transcript variant 275;Homo sapiens (human);!HLA-C*04:01;FYYNAFHWA;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ZP_00051126.1;FFIQTDAAI;COG0265: Trypsin-like serine proteases, typically periplasmic, contain C-terminal PDZ domain;Magnetospirillum magnetotacticum MS-1 (Magnetospirillum magnetotacticum str. MS-1);!HLA-C*04:01;FFIQTDAAI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABV82688.1;FYYNAFHWAI;ubiquitously transcribed tetratricopeptide repeat protein Y-linked transcript variant 275;Homo sapiens (human);!HLA-C*04:01;FYYNAFHWAI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;NP_053113.1;HADDIPVPV;hypothetical protein;Escherichia coli;!HLA-C*04:01;HADDIPVPV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAB65462.1;HTEFQTVSF;glycoprotein precursor;Argentinian mammarenavirus (Junin arenavirus);!HLA-C*04:01;HTEFQTVSF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABI96957.1;HTLESPVEF;orf1a polyprotein;SARS-CoV1;!HLA-C*04:01;HTLESPVEF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABG26815.1;AVDADDSHF;matrix protein 2;Influenza A virus (A/Memphis/1/1978(H1N1)) (Influenza A virus (A/Memphis/1/78(H1N1)));!HLA-C*04:01;AVDADDSHF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAS99868.1;HYNAFHWAI;ubiquitously transcribed X chromosome tetratricopeptide repeat protein variant 2;Canis lupus familiaris (dog);!HLA-C*04:01;HYNAFHWAI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;P24362.1;FTSSFYNYV;Probable serine/threonine-protein kinase B12;Vaccinia virus WR (Vaccinia virus (strain WR));!HLA-C*04:01;FTSSFYNYV;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;CAC85163.1;IRFKDDSSF;nucleocapsid protein;Dobrava-Belgrade orthohantavirus (Dobrava virus);!HLA-C*04:01;IRFKDDSSF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;P03203.3;FYPPVLQPI;Epstein-Barr nuclear antigen 4;Human herpesvirus 4 strain B95-8 (Epstein-Barr virus (strain B95-8));!HLA-C*04:01;FYPPVLQPI;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ACP13266.1;AYPKWKFFL;hypothetical protein;Bacillus anthracis str. CDC 684 (Bacillus anthracis CDC 684);!HLA-C*04:01;AYPKWKFFL;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;AAB50401.1;FYADPKRYF;L protein;Lassa mammarenavirus (Lassa virus);!HLA-C*04:01;FYADPKRYF;HLA-C*04:01
+1;Negative;purified MHC/direct/fluorescence;ABV82688.1;FYYNAFHW;ubiquitously transcribed tetratricopeptide repeat protein Y-linked transcript variant 275;Homo sapiens (human);!HLA-C*04:01;FYYNAFHW;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;AEFGPWQTV;NA;NA;!HLA-C*04:01;AEFGPWQTV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;AEFPVGSTA;NA;NA;!HLA-C*04:01;AEFPVGSTA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;AEFVFSCGI;NA;NA;!HLA-C*04:01;AEFVFSCGI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;AEHDPWWAV;NA;NA;!HLA-C*04:01;AEHDPWWAV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;AELGAFFSI;NA;NA;!HLA-C*04:01;AELGAFFSI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;AEMGANLCV;NA;NA;!HLA-C*04:01;AEMGANLCV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;AENQLFHST;NA;NA;!HLA-C*04:01;AENQLFHST;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;AEYLYADGI;NA;NA;!HLA-C*04:01;AEYLYADGI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;ALFDRPAFK;NA;NA;!HLA-C*04:01;ALFDRPAFK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;ALRQARAAF;NA;NA;!HLA-C*04:01;ALRQARAAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;APAMGMNAY;NA;NA;!HLA-C*04:01;APAMGMNAY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;APRARTAAF;NA;NA;!HLA-C*04:01;APRARTAAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;APRGFRAAF;NA;NA;!HLA-C*04:01;APRGFRAAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;AQIGIFAPV;NA;NA;!HLA-C*04:01;AQIGIFAPV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;AQRAAGPSV;NA;NA;!HLA-C*04:01;AQRAAGPSV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;ARWLASTPL;NA;NA;!HLA-C*04:01;ARWLASTPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;ARWMISSAL;NA;NA;!HLA-C*04:01;ARWMISSAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;ASMDNTSPM;NA;NA;!HLA-C*04:01;ASMDNTSPM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;ATYGWNLVK;NA;NA;!HLA-C*04:01;ATYGWNLVK;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;AVDADDSHF;NA;NA;!HLA-C*04:01;AVDADDSHF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;AVEDFLAFF;NA;NA;!HLA-C*04:01;AVEDFLAFF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;AYFLEAQEM;NA;NA;!HLA-C*04:01;AYFLEAQEM;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;AYPELACAV;NA;NA;!HLA-C*04:01;AYPELACAV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;AYPKWKFFL;NA;NA;!HLA-C*04:01;AYPKWKFFL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;AYQPTRWFI;NA;NA;!HLA-C*04:01;AYQPTRWFI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;CSDAFYPFY;NA;NA;!HLA-C*04:01;CSDAFYPFY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;CSDETTLYY;NA;NA;!HLA-C*04:01;CSDETTLYY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;CTDDNALAY;NA;NA;!HLA-C*04:01;CTDDNALAY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;CTSSIQYHR;NA;NA;!HLA-C*04:01;CTSSIQYHR;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;DEVEFLGHY;NA;NA;!HLA-C*04:01;DEVEFLGHY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;DTDPLPVVF;NA;NA;!HLA-C*04:01;DTDPLPVVF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;DYDDVVHEV;NA;NA;!HLA-C*04:01;DYDDVVHEV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;EIYFSSIHR;NA;NA;!HLA-C*04:01;EIYFSSIHR;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;ETTNWLWAF;NA;NA;!HLA-C*04:01;ETTNWLWAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;ETTNWLWTF;NA;NA;!HLA-C*04:01;ETTNWLWTF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;ETVWPFFYA;NA;NA;!HLA-C*04:01;ETVWPFFYA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;EVFFGLSRY;NA;NA;!HLA-C*04:01;EVFFGLSRY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;EVMPVSMAK;NA;NA;!HLA-C*04:01;EVMPVSMAK;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FADINGKLY;NA;NA;!HLA-C*04:01;FADINGKLY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FADSDNIAM;NA;NA;!HLA-C*04:01;FADSDNIAM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FARQNNGAF;NA;NA;!HLA-C*04:01;FARQNNGAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FAYKTGSSM;NA;NA;!HLA-C*04:01;FAYKTGSSM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FETMVFPAV;NA;NA;!HLA-C*04:01;FETMVFPAV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FEYGGFPPA;NA;NA;!HLA-C*04:01;FEYGGFPPA;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FFIQTDAAI;NA;NA;!HLA-C*04:01;FFIQTDAAI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FIIDNFGSV;NA;NA;!HLA-C*04:01;FIIDNFGSV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FLDKGTYTL;NA;NA;!HLA-C*04:01;FLDKGTYTL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FLNPVIYTF;NA;NA;!HLA-C*04:01;FLNPVIYTF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FLRKNQRAL;NA;NA;!HLA-C*04:01;FLRKNQRAL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FMFDSDEAM;NA;NA;!HLA-C*04:01;FMFDSDEAM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FMFDYIPPV;NA;NA;!HLA-C*04:01;FMFDYIPPV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FMYALSRAF;NA;NA;!HLA-C*04:01;FMYALSRAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FMYEGDTPL;NA;NA;!HLA-C*04:01;FMYEGDTPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FPASHMATY;NA;NA;!HLA-C*04:01;FPASHMATY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FPIQDFPII;NA;NA;!HLA-C*04:01;FPIQDFPII;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FPMAVKLFI;NA;NA;!HLA-C*04:01;FPMAVKLFI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FPMIIGSEL;NA;NA;!HLA-C*04:01;FPMIIGSEL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FPPLAGSDF;NA;NA;!HLA-C*04:01;FPPLAGSDF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FPPTSFGPL;NA;NA;!HLA-C*04:01;FPPTSFGPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FPRIGTAVF;NA;NA;!HLA-C*04:01;FPRIGTAVF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FPRYPLNVL;NA;NA;!HLA-C*04:01;FPRYPLNVL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FPYAIRLVA;NA;NA;!HLA-C*04:01;FPYAIRLVA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FPYEGGKVF;NA;NA;!HLA-C*04:01;FPYEGGKVF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FPYTGDPPY;NA;NA;!HLA-C*04:01;FPYTGDPPY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FQMGGIGPM;NA;NA;!HLA-C*04:01;FQMGGIGPM;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FQPQNGQYI;NA;NA;!HLA-C*04:01;FQPQNGQYI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FQWWRSHPL;NA;NA;!HLA-C*04:01;FQWWRSHPL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FRAPNTREL;NA;NA;!HLA-C*04:01;FRAPNTREL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FRDRGQHVL;NA;NA;!HLA-C*04:01;FRDRGQHVL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FRFFGGVPR;NA;NA;!HLA-C*04:01;FRFFGGVPR;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FRMLAWHVL;NA;NA;!HLA-C*04:01;FRMLAWHVL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FRYEFTAPF;NA;NA;!HLA-C*04:01;FRYEFTAPF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FSFFMNENF;NA;NA;!HLA-C*04:01;FSFFMNENF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FSFGGFTFK;NA;NA;!HLA-C*04:01;FSFGGFTFK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FTASVSTVV;NA;NA;!HLA-C*04:01;FTASVSTVV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FTDISMSLY;NA;NA;!HLA-C*04:01;FTDISMSLY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FTFDLTALK;NA;NA;!HLA-C*04:01;FTFDLTALK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FTFKVNSVK;NA;NA;!HLA-C*04:01;FTFKVNSVK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FTMRLLSPV;NA;NA;!HLA-C*04:01;FTMRLLSPV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FTSSFYNYV;NA;NA;!HLA-C*04:01;FTSSFYNYV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FVAATGRPL;NA;NA;!HLA-C*04:01;FVAATGRPL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FVDVGVSAL;NA;NA;!HLA-C*04:01;FVDVGVSAL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FVDVIIIKV;NA;NA;!HLA-C*04:01;FVDVIIIKV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FVFAPTHGL;NA;NA;!HLA-C*04:01;FVFAPTHGL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FVHDSVQYF;NA;NA;!HLA-C*04:01;FVHDSVQYF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FVRQCFNPM;NA;NA;!HLA-C*04:01;FVRQCFNPM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FVVDTTPPL;NA;NA;!HLA-C*04:01;FVVDTTPPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;FVYSVSFHK;NA;NA;!HLA-C*04:01;FVYSVSFHK;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FYADPKRYF;NA;NA;!HLA-C*04:01;FYADPKRYF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FYPINDDFY;NA;NA;!HLA-C*04:01;FYPINDDFY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FYPPVLQPI;NA;NA;!HLA-C*04:01;FYPPVLQPI;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FYRNISDPL;NA;NA;!HLA-C*04:01;FYRNISDPL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FYYNAFHW;NA;NA;!HLA-C*04:01;FYYNAFHW;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FYYNAFHWA;NA;NA;!HLA-C*04:01;FYYNAFHWA;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;FYYNAFHWAI;NA;NA;!HLA-C*04:01;FYYNAFHWAI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;GFYLSGHLF;NA;NA;!HLA-C*04:01;GFYLSGHLF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;GLIPQWVTL;NA;NA;!HLA-C*04:01;GLIPQWVTL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;GMMRWCMPV;NA;NA;!HLA-C*04:01;GMMRWCMPV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;GPAFVRTKL;NA;NA;!HLA-C*04:01;GPAFVRTKL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;GSYFSGFYK;NA;NA;!HLA-C*04:01;GSYFSGFYK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;GTFEFTSFF;NA;NA;!HLA-C*04:01;GTFEFTSFF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;HADDIPVPV;NA;NA;!HLA-C*04:01;HADDIPVPV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;HASHYTIPW;NA;NA;!HLA-C*04:01;HASHYTIPW;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;HELSLFWPL;NA;NA;!HLA-C*04:01;HELSLFWPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;HEVNGTWMI;NA;NA;!HLA-C*04:01;HEVNGTWMI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;HEWKIPLLI;NA;NA;!HLA-C*04:01;HEWKIPLLI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;HPASRLFPF;NA;NA;!HLA-C*04:01;HPASRLFPF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;HPVTATISF;NA;NA;!HLA-C*04:01;HPVTATISF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;HRYLIRQSM;NA;NA;!HLA-C*04:01;HRYLIRQSM;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;HTEFQTVSF;NA;NA;!HLA-C*04:01;HTEFQTVSF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;HTLESPVEF;NA;NA;!HLA-C*04:01;HTLESPVEF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;HYMLKHLVW;NA;NA;!HLA-C*04:01;HYMLKHLVW;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;HYNAFHWAI;NA;NA;!HLA-C*04:01;HYNAFHWAI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;IIMRRFFYF;NA;NA;!HLA-C*04:01;IIMRRFFYF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;ILFDRLPIA;NA;NA;!HLA-C*04:01;ILFDRLPIA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;ILMARYMSK;NA;NA;!HLA-C*04:01;ILMARYMSK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;IPLGGNGAM;NA;NA;!HLA-C*04:01;IPLGGNGAM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;IPRLGGMAF;NA;NA;!HLA-C*04:01;IPRLGGMAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;IPVHPRHPY;NA;NA;!HLA-C*04:01;IPVHPRHPY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;IQNDLITEF;NA;NA;!HLA-C*04:01;IQNDLITEF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;IRFKDDSSF;NA;NA;!HLA-C*04:01;IRFKDDSSF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;ISDPLTSGL;NA;NA;!HLA-C*04:01;ISDPLTSGL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;ISDSAQNMM;NA;NA;!HLA-C*04:01;ISDSAQNMM;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;ISPRNYFTF;NA;NA;!HLA-C*04:01;ISPRNYFTF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;ITLFPSYQL;NA;NA;!HLA-C*04:01;ITLFPSYQL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;ITPTIYLLL;NA;NA;!HLA-C*04:01;ITPTIYLLL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;IYAAISYMI;NA;NA;!HLA-C*04:01;IYAAISYMI;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;IYASRPLDF;NA;NA;!HLA-C*04:01;IYASRPLDF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;IYDHSRKPF;NA;NA;!HLA-C*04:01;IYDHSRKPF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;IYPEWYFLW;NA;NA;!HLA-C*04:01;IYPEWYFLW;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;IYYWTAWLI;NA;NA;!HLA-C*04:01;IYYWTAWLI;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;KAIGTVLV;NA;NA;!HLA-C*04:01;KAIGTVLV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;KAMRPWQSF;NA;NA;!HLA-C*04:01;KAMRPWQSF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;KELGVHMSL;NA;NA;!HLA-C*04:01;KELGVHMSL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;KEMGFSPRL;NA;NA;!HLA-C*04:01;KEMGFSPRL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;KGPPAALTL;NA;NA;!HLA-C*04:01;KGPPAALTL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;KIFKVTGEF;NA;NA;!HLA-C*04:01;KIFKVTGEF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;KITDFGIAK;NA;NA;!HLA-C*04:01;KITDFGIAK;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;KLDAWLLPF;NA;NA;!HLA-C*04:01;KLDAWLLPF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;KLMDVVYSI;NA;NA;!HLA-C*04:01;KLMDVVYSI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;KPIPHRTVL;NA;NA;!HLA-C*04:01;KPIPHRTVL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;KQLELFWVI;NA;NA;!HLA-C*04:01;KQLELFWVI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;KRMMVRHCL;NA;NA;!HLA-C*04:01;KRMMVRHCL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;KRWAFRTGV;NA;NA;!HLA-C*04:01;KRWAFRTGV;HLA-C*04:01
+2;Negative;kim2014;NA;KVFPYALINK;NA;NA;!HLA-C*04:01;KVFPYALINK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;KVRGRLLAL;NA;NA;!HLA-C*04:01;KVRGRLLAL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;KVYWAGIEF;NA;NA;!HLA-C*04:01;KVYWAGIEF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;KYAEAFQMV;NA;NA;!HLA-C*04:01;KYAEAFQMV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;KYFIPVIEI;NA;NA;!HLA-C*04:01;KYFIPVIEI;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;KYLPNGDYI;NA;NA;!HLA-C*04:01;KYLPNGDYI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LEACYKRSV;NA;NA;!HLA-C*04:01;LEACYKRSV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LEARVNLSV;NA;NA;!HLA-C*04:01;LEARVNLSV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LEDGIYGIF;NA;NA;!HLA-C*04:01;LEDGIYGIF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LEEDIQHFL;NA;NA;!HLA-C*04:01;LEEDIQHFL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LEMNDAPTA;NA;NA;!HLA-C*04:01;LEMNDAPTA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LEMQHLISL;NA;NA;!HLA-C*04:01;LEMQHLISL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LFFPFGLFK;NA;NA;!HLA-C*04:01;LFFPFGLFK;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;LFPELDCFF;NA;NA;!HLA-C*04:01;LFPELDCFF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;LFPELECFF;NA;NA;!HLA-C*04:01;LFPELECFF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LIDGRTSFY;NA;NA;!HLA-C*04:01;LIDGRTSFY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;LLDEPTNHL;NA;NA;!HLA-C*04:01;LLDEPTNHL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LLPRRGPRL;NA;NA;!HLA-C*04:01;LLPRRGPRL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LMMSSPPPI;NA;NA;!HLA-C*04:01;LMMSSPPPI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LMYPTTLLK;NA;NA;!HLA-C*04:01;LMYPTTLLK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LPAEVRAAF;NA;NA;!HLA-C*04:01;LPAEVRAAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LPANLTLMM;NA;NA;!HLA-C*04:01;LPANLTLMM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LPSSSSYSY;NA;NA;!HLA-C*04:01;LPSSSSYSY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;LQPSDTLLF;NA;NA;!HLA-C*04:01;LQPSDTLLF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;LRNIYETEF;NA;NA;!HLA-C*04:01;LRNIYETEF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;LSDAARLFL;NA;NA;!HLA-C*04:01;LSDAARLFL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;LTDNGYLLY;NA;NA;!HLA-C*04:01;LTDNGYLLY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;LTIPTIMGR;NA;NA;!HLA-C*04:01;LTIPTIMGR;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;LYSRSFWFF;NA;NA;!HLA-C*04:01;LYSRSFWFF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MAAAAFPAL;NA;NA;!HLA-C*04:01;MAAAAFPAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MAAVRTTAL;NA;NA;!HLA-C*04:01;MAAVRTTAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MALATGLWW;NA;NA;!HLA-C*04:01;MALATGLWW;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MAMGILHTI;NA;NA;!HLA-C*04:01;MAMGILHTI;HLA-C*04:01
+2;Negative;kim2014;NA;MAWERGPAL;NA;NA;!HLA-C*04:01;MAWERGPAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MAWLFFWAI;NA;NA;!HLA-C*04:01;MAWLFFWAI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MEFEPFQSL;NA;NA;!HLA-C*04:01;MEFEPFQSL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MEFNSLLAI;NA;NA;!HLA-C*04:01;MEFNSLLAI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MEFWLVAAL;NA;NA;!HLA-C*04:01;MEFWLVAAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MEKTHNLMA;NA;NA;!HLA-C*04:01;MEKTHNLMA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MERFSWHVA;NA;NA;!HLA-C*04:01;MERFSWHVA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MGAGLVFPI;NA;NA;!HLA-C*04:01;MGAGLVFPI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MLVGHMPFM;NA;NA;!HLA-C*04:01;MLVGHMPFM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MLYPLLWMF;NA;NA;!HLA-C*04:01;MLYPLLWMF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MMAKSNSPF;NA;NA;!HLA-C*04:01;MMAKSNSPF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MMHASTSPF;NA;NA;!HLA-C*04:01;MMHASTSPF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MMWATAQAL;NA;NA;!HLA-C*04:01;MMWATAQAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MMYTVSLGK;NA;NA;!HLA-C*04:01;MMYTVSLGK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MPAIFFSIV;NA;NA;!HLA-C*04:01;MPAIFFSIV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MPAYIRNTL;NA;NA;!HLA-C*04:01;MPAYIRNTL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MPFAWQFGF;NA;NA;!HLA-C*04:01;MPFAWQFGF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MPFIATPPV;NA;NA;!HLA-C*04:01;MPFIATPPV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MPMKGRFPI;NA;NA;!HLA-C*04:01;MPMKGRFPI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MPMSMPIPM;NA;NA;!HLA-C*04:01;MPMSMPIPM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MPVGGQSSF;NA;NA;!HLA-C*04:01;MPVGGQSSF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MPWLTTGPM;NA;NA;!HLA-C*04:01;MPWLTTGPM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MPYAAHDPI;NA;NA;!HLA-C*04:01;MPYAAHDPI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MPYHGYHII;NA;NA;!HLA-C*04:01;MPYHGYHII;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MQFPGSVGF;NA;NA;!HLA-C*04:01;MQFPGSVGF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MQIRGFVYF;NA;NA;!HLA-C*04:01;MQIRGFVYF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MQYEVTQHA;NA;NA;!HLA-C*04:01;MQYEVTQHA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MQYLNPPPY;NA;NA;!HLA-C*04:01;MQYLNPPPY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MRYFIGQPL;NA;NA;!HLA-C*04:01;MRYFIGQPL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;MSDWGHITV;NA;NA;!HLA-C*04:01;MSDWGHITV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;MSNEGSYFF;NA;NA;!HLA-C*04:01;MSNEGSYFF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;MSPDNALIY;NA;NA;!HLA-C*04:01;MSPDNALIY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MSWGWRLPF;NA;NA;!HLA-C*04:01;MSWGWRLPF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;MTDKICWLY;NA;NA;!HLA-C*04:01;MTDKICWLY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MTDVDLNYY;NA;NA;!HLA-C*04:01;MTDVDLNYY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MTFPVSLEY;NA;NA;!HLA-C*04:01;MTFPVSLEY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MTHPQSEAA;NA;NA;!HLA-C*04:01;MTHPQSEAA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MTMITPPTF;NA;NA;!HLA-C*04:01;MTMITPPTF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MTMLIKAFK;NA;NA;!HLA-C*04:01;MTMLIKAFK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MTMLTRWKI;NA;NA;!HLA-C*04:01;MTMLTRWKI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MTMSYLSTR;NA;NA;!HLA-C*04:01;MTMSYLSTR;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MTYLDGHPV;NA;NA;!HLA-C*04:01;MTYLDGHPV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MTYSHHACR;NA;NA;!HLA-C*04:01;MTYSHHACR;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MVFGRFSFA;NA;NA;!HLA-C*04:01;MVFGRFSFA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MVFQHFHLF;NA;NA;!HLA-C*04:01;MVFQHFHLF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MVIFFMSPK;NA;NA;!HLA-C*04:01;MVIFFMSPK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MVIKWIHER;NA;NA;!HLA-C*04:01;MVIKWIHER;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MVLSGTLAY;NA;NA;!HLA-C*04:01;MVLSGTLAY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MVRQMRAAL;NA;NA;!HLA-C*04:01;MVRQMRAAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;MWHVTRGAF;NA;NA;!HLA-C*04:01;MWHVTRGAF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;MYMALIAAF;NA;NA;!HLA-C*04:01;MYMALIAAF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;MYPFIFFIV;NA;NA;!HLA-C*04:01;MYPFIFFIV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;MYTRNLLWL;NA;NA;!HLA-C*04:01;MYTRNLLWL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;NRDVSFQDL;NA;NA;!HLA-C*04:01;NRDVSFQDL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;NTDDFPLTL;NA;NA;!HLA-C*04:01;NTDDFPLTL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;NTDEIPELI;NA;NA;!HLA-C*04:01;NTDEIPELI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;NTDNKFISY;NA;NA;!HLA-C*04:01;NTDNKFISY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;NTDSSLQSM;NA;NA;!HLA-C*04:01;NTDSSLQSM;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;QTDNQLAVF;NA;NA;!HLA-C*04:01;QTDNQLAVF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RAMRMVYYL;NA;NA;!HLA-C*04:01;RAMRMVYYL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RARKRGITM;NA;NA;!HLA-C*04:01;RARKRGITM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RARRHLAAL;NA;NA;!HLA-C*04:01;RARRHLAAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RARRLRRAL;NA;NA;!HLA-C*04:01;RARRLRRAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RAYRNALSM;NA;NA;!HLA-C*04:01;RAYRNALSM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;REAPYELNI;NA;NA;!HLA-C*04:01;REAPYELNI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;REMHHLVEF;NA;NA;!HLA-C*04:01;REMHHLVEF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;REMINHYQV;NA;NA;!HLA-C*04:01;REMINHYQV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RENHTEGLL;NA;NA;!HLA-C*04:01;RENHTEGLL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;REWFMDLNL;NA;NA;!HLA-C*04:01;REWFMDLNL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;REWGWRIPF;NA;NA;!HLA-C*04:01;REWGWRIPF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;RFEAYGWQV;NA;NA;!HLA-C*04:01;RFEAYGWQV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RFFKHFMSL;NA;NA;!HLA-C*04:01;RFFKHFMSL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;RFVLALLAF;NA;NA;!HLA-C*04:01;RFVLALLAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RIFPATHYV;NA;NA;!HLA-C*04:01;RIFPATHYV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RIRAANLPI;NA;NA;!HLA-C*04:01;RIRAANLPI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RIYKRSLKL;NA;NA;!HLA-C*04:01;RIYKRSLKL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RIYRKGNPL;NA;NA;!HLA-C*04:01;RIYRKGNPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RLKFSLSYK;NA;NA;!HLA-C*04:01;RLKFSLSYK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RLYELIGSV;NA;NA;!HLA-C*04:01;RLYELIGSV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RLYPFGSYY;NA;NA;!HLA-C*04:01;RLYPFGSYY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RLYQYSFAK;NA;NA;!HLA-C*04:01;RLYQYSFAK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RMFKRVFNM;NA;NA;!HLA-C*04:01;RMFKRVFNM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RMMETWHPL;NA;NA;!HLA-C*04:01;RMMETWHPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RMMGVKYLM;NA;NA;!HLA-C*04:01;RMMGVKYLM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RMYWGVNPK;NA;NA;!HLA-C*04:01;RMYWGVNPK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPAGARAAF;NA;NA;!HLA-C*04:01;RPAGARAAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPAPARLPL;NA;NA;!HLA-C*04:01;RPAPARLPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPAPGGKAY;NA;NA;!HLA-C*04:01;RPAPGGKAY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPMLARLTV;NA;NA;!HLA-C*04:01;RPMLARLTV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPMTYKAAL;NA;NA;!HLA-C*04:01;RPMTYKAAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPRCAYLPF;NA;NA;!HLA-C*04:01;RPRCAYLPF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPREATIIY;NA;NA;!HLA-C*04:01;RPREATIIY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPRLHSISF;NA;NA;!HLA-C*04:01;RPRLHSISF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPRPRTPEW;NA;NA;!HLA-C*04:01;RPRPRTPEW;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPRQRGIPF;NA;NA;!HLA-C*04:01;RPRQRGIPF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPRRASSPF;NA;NA;!HLA-C*04:01;RPRRASSPF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPRVAQLTF;NA;NA;!HLA-C*04:01;RPRVAQLTF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RPVFARLPF;NA;NA;!HLA-C*04:01;RPVFARLPF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RQHPGLFPF;NA;NA;!HLA-C*04:01;RQHPGLFPF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RQIRMTSTI;NA;NA;!HLA-C*04:01;RQIRMTSTI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RQLLWRYQI;NA;NA;!HLA-C*04:01;RQLLWRYQI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RQMRASAPL;NA;NA;!HLA-C*04:01;RQMRASAPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RQNAPFEPI;NA;NA;!HLA-C*04:01;RQNAPFEPI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RQRAVRMVL;NA;NA;!HLA-C*04:01;RQRAVRMVL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RQWGMGFLL;NA;NA;!HLA-C*04:01;RQWGMGFLL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RQYERYTAL;NA;NA;!HLA-C*04:01;RQYERYTAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRAALSGHL;NA;NA;!HLA-C*04:01;RRAALSGHL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRFKYLLNV;NA;NA;!HLA-C*04:01;RRFKYLLNV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRFNRTKPM;NA;NA;!HLA-C*04:01;RRFNRTKPM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRHWGGNVL;NA;NA;!HLA-C*04:01;RRHWGGNVL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRLHRLLLM;NA;NA;!HLA-C*04:01;RRLHRLLLM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRRFVQNAL;NA;NA;!HLA-C*04:01;RRRFVQNAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRRKGWIPL;NA;NA;!HLA-C*04:01;RRRKGWIPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRRLRTLVL;NA;NA;!HLA-C*04:01;RRRLRTLVL;HLA-C*04:01
+2;Negative;kim2014;NA;RRRPVTRPL;NA;NA;!HLA-C*04:01;RRRPVTRPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRRRRRAAL;NA;NA;!HLA-C*04:01;RRRRRRAAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRRWCGLGL;NA;NA;!HLA-C*04:01;RRRWCGLGL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRWIAPHPL;NA;NA;!HLA-C*04:01;RRWIAPHPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRYASQTEL;NA;NA;!HLA-C*04:01;RRYASQTEL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRYRRIYDL;NA;NA;!HLA-C*04:01;RRYRRIYDL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RRYTRRISL;NA;NA;!HLA-C*04:01;RRYTRRISL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;RSDEYVAYY;NA;NA;!HLA-C*04:01;RSDEYVAYY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RTFGCSWEF;NA;NA;!HLA-C*04:01;RTFGCSWEF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RTLNLFRYK;NA;NA;!HLA-C*04:01;RTLNLFRYK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RTRAGRHAF;NA;NA;!HLA-C*04:01;RTRAGRHAF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;RTWFYRTEF;NA;NA;!HLA-C*04:01;RTWFYRTEF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RVMAIFMAL;NA;NA;!HLA-C*04:01;RVMAIFMAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RVMAPRALL;NA;NA;!HLA-C*04:01;RVMAPRALL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RVMPVFAFK;NA;NA;!HLA-C*04:01;RVMPVFAFK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RVRSMANVY;NA;NA;!HLA-C*04:01;RVRSMANVY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RVRWRNYAL;NA;NA;!HLA-C*04:01;RVRWRNYAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RVYAHVRSV;NA;NA;!HLA-C*04:01;RVYAHVRSV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RWFVRNPFF;NA;NA;!HLA-C*04:01;RWFVRNPFF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RWRWFRAAM;NA;NA;!HLA-C*04:01;RWRWFRAAM;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;RYAYTSVEF;NA;NA;!HLA-C*04:01;RYAYTSVEF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;RYDKSAADL;NA;NA;!HLA-C*04:01;RYDKSAADL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;RYEFTAPFI;NA;NA;!HLA-C*04:01;RYEFTAPFI;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;RYMSKTYNF;NA;NA;!HLA-C*04:01;RYMSKTYNF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;RYNCKCCWF;NA;NA;!HLA-C*04:01;RYNCKCCWF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;RYPIDPFLL;NA;NA;!HLA-C*04:01;RYPIDPFLL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RYRQVLSPL;NA;NA;!HLA-C*04:01;RYRQVLSPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;RYRTAVCGL;NA;NA;!HLA-C*04:01;RYRTAVCGL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;RYSGFVRTL;NA;NA;!HLA-C*04:01;RYSGFVRTL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;RYSNFAWYF;NA;NA;!HLA-C*04:01;RYSNFAWYF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SARRRHLVF;NA;NA;!HLA-C*04:01;SARRRHLVF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SAYYLDIGF;NA;NA;!HLA-C*04:01;SAYYLDIGF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SEFWLNYTA;NA;NA;!HLA-C*04:01;SEFWLNYTA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SEMGANFKA;NA;NA;!HLA-C*04:01;SEMGANFKA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SEMGANFRA;NA;NA;!HLA-C*04:01;SEMGANFRA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SERFINYAI;NA;NA;!HLA-C*04:01;SERFINYAI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SEWGWRIPF;NA;NA;!HLA-C*04:01;SEWGWRIPF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;SHDLAPQFL;NA;NA;!HLA-C*04:01;SHDLAPQFL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;SHDVLTVQF;NA;NA;!HLA-C*04:01;SHDVLTVQF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SILPISWAY;NA;NA;!HLA-C*04:01;SILPISWAY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SLYPPCLFK;NA;NA;!HLA-C*04:01;SLYPPCLFK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SLYSGFPSL;NA;NA;!HLA-C*04:01;SLYSGFPSL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SMFERDFHF;NA;NA;!HLA-C*04:01;SMFERDFHF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SMNYPNSYK;NA;NA;!HLA-C*04:01;SMNYPNSYK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SPAAYVLPL;NA;NA;!HLA-C*04:01;SPAAYVLPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SQAAFGLPI;NA;NA;!HLA-C*04:01;SQAAFGLPI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SRWAISHWL;NA;NA;!HLA-C*04:01;SRWAISHWL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SRWRIRSGL;NA;NA;!HLA-C*04:01;SRWRIRSGL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;SSDDFALIV;NA;NA;!HLA-C*04:01;SSDDFALIV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;SSDLRSWTF;NA;NA;!HLA-C*04:01;SSDLRSWTF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;STEFIPNLF;NA;NA;!HLA-C*04:01;STEFIPNLF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;STFDLYVYR;NA;NA;!HLA-C*04:01;STFDLYVYR;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;STMPLVMAW;NA;NA;!HLA-C*04:01;STMPLVMAW;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;STMRRMALR;NA;NA;!HLA-C*04:01;STMRRMALR;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SVDSDHLGY;NA;NA;!HLA-C*04:01;SVDSDHLGY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SVFEGIRAY;NA;NA;!HLA-C*04:01;SVFEGIRAY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SVIDHIHYM;NA;NA;!HLA-C*04:01;SVIDHIHYM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SVMAIFYLR;NA;NA;!HLA-C*04:01;SVMAIFYLR;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SVQWFRLPR;NA;NA;!HLA-C*04:01;SVQWFRLPR;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;SYCNGVREL;NA;NA;!HLA-C*04:01;SYCNGVREL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;SYFPDSNNV;NA;NA;!HLA-C*04:01;SYFPDSNNV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;SYGCPTNPF;NA;NA;!HLA-C*04:01;SYGCPTNPF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;SYIRYFTVF;NA;NA;!HLA-C*04:01;SYIRYFTVF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;SYLRRTQSM;NA;NA;!HLA-C*04:01;SYLRRTQSM;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;SYLTVHQMI;NA;NA;!HLA-C*04:01;SYLTVHQMI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;SYRNFSFSL;NA;NA;!HLA-C*04:01;SYRNFSFSL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;SYSTPALTL;NA;NA;!HLA-C*04:01;SYSTPALTL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TEMYIMYAM;NA;NA;!HLA-C*04:01;TEMYIMYAM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TFMDHVLRY;NA;NA;!HLA-C*04:01;TFMDHVLRY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;TFMGMNVQF;NA;NA;!HLA-C*04:01;TFMGMNVQF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TPGRYRTAV;NA;NA;!HLA-C*04:01;TPGRYRTAV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;TRDPNLAYI;NA;NA;!HLA-C*04:01;TRDPNLAYI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TSASFTDLY;NA;NA;!HLA-C*04:01;TSASFTDLY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TTAEFTVPK;NA;NA;!HLA-C*04:01;TTAEFTVPK;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;TTDDSTSYY;NA;NA;!HLA-C*04:01;TTDDSTSYY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TTFDLTLRR;NA;NA;!HLA-C*04:01;TTFDLTLRR;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TTIGEWAFW;NA;NA;!HLA-C*04:01;TTIGEWAFW;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TTIPTNLFR;NA;NA;!HLA-C*04:01;TTIPTNLFR;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TTYVYTLPV;NA;NA;!HLA-C*04:01;TTYVYTLPV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TVIDVNTGK;NA;NA;!HLA-C*04:01;TVIDVNTGK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TVMDIISRK;NA;NA;!HLA-C*04:01;TVMDIISRK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TVYPKTHYV;NA;NA;!HLA-C*04:01;TVYPKTHYV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;TYFEEPAAF;NA;NA;!HLA-C*04:01;TYFEEPAAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;TYLQSLASL;NA;NA;!HLA-C*04:01;TYLQSLASL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;TYLSSSLFL;NA;NA;!HLA-C*04:01;TYLSSSLFL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;VEMQLAVVI;NA;NA;!HLA-C*04:01;VEMQLAVVI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;VEYHYTFYI;NA;NA;!HLA-C*04:01;VEYHYTFYI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;VGYYTFHPK;NA;NA;!HLA-C*04:01;VGYYTFHPK;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;VLAGWLFHV;NA;NA;!HLA-C*04:01;VLAGWLFHV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;VLYHRYNLV;NA;NA;!HLA-C*04:01;VLYHRYNLV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;VMAPRTLIL;NA;NA;!HLA-C*04:01;VMAPRTLIL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;VMAPRTLVL;NA;NA;!HLA-C*04:01;VMAPRTLVL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;VMPPRTLLL;NA;NA;!HLA-C*04:01;VMPPRTLLL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;VPADHRLAF;NA;NA;!HLA-C*04:01;VPADHRLAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;VPRPRFSAL;NA;NA;!HLA-C*04:01;VPRPRFSAL;HLA-C*04:01
+2;Negative;Grotenbreg - purified MHC;NA;VSFIEFVGW;NA;NA;!HLA-C*04:01;VSFIEFVGW;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;VSITNPFLF;NA;NA;!HLA-C*04:01;VSITNPFLF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;VTDEGTSSF;NA;NA;!HLA-C*04:01;VTDEGTSSF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;VTFGARASF;NA;NA;!HLA-C*04:01;VTFGARASF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;VYAPAGVEL;NA;NA;!HLA-C*04:01;VYAPAGVEL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;VYWENEVSI;NA;NA;!HLA-C*04:01;VYWENEVSI;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;VYYIVVRDF;NA;NA;!HLA-C*04:01;VYYIVVRDF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;WEMRAGREI;NA;NA;!HLA-C*04:01;WEMRAGREI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;WMRWGGWPF;NA;NA;!HLA-C*04:01;WMRWGGWPF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;WMYYPRSPV;NA;NA;!HLA-C*04:01;WMYYPRSPV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;WPILGFFPM;NA;NA;!HLA-C*04:01;WPILGFFPM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;WPLVNFHIL;NA;NA;!HLA-C*04:01;WPLVNFHIL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;WPTPKTHPV;NA;NA;!HLA-C*04:01;WPTPKTHPV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;WQLTSIWPI;NA;NA;!HLA-C*04:01;WQLTSIWPI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;WTFTPTTPL;NA;NA;!HLA-C*04:01;WTFTPTTPL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;WYYDFHFFV;NA;NA;!HLA-C*04:01;WYYDFHFFV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YAIYTLGEM;NA;NA;!HLA-C*04:01;YAIYTLGEM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YAMAIRQAI;NA;NA;!HLA-C*04:01;YAMAIRQAI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YAREAGIAM;NA;NA;!HLA-C*04:01;YAREAGIAM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YARNFLIPF;NA;NA;!HLA-C*04:01;YARNFLIPF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YARRYFYPL;NA;NA;!HLA-C*04:01;YARRYFYPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YAYEPGSVM;NA;NA;!HLA-C*04:01;YAYEPGSVM;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YAYNSSLLY;NA;NA;!HLA-C*04:01;YAYNSSLLY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YEHYFVFAA;NA;NA;!HLA-C*04:01;YEHYFVFAA;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YELDLWGKI;NA;NA;!HLA-C*04:01;YELDLWGKI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YESSHWLVV;NA;NA;!HLA-C*04:01;YESSHWLVV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YFIFVRAIL;NA;NA;!HLA-C*04:01;YFIFVRAIL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YFYYNAFHW;NA;NA;!HLA-C*04:01;YFYYNAFHW;HLA-C*04:01
+2;Negative;kim2014;NA;YIDISDVKV;NA;NA;!HLA-C*04:01;YIDISDVKV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YIISTHYQF;NA;NA;!HLA-C*04:01;YIISTHYQF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YLAENTFVV;NA;NA;!HLA-C*04:01;YLAENTFVV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YLQQNTHTL;NA;NA;!HLA-C*04:01;YLQQNTHTL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YLREHIRAM;NA;NA;!HLA-C*04:01;YLREHIRAM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YLRKHIRAL;NA;NA;!HLA-C*04:01;YLRKHIRAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YLRNAGAAM;NA;NA;!HLA-C*04:01;YLRNAGAAM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YMKERFTVL;NA;NA;!HLA-C*04:01;YMKERFTVL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YMKKRYEEF;NA;NA;!HLA-C*04:01;YMKKRYEEF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YMRERFEPM;NA;NA;!HLA-C*04:01;YMRERFEPM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YMRERLSDF;NA;NA;!HLA-C*04:01;YMRERLSDF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YMREVGAAL;NA;NA;!HLA-C*04:01;YMREVGAAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YMYRVWSPL;NA;NA;!HLA-C*04:01;YMYRVWSPL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YPFHIFYPV;NA;NA;!HLA-C*04:01;YPFHIFYPV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YPKFHRSAM;NA;NA;!HLA-C*04:01;YPKFHRSAM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YPMSIPATL;NA;NA;!HLA-C*04:01;YPMSIPATL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YPPPRYITV;NA;NA;!HLA-C*04:01;YPPPRYITV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YPRNGWPAL;NA;NA;!HLA-C*04:01;YPRNGWPAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YPWAIFHPH;NA;NA;!HLA-C*04:01;YPWAIFHPH;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YPYQLMLSL;NA;NA;!HLA-C*04:01;YPYQLMLSL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YQLEMYHPI;NA;NA;!HLA-C*04:01;YQLEMYHPI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YQRALHTSI;NA;NA;!HLA-C*04:01;YQRALHTSI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YQVKYVSPV;NA;NA;!HLA-C*04:01;YQVKYVSPV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YQYIFLSFF;NA;NA;!HLA-C*04:01;YQYIFLSFF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YRATYSMAL;NA;NA;!HLA-C*04:01;YRATYSMAL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YRWVNLASF;NA;NA;!HLA-C*04:01;YRWVNLASF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YRYCHQLAL;NA;NA;!HLA-C*04:01;YRYCHQLAL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YSFSRAYTL;NA;NA;!HLA-C*04:01;YSFSRAYTL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YSLAGSSPF;NA;NA;!HLA-C*04:01;YSLAGSSPF;HLA-C*04:01
+2;Negative;kim2014;NA;YSLEYFQFV;NA;NA;!HLA-C*04:01;YSLEYFQFV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YSLMSRYQF;NA;NA;!HLA-C*04:01;YSLMSRYQF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YSRMLYIEF;NA;NA;!HLA-C*04:01;YSRMLYIEF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YSRPWNWTF;NA;NA;!HLA-C*04:01;YSRPWNWTF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTDKIAMSY;NA;NA;!HLA-C*04:01;YTDKIAMSY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTFEPHYFY;NA;NA;!HLA-C*04:01;YTFEPHYFY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTFFFTQYF;NA;NA;!HLA-C*04:01;YTFFFTQYF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTFTSLFSL;NA;NA;!HLA-C*04:01;YTFTSLFSL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTGAMTSKF;NA;NA;!HLA-C*04:01;YTGAMTSKF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTIDLNDAF;NA;NA;!HLA-C*04:01;YTIDLNDAF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTIEGIAFM;NA;NA;!HLA-C*04:01;YTIEGIAFM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTIGIGAFY;NA;NA;!HLA-C*04:01;YTIGIGAFY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTITSLFSL;NA;NA;!HLA-C*04:01;YTITSLFSL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTIYGAWMF;NA;NA;!HLA-C*04:01;YTIYGAWMF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTKKYLLSF;NA;NA;!HLA-C*04:01;YTKKYLLSF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YTLNDAPYI;NA;NA;!HLA-C*04:01;YTLNDAPYI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTLNNGVAM;NA;NA;!HLA-C*04:01;YTLNNGVAM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTMELCGAM;NA;NA;!HLA-C*04:01;YTMELCGAM;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTPEQWWPF;NA;NA;!HLA-C*04:01;YTPEQWWPF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YTTDVNQLY;NA;NA;!HLA-C*04:01;YTTDVNQLY;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTYDLAEYR;NA;NA;!HLA-C*04:01;YTYDLAEYR;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YTYGAGSYF;NA;NA;!HLA-C*04:01;YTYGAGSYF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YVDIIGLSV;NA;NA;!HLA-C*04:01;YVDIIGLSV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YVDIYAASV;NA;NA;!HLA-C*04:01;YVDIYAASV;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YVFAIPLPF;NA;NA;!HLA-C*04:01;YVFAIPLPF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YVILVGAAF;NA;NA;!HLA-C*04:01;YVILVGAAF;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YVLNGYTEF;NA;NA;!HLA-C*04:01;YVLNGYTEF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YVLSFQVTF;NA;NA;!HLA-C*04:01;YVLSFQVTF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YVYFYDLSY;NA;NA;!HLA-C*04:01;YVYFYDLSY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YWDQVTFFY;NA;NA;!HLA-C*04:01;YWDQVTFFY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YWLNTPFLV;NA;NA;!HLA-C*04:01;YWLNTPFLV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YYFQSGNEI;NA;NA;!HLA-C*04:01;YYFQSGNEI;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YYGKTPMQI;NA;NA;!HLA-C*04:01;YYGKTPMQI;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YYIIETEHL;NA;NA;!HLA-C*04:01;YYIIETEHL;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YYKKTFSAL;NA;NA;!HLA-C*04:01;YYKKTFSAL;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YYLEKANKI;NA;NA;!HLA-C*04:01;YYLEKANKI;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YYLIKYLHV;NA;NA;!HLA-C*04:01;YYLIKYLHV;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YYNAFHWA;NA;NA;!HLA-C*04:01;YYNAFHWA;HLA-C*04:01
+2;Negative;kim2014;NA;YYNAFHWAI;NA;NA;!HLA-C*04:01;YYNAFHWAI;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YYNAFQWAI;NA;NA;!HLA-C*04:01;YYNAFQWAI;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YYRYPTGESY;NA;NA;!HLA-C*04:01;YYRYPTGESY;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YYSNKVFPI;NA;NA;!HLA-C*04:01;YYSNKVFPI;HLA-C*04:01
+2;Negative;Ph.D. - purified MHC/direct/fluorescence;NA;YYTEDQGQF;NA;NA;!HLA-C*04:01;YYTEDQGQF;HLA-C*04:01
+2;Negative;Buus - purified MHC/competitive/fluorescence;NA;YYWPRPRRY;NA;NA;!HLA-C*04:01;YYWPRPRRY;HLA-C*04:01

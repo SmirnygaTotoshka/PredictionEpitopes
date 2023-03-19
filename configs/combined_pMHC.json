@@ -2,7 +2,7 @@
   "host": "192.168.0.10",
   "user": "SmirnygaTotoshka",
   "password": "linageenddo1",
-  "model_name":["HLA-A0101"],
+  "model_names":["HLA-A0101"],
   "method":"PASS",
   "min_desc_level": 3,
   "max_desc_level": 4,
@@ -20,10 +20,9 @@
   "local_configs": "/home/stotoshka/Documents/Epitops/experiments/configs",
 
   "remote_work_dir": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/by_alleles",
-  "remote_data": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/by_alleles/sdf",
-  "remote_SAR": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/by_alleles/sar",
-  "remote_output": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/by_alleles/output",
-  "remote_exec_configs": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/by_alleles/exec_cfg",
+  "remote_data": "sdf",
+  "remote_SAR": "sar",
+  "remote_output": "output",
 
   "threads": 5,
   "overwrite": true

@@ -1,0 +1,25 @@
+{
+  "host": "192.168.0.10",
+  "user": "SmirnygaTotoshka",
+  "password": "linageenddo1",
+  "model_names":["combined" , "HLA-A0201" , "HLA-A0203" , "HLA-A0206" , "HLA-A0216", " HLA-A0301",  "HLA-A1101",  "HLA-B7301", "HLA-C0401",  "HLA-C1402",  "HLA-C1502"],
+  "method":"PASS",
+  "min_desc_level": 6,
+  "max_desc_level": 16,
+  "fiveCV": true,
+  "activity":"activity",
+  "record_id": "seq",
+  "timeout": 1,
+
+  "local_work_dir": "/home/stotoshka/Documents/Epitops/experiments",
+  "csv_input": "/home/stotoshka/Documents/Epitops/PredictionEpitopes/data/find_optim_level_and_strat",
+  "converter_output": "/home/stotoshka/Documents/Epitops/experiments/SDF",
+  "converter_threads": 10,
+  "converter_column": "epitope",
+  "local_configs": "/home/stotoshka/Documents/Epitops/experiments/configs",
+
+  "remote_work_dir": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom",
+  "remote_data": "sdf",
+  "remote_SAR": "sar",
+  "remote_output": "output"
+}

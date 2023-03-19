@@ -185,3 +185,17 @@ for (a in levels(combined$allele)) {
   }
 }
 write.table(failed.alleles, "data/failed_alleles.csv", row.names = F,col.names = F)
+
+top.5 = c("HLA-A*02:01","HLA-A*03:01","HLA-A*11:01","HLA-A*02:03","HLA-A*02:06")
+low.5 = c("HLA-A*02:16","HLA-C*14:02","HLA-C*15:02","HLA-C*04:01","HLA-B*73:01")
+sel.alleles = c(top.5,low.5)
+combined.sel = subset(combined, allele %in% sel.alleles)
+vroom_write(combined.sel, "data/find_optim_level_and_strat/combined.csv", delim = ";")
+for (a in sel.alleles) {
+  s = combined.sel[combined.sel["allele"] == a,]
+  s$activity = as.vector(s$activity)
+  print(table(s$activity))
+  name = str_remove_all(a,"[*:]")
+  vroom_write(s, paste0("data/find_optim_level_and_strat/",name,".csv"), delim = ";")
+}
+

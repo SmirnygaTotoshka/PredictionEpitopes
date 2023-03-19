@@ -7,8 +7,6 @@ Created on Sun Aug 14 18:05 2022
 
 @version 1.1
 
-add delete temp files creating by threads
-TODO need test
 """
 
 

@@ -1,0 +1,5 @@
+time ./pipeline.sh \
+/home/stotoshka/Documents/Epitops/PredictionEpitopes/configs/level_and_strat.json \
+/home/stotoshka/Documents/Epitops/experiments/configs \
+/home/stotoshka/Documents/Epitops/experiments/SDF \
+/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/sdf
