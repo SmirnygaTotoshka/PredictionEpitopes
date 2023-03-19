@@ -34,12 +34,35 @@ public class HelloController {
     @FXML
     private Button start;
 
+    @FXML
+    private ComboBox<String> task_type;
+
     private PrintStream ps;
+    @FXML
+    private TextArea console;
+
+    public void initialize() {
+        ps = new PrintStream(new Console(console)) ;
+    }
+
+    public class Console extends OutputStream {
+        private TextArea console;
+
+        public Console(TextArea console) {
+            this.console = console;
+        }
+
+        public void appendText(String valueOf) {
+            Platform.runLater(() -> console.appendText(valueOf));
+        }
+
+        public void write(int b) throws IOException {
+            appendText(String.valueOf((char)b));
+        }
+    }
     private static final String url = "jdbc:mysql://192.168.0.11:3306/experiments";
     private static final String user = "root";
     private static final String password = "meow_root";
-
-    private volatile ObservableList<Model> all_models;
 
     private volatile static Connection con;
 
@@ -58,6 +81,8 @@ public class HelloController {
     }
     @FXML
     private void startProgram() throws SQLException {
+        System.setOut(ps);
+        System.setErr(ps);
         System.out.println("Starting at " + new Date());
         start.setDisable(true);
         try {
@@ -68,13 +93,14 @@ public class HelloController {
             System.out.println(settings);
             System.out.println("---------------------------------------------------");
             System.out.println("Preparing");
-            all_models = settings.prepare();
+            Distributor distributor = Distributor.getInstance();
+            distributor.setAllModels(settings.prepare());
             System.out.println(new Date());
             System.out.println("---------------------------------------------------");
 
-            printModelStatuses(all_models);
+            printModelStatuses(distributor.getAllModels());
             status.getColumns().removeAll(status.getColumns());
-            status.setItems(FXCollections.observableArrayList(all_models));
+            status.setItems(FXCollections.observableArrayList(distributor.getAllModels()));
             TableColumn<Model, String> idColumn = new TableColumn<>("ID");
             idColumn.setCellValueFactory(new PropertyValueFactory<Model, String>("id"));
             status.getColumns().add(idColumn);
@@ -106,13 +132,13 @@ public class HelloController {
             });
             System.out.println("---------------------------------------------------");
             System.out.println("Converting");
-            Distributor d = new Distributor();
-            ArrayList<Model[]> converter_files = d.distributeConverterTasks(all_models,settings.getThreads());
+
+            ArrayList<Model[]> converter_files = distributor.distributeConverterTasks(settings.getThreads());
             ArrayList<ConveterTask> converters = new ArrayList<>();
             for (int i = 0; i < converter_files.size(); i++) {
                 converters.add(new ConveterTask(settings, converter_files.get(i)));
                 converters.get(i).setOnSucceeded(workerStateEvent -> {
-                    ObservableList<Model> after_convert = all_models.stream().filter(model -> {
+                    ObservableList<Model> after_convert = distributor.getAllModels().stream().filter(model -> {
                         try {
                             return model.isSuccess();
                         } catch (Exception e) {
@@ -120,34 +146,37 @@ public class HelloController {
                         }
                     }).collect(Collectors.toCollection(FXCollections::observableArrayList));
                     try {
-                        ArrayList<Model[]> execution_files = d.distribute(after_convert,settings.getThreads());
+                        status.refresh();
+                        ArrayList<Model[]> execution_files = distributor.distribute(after_convert,settings.getThreads());
                         ArrayList<ExecutionTask> executionTasks = new ArrayList<>();
                         for (int j = 0; j < execution_files.size(); j++) {
                             executionTasks.add(new ExecutionTask(settings, execution_files.get(j)));
-                            if (settings.isFiveCV()) {
-                                executionTasks.get(j).setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                            executionTasks.get(j).setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                                     @Override
                                     public void handle(WorkerStateEvent workerStateEvent) {
-                                        ObservableList<Model> after_execute = after_convert.stream().filter(model -> {
+                                        status.refresh();
+                                        if (settings.isFiveCV()) {
+                                            ObservableList<Model> after_execute = after_convert.stream().filter(model -> {
+                                                try {
+                                                    return model.isSuccess();
+                                                } catch (Exception e) {
+                                                    return false;
+                                                }
+                                            }).collect(Collectors.toCollection(FXCollections::observableArrayList));
                                             try {
-                                                return model.isSuccess();
-                                            } catch (Exception e) {
-                                                return false;
+
+                                                ArrayList<Model[]> validation_files = distributor.distribute(after_execute, settings.getThreads());
+                                                ArrayList<ExecutionTask> validationTasks = new ArrayList<>();
+                                                ExecutionTask.PROGRAM_NAME = "OLMPASS2CSV.exe";
+                                                for (int j = 0; j < validation_files.size(); j++) {
+                                                    validationTasks.add(new ExecutionTask(settings, validation_files.get(j)));
+                                                }
+                                            } catch (IOException e) {
+                                                throw new RuntimeException(e);
                                             }
-                                        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
-                                        try {
-                                            ArrayList<Model[]> validation_files = d.distribute(after_execute, settings.getThreads());
-                                            ArrayList<ExecutionTask> validationTasks = new ArrayList<>();
-                                            ExecutionTask.PROGRAM_NAME = "OLMPASS2CSV.exe";
-                                            for (int j = 0; j < validation_files.size(); j++) {
-                                                validationTasks.add(new ExecutionTask(settings, validation_files.get(j)));
-                                            }
-                                        } catch (IOException e) {
-                                            throw new RuntimeException(e);
                                         }
                                     }
                                 });
-                            }
                             new Thread(executionTasks.get(j)).start();
                         }
                     } catch (IOException e) {
@@ -169,6 +198,7 @@ public class HelloController {
             alert.show();
         }
         finally {
+            status.refresh();
             con.close();
             start.setDisable(false);
         }

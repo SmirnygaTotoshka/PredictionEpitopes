@@ -10,18 +10,60 @@ import java.util.Collection;
 
 public class Distributor {
 
-    public ArrayList<Model[]> distributeConverterTasks(ObservableList<Model> models, long threads)throws IOException{
+    private static volatile Distributor instance;
+    private static Object mutex = new Object();
+
+    private Distributor() {
+    }
+
+    public static Distributor getInstance() {
+        Distributor result = instance;
+        if (result == null) {
+            synchronized (mutex) {
+                result = instance;
+                if (result == null)
+                    instance = result = new Distributor();
+            }
+        }
+        return result;
+    }
+    private volatile ObservableList<Model> all_models;
+
+    public void setAllModels(ObservableList<Model> all_models){
+        this.all_models = all_models;
+    }
+
+    public ObservableList<Model> getAllModels(){
+        return this.all_models;
+    }
+
+    public synchronized void send(Model.STATUS signal, Model model){
+        if (signal.equals(Model.STATUS.WAITING_CONVERT) || signal.equals(Model.STATUS.CONVERT) ||
+            signal.equals(Model.STATUS.COPY_SAMPLE) || signal.equals(Model.STATUS.WAITING_EXECUTION)){
+            for (int i = 0; i < all_models.size(); i++) {
+                if (all_models.get(i).getName(Model.NEEDED_FILE.CONVERTER_CONFIG).contentEquals(model.getName(Model.NEEDED_FILE.CONVERTER_CONFIG))){
+                    all_models.get(i).setStatus(signal);
+                }
+            }
+        }
+        else {
+            model.setStatus(signal);
+        }
+    }
+
+
+    public ArrayList<Model[]> distributeConverterTasks(long threads)throws IOException{
         ObservableList<Model> tmp = FXCollections.observableArrayList();
-        tmp.add(models.get(0));
-        for (int i = 1; i < models.size(); i++) {
+        tmp.add(all_models.get(0));
+        for (int i = 1; i < all_models.size(); i++) {
             boolean not_in = true;
             for (int j = 0; j < tmp.size(); j++) {
-                if (tmp.get(j).getName(Model.NEEDED_FILE.CONVERTER_CONFIG).contentEquals(models.get(i).getName(Model.NEEDED_FILE.CONVERTER_CONFIG))){
+                if (tmp.get(j).getName(Model.NEEDED_FILE.CONVERTER_CONFIG).contentEquals(all_models.get(i).getName(Model.NEEDED_FILE.CONVERTER_CONFIG))){
                     not_in = false;
                 }
             }
             if (not_in)
-                tmp.add(models.get(i));
+                tmp.add(all_models.get(i));
         }
         return distribute(tmp, threads);
     }

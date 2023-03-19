@@ -4,10 +4,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import org.json.simple.JSONObject;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class Model {
     private String model_name, mode, fold;
@@ -30,12 +27,15 @@ public class Model {
 
     private SimpleStringProperty id;
 
+
     enum NEEDED_FILE{
         CONVERTER_CONFIG,
         EXECUTION_CONFIG,
         VALIDATION_CONFIG,
         SAMPLE,
         MODEL,
+        LOG,
+        MODEL_OUTPUT,
         CSV_OUTPUT,
         CSV_INPUT
     }
@@ -168,6 +168,14 @@ public class Model {
                 name = model_name + "_" + mode + "_" + fold;
                 extension = ".sdf";
                 break;
+            case MODEL_OUTPUT:
+                name = generateID();
+                extension = ".LST";
+                break;
+            case LOG:
+                name = generateID();
+                extension = ".HST";
+                break;
             default:
                 name = generateID();
                 extension = "";
@@ -196,6 +204,22 @@ public class Model {
         catch (IOException e) {
             fail(e);
         }
+    }
+
+    public String getModel_name() {
+        return model_name;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public long getLevel() {
+        return level;
+    }
+
+    public String getFold() {
+        return fold;
     }
 
     public void fail(Exception e){

@@ -2,6 +2,7 @@ package ru.smirnygatotoshka.pass;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -10,7 +11,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class Config {
@@ -180,8 +183,32 @@ public class Config {
     public boolean isOverwrite() {
         return overwrite;
     }
+    public void deleteDir(File file)
+            throws IOException {
+        Path pathToBeDeleted = file.toPath();
 
+        Files.walk(pathToBeDeleted)
+                .sorted(Comparator.reverseOrder())
+                .map(Path::toFile)
+                .forEach(File::delete);
+
+    }
     public ObservableList<Model> prepare() throws IOException {
+        File local = new File(local_work_dir);
+        File remote = new File(remote_work_dir);
+        if (overwrite){
+            if (local.exists())
+                deleteDir(local);
+            if (remote.exists())
+                deleteDir(remote);
+        }
+        else {
+            if (local.exists())
+                throw new IOException(local.getAbsolutePath() + " is exists!");
+            if (remote.exists())
+                throw new IOException(remote.getAbsolutePath() + " is exists!");
+
+        }
         String[] dirs = new String[]{
                 local_work_dir,
                 converter_output,
@@ -193,6 +220,7 @@ public class Config {
         };
         for (String s: dirs) {
             File f = new File(s);
+
             if (!f.exists()){
                 if (!f.mkdir()) throw new IOException("Couldn`t create dir " + s);
             }

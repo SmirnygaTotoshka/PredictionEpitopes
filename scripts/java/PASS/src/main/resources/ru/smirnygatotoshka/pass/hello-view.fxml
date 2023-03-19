@@ -22,5 +22,6 @@
                  <TableColumn prefWidth="300.0" text="Exception" />
         </columns>-->
       </TableView>
+      <TextArea fx:id="console" prefHeight="400.0" prefWidth="200.0" />
    </children>
 </VBox>
