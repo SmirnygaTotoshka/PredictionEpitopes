@@ -6,6 +6,7 @@ import os
 import multiprocessing
 import time
 import glob
+from random import shuffle
 
 
 def launch(proc, partition, program):
@@ -39,6 +40,7 @@ if __name__ == '__main__':
         raise Exception("Program path doesn`t exist")
 
     launches = glob.glob(os.path.join(input, '*.txt'))
+    shuffle(launches)
     #print(launches)
 
     total = len(launches)

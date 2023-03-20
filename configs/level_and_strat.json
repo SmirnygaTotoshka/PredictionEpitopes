@@ -2,7 +2,7 @@
   "host": "192.168.0.10",
   "user": "SmirnygaTotoshka",
   "password": "linageenddo1",
-  "model_names":["combined" , "HLA-A0201" , "HLA-A0203" , "HLA-A0206" , "HLA-A0216", " HLA-A0301",  "HLA-A1101",  "HLA-B7301", "HLA-C0401",  "HLA-C1402",  "HLA-C1502"],
+  "model_names":["HLA-A0301","combined" , "HLA-A0201" , "HLA-A0203" , "HLA-A0206" , "HLA-A0216",   "HLA-A1101",  "HLA-B7301", "HLA-C0401",  "HLA-C1402",  "HLA-C1502"],
   "method":"PASS",
   "min_desc_level": 6,
   "max_desc_level": 16,

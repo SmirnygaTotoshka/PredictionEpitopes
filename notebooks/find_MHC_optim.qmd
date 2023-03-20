@@ -1,0 +1,229 @@
+---
+title: "Поиск оптимальной стратегии формирования обучающих выборок для моделей эпитоп-МНС"
+author: "Антон Смирнов"
+date: "Mar 20, 2023"
+date-format: "MMM D, YYYY"
+toc: true
+toc-depth: 3
+tbl-cap-location: top
+toc-title: "Оглавление"
+fontsize: 14pt
+engine: knitr
+linestretch: 1.5
+geometry:
+  - top=10mm
+  - left=20mm
+  - right=20mm
+  - heightrounded
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: report
+    pdf-engine: xelatex
+    header-includes: |
+      \usepackage[utf8]{inputenc}
+      \usepackage[american,russian]{babel}
+      \usepackage{hyperref}  
+      \usepackage{unicode-math}
+mainfont: Arial
+monofont: Arial
+sansfont: Arial
+editor: visual
+---
+
+# Введение
+
+Для поиска оптимальной стратегии формирования выборок и уровня дескрипторов для обучения моделей эпитоп-МНС были сформированы из данных таблицы mhc_bind Immune Epitope Database обучающие выборки. Обучающие выборки были сделаны 2 типов.
+
+1.  Комбинированная, где в один файл объединены данные об активности и неактивности эпитопов избранных 10 аллелей МНС
+2.  Отдельные, где данные по активности и неактивности к конкретному избранному аллелю МНС собраны в отдельные файлы
+
+Необходимость проверки заключаются в том, что PASS формирует отрицательные примеры для класса из всех случаев, которые не принадлежат ему. Это не совсем правильно с биологической точки зрения, так как взаимодействие одного эпитопа с одним аллелем МНС не исключает, что этот же эпитоп будет взаимодействовать с другим аллелем. Поэтому второй подход биологически верен, но он может не обеспечить достаточной точности прогноза. Кроме этого необходимо установить оптимальный уровень дескрипторов, который обеспечивает максимальную точность.
+
+# Методы
+
+Для моделирования были выбраны 5 аллелей МНС высокопредставленных в имеющихся данных и 5 аллелей имющих низко- или среднюю представленность.
+
+| Высокопредставленные | Низкопредставленные |
+|----------------------|---------------------|
+| HLA-A\*02:01         | HLA-A\*02:16        |
+| HLA-A\*03:01         | HLA-C\*14:02        |
+| HLA-A\*11:01         | HLA-C\*15:02        |
+| HLA-A\*02:03         | HLA-C\*04:01        |
+| HLA-A\*02:06         | HLA-B\*73:01        |
+
+: Избранные аллели МНС
+
+Представленность аллелей
+
+```{r,echo=F, warning=F}
+suppressPackageStartupMessages(library(openxlsx))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(knitr))
+
+combined.stat = read.csv2("../data/find_optim_level_and_strat/combined.csv") %>% 
+  group_by(activity) %>% 
+  summarise(unique_epi = length(unique(epitope))) %>% 
+  arrange(.by_group = T)
+kable(combined.stat)
+```
+
+Минимальный уровень дескрипторов - 6
+
+Максимальный уровень дескрипторов - 16.
+
+Из предыдущего опыта известно, что не стоит брать слишком маленький уровень дескрипторов, так как модели имеют низкую точность.
+
+# Результаты
+
+```{r, echo = F, warning = F}
+result = openxlsx::read.xlsx("/home/stotoshka/Documents/Epitops/PredictionEpitopes/data/find_optim_level_and_strat/results.xlsx",sheet = 1)
+head(result)
+```
+
+## Высокопредставленные аллели
+
+### HLA-A\*02:01
+```{r, echo = F}
+combined = result[(result$model_name == "combined") & grepl("HLA-A\\*02\\:01",result$activity),]
+allele = result[result$model_name == "HLA-A0201",]
+together = rbind(combined, allele)
+together$type = paste(together$model_name, together$activity)
+ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
+  labs(x = "Уровень MNA дескриптора",
+       y = "AUC LOOCV", 
+       title = "HLA-A*02:01") + 
+  guides(color=guide_legend(title="Тип модели"))
+```
+
+### HLA-A\*03:01
+
+```{r, echo = F}
+combined = result[(result$model_name == "combined") & grepl("HLA-A\\*03\\:01",result$activity),]
+allele = result[result$model_name == "HLA-A0301",]
+together = rbind(combined, allele)
+together$type = paste(together$model_name, together$activity)
+ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
+  labs(x = "Уровень MNA дескриптора",
+       y = "AUC LOOCV", 
+       title = "HLA-A*03:01") + 
+  guides(color=guide_legend(title="Тип модели"))
+```
+
+### HLA-A\*11:01
+```{r, echo = F}
+combined = result[(result$model_name == "combined") & grepl("HLA-A\\*11\\:01",result$activity),]
+allele = result[result$model_name == "HLA-A1101",]
+together = rbind(combined, allele)
+together$type = paste(together$model_name, together$activity)
+ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
+  labs(x = "Уровень MNA дескриптора",
+       y = "AUC LOOCV", 
+       title = "HLA-A*11:01") + 
+  guides(color=guide_legend(title="Тип модели"))
+```
+
+### HLA-A\*02:03
+```{r, echo = F}
+combined = result[(result$model_name == "combined") & grepl("HLA-A\\*02\\:03",result$activity),]
+allele = result[result$model_name == "HLA-A0203",]
+together = rbind(combined, allele)
+together$type = paste(together$model_name, together$activity)
+ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
+  labs(x = "Уровень MNA дескриптора",
+       y = "AUC LOOCV", 
+       title = "HLA-A*02:03") + 
+  guides(color=guide_legend(title="Тип модели"))
+```
+
+### HLA-A\*02:06
+```{r, echo = F}
+combined = result[(result$model_name == "combined") & grepl("HLA-A\\*02\\:06",result$activity),]
+allele = result[result$model_name == "HLA-A0206",]
+together = rbind(combined, allele)
+together$type = paste(together$model_name, together$activity)
+ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
+  labs(x = "Уровень MNA дескриптора",
+       y = "AUC LOOCV", 
+       title = "HLA-A*02:06") + 
+  guides(color=guide_legend(title="Тип модели"))
+```
+
+## Низкопредставленные аллели
+
+### HLA-A\*02:16
+```{r, echo = F}
+combined = result[(result$model_name == "combined") & grepl("HLA-A\\*02\\:16",result$activity),]
+allele = result[result$model_name == "HLA-A0216",]
+together = rbind(combined, allele)
+together$type = paste(together$model_name, together$activity)
+ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
+  labs(x = "Уровень MNA дескриптора",
+       y = "AUC LOOCV", 
+       title = "HLA-A*02:16") + 
+  guides(color=guide_legend(title="Тип модели"))
+```
+
+### HLA-C\*14:02
+```{r, echo = F}
+combined = result[(result$model_name == "combined") & grepl("HLA-C\\*14\\:02",result$activity),]
+allele = result[result$model_name == "HLA-C1402",]
+together = rbind(combined, allele)
+together$type = paste(together$model_name, together$activity)
+ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
+  labs(x = "Уровень MNA дескриптора",
+       y = "AUC LOOCV", 
+       title = "HLA-C*14:02") + 
+  guides(color=guide_legend(title="Тип модели"))
+```
+
+### HLA-C\*15:02
+```{r, echo = F}
+combined = result[(result$model_name == "combined") & grepl("HLA-C\\*15\\:02",result$activity),]
+allele = result[result$model_name == "HLA-C1502",]
+together = rbind(combined, allele)
+together$type = paste(together$model_name, together$activity)
+ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
+  labs(x = "Уровень MNA дескриптора",
+       y = "AUC LOOCV", 
+       title = "HLA-C*15:02") + 
+  guides(color=guide_legend(title="Тип модели"))
+```
+
+### HLA-С\*04:01
+```{r, echo = F}
+combined = result[(result$model_name == "combined") & grepl("HLA-C\\*04\\:01",result$activity),]
+allele = result[result$model_name == "HLA-C0401",]
+together = rbind(combined, allele)
+together$type = paste(together$model_name, together$activity)
+ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
+  labs(x = "Уровень MNA дескриптора",
+       y = "AUC LOOCV", 
+       title = "HLA-C*04:01") + 
+  guides(color=guide_legend(title="Тип модели"))
+```
+
+### HLA-B\*73:01
+```{r, echo = F}
+combined = result[(result$model_name == "combined") & grepl("HLA-B\\*73\\:01",result$activity),]
+allele = result[result$model_name == "HLA-B7301",]
+together = rbind(combined, allele)
+together$type = paste(together$model_name, together$activity)
+ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
+  labs(x = "Уровень MNA дескриптора",
+       y = "AUC LOOCV", 
+       title = "HLA-B*73:01") + 
+  guides(color=guide_legend(title="Тип модели"))
+```
+
+## Обобщение
+```{r, echo = F}
+kable(result %>% 
+        group_by(activity, model_name) %>% 
+        summarise(max_auc = max(iap,na.rm = T),
+                  level = descriptor_level[which.max(iap)]))
+```
+
+# Выводы
