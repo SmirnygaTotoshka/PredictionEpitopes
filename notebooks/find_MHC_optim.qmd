@@ -34,7 +34,7 @@ editor: visual
 
 # Введение
 
-Для поиска оптимальной стратегии формирования выборок и уровня дескрипторов для обучения моделей эпитоп-МНС были сформированы из данных таблицы mhc_bind Immune Epitope Database обучающие выборки. Обучающие выборки были сделаны 2 типов.
+Для поиска оптимальной стратегии формирования выборок и уровня дескрипторов для обучения моделей эпитоп-МНС были сформированы из данных таблицы mhc_bind Immune Epitope Database и данных, используемых для обучения MHCflurry, но полученные не масс-спектрометрией, обучающие выборки. Обучающие выборки были сделаны 2 типов.
 
 1.  Комбинированная, где в один файл объединены данные об активности и неактивности эпитопов избранных 10 аллелей МНС
 2.  Отдельные, где данные по активности и неактивности к конкретному избранному аллелю МНС собраны в отдельные файлы
@@ -92,10 +92,10 @@ allele = result[result$model_name == "HLA-A0201",]
 together = rbind(combined, allele)
 together$type = paste(together$model_name, together$activity)
 ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
-  labs(x = "Уровень MNA дескриптора",
+  labs(x = "MNA level",
        y = "AUC LOOCV", 
        title = "HLA-A*02:01") + 
-  guides(color=guide_legend(title="Тип модели"))
+  guides(color=guide_legend(title="Model type"))
 ```
 
 ### HLA-A\*03:01
@@ -106,10 +106,10 @@ allele = result[result$model_name == "HLA-A0301",]
 together = rbind(combined, allele)
 together$type = paste(together$model_name, together$activity)
 ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
-  labs(x = "Уровень MNA дескриптора",
+  labs(x = "MNA level",
        y = "AUC LOOCV", 
        title = "HLA-A*03:01") + 
-  guides(color=guide_legend(title="Тип модели"))
+  guides(color=guide_legend(title="Model type"))
 ```
 
 ### HLA-A\*11:01
@@ -119,10 +119,10 @@ allele = result[result$model_name == "HLA-A1101",]
 together = rbind(combined, allele)
 together$type = paste(together$model_name, together$activity)
 ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
-  labs(x = "Уровень MNA дескриптора",
+  labs(x = "MNA level",
        y = "AUC LOOCV", 
        title = "HLA-A*11:01") + 
-  guides(color=guide_legend(title="Тип модели"))
+  guides(color=guide_legend(title="Model type"))
 ```
 
 ### HLA-A\*02:03
@@ -132,10 +132,10 @@ allele = result[result$model_name == "HLA-A0203",]
 together = rbind(combined, allele)
 together$type = paste(together$model_name, together$activity)
 ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
-  labs(x = "Уровень MNA дескриптора",
+  labs(x = "MNA level",
        y = "AUC LOOCV", 
        title = "HLA-A*02:03") + 
-  guides(color=guide_legend(title="Тип модели"))
+  guides(color=guide_legend(title="Model type"))
 ```
 
 ### HLA-A\*02:06
@@ -145,10 +145,10 @@ allele = result[result$model_name == "HLA-A0206",]
 together = rbind(combined, allele)
 together$type = paste(together$model_name, together$activity)
 ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
-  labs(x = "Уровень MNA дескриптора",
+  labs(x = "MNA level",
        y = "AUC LOOCV", 
        title = "HLA-A*02:06") + 
-  guides(color=guide_legend(title="Тип модели"))
+  guides(color=guide_legend(title="Model type"))
 ```
 
 ## Низкопредставленные аллели
@@ -160,10 +160,10 @@ allele = result[result$model_name == "HLA-A0216",]
 together = rbind(combined, allele)
 together$type = paste(together$model_name, together$activity)
 ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
-  labs(x = "Уровень MNA дескриптора",
+  labs(x = "MNA level",
        y = "AUC LOOCV", 
        title = "HLA-A*02:16") + 
-  guides(color=guide_legend(title="Тип модели"))
+  guides(color=guide_legend(title="Model type"))
 ```
 
 ### HLA-C\*14:02
@@ -173,10 +173,10 @@ allele = result[result$model_name == "HLA-C1402",]
 together = rbind(combined, allele)
 together$type = paste(together$model_name, together$activity)
 ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
-  labs(x = "Уровень MNA дескриптора",
+  labs(x = "MNA level",
        y = "AUC LOOCV", 
        title = "HLA-C*14:02") + 
-  guides(color=guide_legend(title="Тип модели"))
+  guides(color=guide_legend(title="Model type"))
 ```
 
 ### HLA-C\*15:02
@@ -186,10 +186,10 @@ allele = result[result$model_name == "HLA-C1502",]
 together = rbind(combined, allele)
 together$type = paste(together$model_name, together$activity)
 ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
-  labs(x = "Уровень MNA дескриптора",
+  labs(x = "MNA level",
        y = "AUC LOOCV", 
        title = "HLA-C*15:02") + 
-  guides(color=guide_legend(title="Тип модели"))
+  guides(color=guide_legend(title="Model type"))
 ```
 
 ### HLA-С\*04:01
@@ -199,10 +199,10 @@ allele = result[result$model_name == "HLA-C0401",]
 together = rbind(combined, allele)
 together$type = paste(together$model_name, together$activity)
 ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
-  labs(x = "Уровень MNA дескриптора",
+  labs(x = "MNA level",
        y = "AUC LOOCV", 
        title = "HLA-C*04:01") + 
-  guides(color=guide_legend(title="Тип модели"))
+  guides(color=guide_legend(title="Model type"))
 ```
 
 ### HLA-B\*73:01
@@ -212,18 +212,43 @@ allele = result[result$model_name == "HLA-B7301",]
 together = rbind(combined, allele)
 together$type = paste(together$model_name, together$activity)
 ggplot(together) + geom_point(aes(x = descriptor_level, y = iap, color = type))+ geom_line(aes(x = descriptor_level, y = iap, color = type)) + 
-  labs(x = "Уровень MNA дескриптора",
+  labs(x = "MNA level",
        y = "AUC LOOCV", 
        title = "HLA-B*73:01") + 
-  guides(color=guide_legend(title="Тип модели"))
+  guides(color=guide_legend(title="Model type"))
 ```
 
 ## Обобщение
 ```{r, echo = F}
-kable(result %>% 
+stat = result %>% 
         group_by(activity, model_name) %>% 
         summarise(max_auc = max(iap,na.rm = T),
-                  level = descriptor_level[which.max(iap)]))
+                  level = descriptor_level[which.max(iap)])
+kable(stat)
 ```
-
+```{r, echo = F}
+Mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+kable(stat %>% mutate(type = if_else(model_name == "combined", "combined", "allele")) %>% 
+  group_by(type) %>% 
+  summarise(mean_auc = mean(max_auc, na.rm = T),
+            model_level = Mode(level)))
+```
+```{r, echo = F}
+kable(stat %>% mutate(type = if_else(model_name == "combined", "combined", "allele"),
+                response = if_else(grepl("!", activity), "neg", "pos")) %>% 
+  group_by(type, response) %>% 
+  summarise(mean_auc = mean(max_auc, na.rm = T),
+            model_level = Mode(level)))
+```
 # Выводы
+
+1. Совмещенная обучающая выборка даёт в среднем большую точность, чем отдельные по аллелям в отношении положительного исхода, однако отрицательный исход модели предсказывают примерно одинаково точно. Оптимальная стратегия использовать совмещенную обучающую выборку
+
+2. Оптимальный уровень дескрипторов лежит в промежутке от 7 до 9. Точность моделирования на 8 и на 9 уровне дескрипторов меняется, как правило, слабо.
+
+# Обсуждение
+
+В исследование были намеренно не включенны данные, полученные в экспериментах, направленные на определение связывания эпитопа и МНС, а не элюированные от пациентов и определенные масс-спектрометрией. Создатели MHCflurry пишут, что такие данные зависят от предыдущих этапов процессинга, что вносит систематическую ошибку в модели. Поскольку масс-спектрометрические данные значительно увеличивают точность прогноза, они идут на компромисс и пробуют ограничивать количество таких данных, но насколько правильный такой подход?
