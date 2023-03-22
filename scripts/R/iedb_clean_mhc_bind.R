@@ -49,8 +49,8 @@ sum(is.na(bind.assays$reference_id)) == 0
 #2
 sum(is.na(bind.assays$as_char_value)) == 0
 #3
-sum(grepl("[ACDEFGHIKLMNPQRSTVWYU]",bind.assays$linear_peptide_seq)) == nrow(bind.assays)
-sum(grepl("[ACDEFGHIKLMNPQRSTVWYU]",bind.assays$linear_peptide_seq)) == nrow(bind.assays)
+sum(grepl("^[ACDEFGHIKLMNPQRSTVWYU]+$",bind.assays$linear_peptide_seq)) == nrow(bind.assays)
+sum(grepl("^[ACDEFGHIKLMNPQRSTVWYU]+$",bind.assays$linear_peptide_seq)) == nrow(bind.assays)
 #4
 ind = seq_len(nrow(bind.assays))
 has.epitope = sapply(ind,function(i){

@@ -39,7 +39,7 @@ flurry.data = vroom("data/source/MHCflurry.csv", delim = ",",show_col_types = FA
   select(all_of(flurry.cols)) %>% 
   mutate("as_char_value" = if_else(measurement_value <= 5000 & measurement_inequality != ">",
                                    "Positive",
-                                   "Negative"))
+                                   "Negative"))#5000 - см Iedb_analysys - примерная граница разделения классов bind данных
 table(flurry.data$as_char_value)
 
 positive.flurry = flurry.data %>% 
@@ -57,7 +57,7 @@ positive.flurry = flurry.data %>%
            source_organism_name,
            activity) %>% 
   filter(grepl("^HLA-[ABC]\\*\\d{2}:\\d{2}$", activity)) %>% 
-  filter(grepl("[ACDEFGHIKLMNPQRSTVWY]",peptide))
+  filter(grepl("^[ACDEFGHIKLMNPQRSTVWY]+$",peptide))
 
 negative.flurry = flurry.data %>% 
   filter(as_char_value == 'Negative') %>% 
@@ -74,7 +74,7 @@ negative.flurry = flurry.data %>%
            source_organism_name,
            activity)%>% 
   filter(grepl("^!HLA-[ABC]\\*\\d{2}:\\d{2}$", activity)) %>% 
-  filter(grepl("[ACDEFGHIKLMNPQRSTVWY]",peptide))
+  filter(grepl("^[ACDEFGHIKLMNPQRSTVWY]+$",peptide))
 
 final.cols = c("as_char_value",
                "assay_type",
