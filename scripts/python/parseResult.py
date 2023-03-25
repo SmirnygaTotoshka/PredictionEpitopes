@@ -21,10 +21,13 @@ if __name__ == '__main__':
 
     tbl = pd.DataFrame(columns=["model_name","descriptor_level","num_subst", "iap", "twentyCV","activity"])
     os.chdir(input)
-    results = glob('*.HST')
-    header = "No	 Check	 Number	 IAP	 20-Fold	 Activity"
+    #results = glob('*.HST')
+    results = glob('*_CRV.LOG')
+    print(results)
+    #header = "No	 Check	 Number	 IAP	 20-Fold	 Activity"
+    header = "No	 Check	 Group	 Number	 IAP	 20-Fold	 Activity"
     for r in results:
-        with open(r,"r") as f:
+        with open(r,"r", encoding='cp1252') as f:
             split_name = re.split("_",os.path.splitext(r)[0])
             model_name = split_name[0]
             level = split_name[1]

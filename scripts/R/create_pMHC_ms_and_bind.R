@@ -24,7 +24,7 @@ flurry.bind = flurry %>%
   filter(measurement_kind == "affinity") %>% 
   filter(grepl("^HLA-[ABC]\\*\\d{2}:\\d{2}$", allele)) %>% 
   filter(grepl("^[ACDEFGHIKLMNPQRSTVWYU]+$", peptide)) %>% 
-  select(all_of(flurry.cols)) %>% 
+  select(all_of(flurry.cols)) %>% #TODO maybe change to 5000
   mutate("as_char_value" = if_else(measurement_value <= 100 & measurement_inequality != ">",
                                    "Positive",
                                    "Negative"),
@@ -152,7 +152,7 @@ combined = bind_rows(bind.dataset, elution.dataset)%>%
   filter(!pair1 %in% elution.contra) %>% 
   select(-c("pair", "pair1"))
 
-vroom_write(bind.dataset, "data/check_assays_pMHC/bind.dataset.csv", delim = ";")
-vroom_write(elution.dataset, "data/check_assays_pMHC/elution.dataset.csv", delim = ";")
-vroom_write(combined, "data/check_assays_pMHC/combined.dataset.csv", delim = ";")
+vroom_write(bind.dataset, "data/check_assays_pMHC/bind.csv", delim = ";")
+vroom_write(elution.dataset, "data/check_assays_pMHC/elution.csv", delim = ";")
+vroom_write(combined, "data/check_assays_pMHC/combined.csv", delim = ";")
 

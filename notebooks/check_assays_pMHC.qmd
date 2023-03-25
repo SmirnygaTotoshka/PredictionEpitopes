@@ -1,0 +1,90 @@
+---
+title: "Выбор источников данных для формирования обучающих выборок для моделей эпитоп-МНС."
+author: "Антон Смирнов"
+date: "Mar 26, 2023"
+date-format: "MMM D, YYYY"
+toc: true
+toc-depth: 3
+tbl-cap-location: top
+toc-title: "Оглавление"
+fontsize: 14pt
+engine: knitr
+linestretch: 1.5
+geometry:
+  - top=10mm
+  - left=20mm
+  - right=20mm
+  - heightrounded
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: report
+    pdf-engine: xelatex
+    header-includes: |
+      \usepackage[utf8]{inputenc}
+      \usepackage[american,russian]{babel}
+      \usepackage{hyperref}  
+      \usepackage{unicode-math}
+mainfont: Arial
+monofont: Arial
+sansfont: Arial
+editor: visual
+bibliography: references.bib
+---
+
+# Введение
+
+Существует два типа экспериментов для получения данных о связывании эпитопа и МНС: определение связывания пептида и МНС и элюирование пептидов из МНС и определение их последовательности с помощью масс-спектрометрии. Второй метод высокопроизводителен, с его помощью получают большое количество данных, но это почти всегда положительные примеры. Данных, полученных первым методом в несколько раз меньше, но содержание положительных и отрицательных примеров примерно одинаковое. Цель этого эксперимента определить, какие данные: mhc_bind, mhc_elution, combined - стоит брать для построения конечной модели.
+
+# Методы
+
+Источники данных: IEDB и MHCflurry.
+
+Порог активности для масс-спектрометрических данных был взят \<=100 nM в отличие от 5000 nM, который использовался ранее. Порог в 100 нМ взят из статьи[@odonnell2020], порог 5000 нМ на основании изучения mhc_bind данных из IEDB.
+
+Моделирование проводилось на 7-9 уровнях MNA дескрипторов в GUI версии MultiPASS. После обучения были отфильтрованы модели, для которых IAP \< 0,75.
+
+# Результаты
+
+Суммарная статистика
+
+```{r, echo=F,warning=F}
+suppressPackageStartupMessages(library(dplyr)) 
+suppressPackageStartupMessages(library(knitr))
+results =  readxl::read_excel("~/Documents/Epitops/experiments/results/results.xlsx")
+
+kable(results %>% group_by(model_name, descriptor_level) %>%
+  summarise(num_activity = n(),
+            mean_iap = mean(iap),
+            mean_20_fold = mean(twentyCV)))
+
+```
+
+Если оставить только положительные случаи
+
+```{r, echo=F,warning=F}
+kable(results %>%
+  filter(!grepl("\\!", activity)) %>% 
+  group_by(model_name, descriptor_level) %>%
+  summarise(num_activity = n(),
+            mean_iap = mean(iap),
+            mean_20_fold = mean(twentyCV)))
+```
+
+Если оставить только отрицательные случаи
+
+```{r, echo=F,warning=F}
+kable(results %>%
+  filter(grepl("\\!", activity)) %>% 
+  group_by(model_name, descriptor_level) %>%
+  summarise(num_activity = n(),
+            mean_iap = mean(iap),
+            mean_20_fold = mean(twentyCV)))
+```
+
+# Выводы
+
+Может показаться, что модели основанные на чисто масс-спектрометрических данных имеют в среднем более высокую точность, чем остальные. Однако, это влияние недостаточно хорошей точности предсказания отрицательных случаев. Это может быть связано с недостаточным количеством данных относительно положительных активностей. Для положительных активностей точность не зависит от происхождения данных, отличается только спектр предсказаний: масс-спектрометрические данные расширяют почти вдвое. Для дальнейшего моделирования считаю разумным использовать комбинированные данные, моделирование проводить на 7 уровне MNA дескрипторов.
+
+# Список литературы

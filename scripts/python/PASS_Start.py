@@ -7,6 +7,8 @@ import multiprocessing
 import time
 import glob
 from random import shuffle
+import datetime
+
 
 
 def launch(proc, partition, program):
@@ -23,6 +25,7 @@ if __name__ == '__main__':
         Path to config file
     '''
     start_time = time.time()
+    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     parser = argparse.ArgumentParser()
     parser.add_argument("program", help="Path to config file.")
     parser.add_argument("input", help="Directory for pass input.")
@@ -68,3 +71,7 @@ if __name__ == '__main__':
     # завершат свою работу.
     for p in processes:
         p.join()
+
+    end_time = time.time()
+    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    print("--- %s seconds ---" % (end_time - start_time))

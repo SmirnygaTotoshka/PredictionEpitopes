@@ -1,0 +1,19 @@
+{
+  "model_names":["bind","elution", "combined"],
+  "min_desc_level": 7,
+  "max_desc_level": 9,
+  "activity":"activity",
+  "record_id": "seq",
+
+  "local_work_dir": "/home/stotoshka/Documents/Epitops/experiments",
+  "csv_input": "/home/stotoshka/Documents/Epitops/PredictionEpitopes/data/check_assays_pMHC",
+  "converter_output": "/home/stotoshka/Documents/Epitops/experiments/SDF",
+  "converter_threads": 15,
+  "converter_column": "epitope",
+  "local_configs": "/home/stotoshka/Documents/Epitops/experiments/configs",
+
+  "remote_work_dir": "/run/user/1000/gvfs/smb-share:server=192.168.0.10,share=diplom/check_assays",
+  "remote_data": "sdf",
+  "remote_SAR": "sar",
+  "remote_output": "output"
+}
