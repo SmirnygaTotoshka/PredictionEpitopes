@@ -50,9 +50,8 @@ format:
     grid:
       sidebar-width: 350px
   docx: 
-    reference-doc: "vkr-2022.docx"
+    reference-doc: "diplom_template.docx"
   pdf:
-    documentclass: report
     pdf-engine: xelatex
     header-includes: |
       \usepackage[utf8]{inputenc}
