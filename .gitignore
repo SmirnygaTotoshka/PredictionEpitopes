@@ -8,6 +8,7 @@
 .docx
 .idea
 data/source/*
+data/AA_for_transplantology/*
 data/check_assays_pMHC/*
 scripts/java/PASSExperiments/out
 data/bind_train_dataset/*

@@ -1,0 +1,14 @@
+{
+  "model_names":["combined_positive_I_clean", "combined_positive_I_clean_Fold5",  "combined_total_I_clean_Fold3",
+"combined_positive_I_clean_Fold1" , "combined_positive_II_clean"   ,    "combined_total_I_clean_Fold4",
+"combined_positive_I_clean_Fold2" , "combined_total_I_clean"    ,       "combined_total_I_clean_Fold5",
+"combined_positive_I_clean_Fold3"  ,"combined_total_I_clean_Fold1",     "combined_total_II_clean",
+"combined_positive_I_clean_Fold4" , "combined_total_I_clean_Fold2"],
+  "min_desc_level": 7,
+  "max_desc_level": 7,
+  "local_configs": "/home/stotoshka/Documents/Epitops/experiments/configs",
+  "csv_input": "/home/stotoshka/Documents/Epitops/PredictionEpitopes/data/AA_for_transplantology",
+  "converter_output": "/home/stotoshka/Documents/Epitops/experiments/SDF",
+  "converter_column": "epitope",
+  "converter_threads": 10
+}

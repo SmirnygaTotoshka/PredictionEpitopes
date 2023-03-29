@@ -15,7 +15,7 @@
 #    - аллель должен быть человеческий
 #    - аллель должен быть первого класса МНС
 #    - аллель должен быть записан в формате HLA-<ген>*<аллельная группа>:<белковый продукт>
-
+USE iedb;
 CREATE TABLE filtered_bind
 AS (SELECT reference_id, curated_epitope_id, as_char_value,
 as_location, category, assay_type,units,
