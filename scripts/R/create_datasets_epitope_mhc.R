@@ -4,7 +4,13 @@ library(caret)
 library(stringr)
 set.seed(9)
 iedb.bind = vroom("data/source/epi_mhc_bind_human_total.csv",delim = ";", show_col_types = F) %>% 
-  mutate(as_char_value = if_else(as_char_value == 'Negative', 'Negative', 'Positive'))
+  mutate(as_char_value = if_else(as_char_value == 'Negative', 'Negative', 'Positive')) %>% 
+  filter(grepl("Exact Epitope", e_region_domain_flag,fixed = T)) %>% 
+  filter(!grepl("bad",as_comments,fixed = T)) %>% 
+  filter(!grepl("did not",as_comments,fixed = T)) %>% 
+  filter(!grepl("TAP-deficient",as_comments,fixed = T)) %>% 
+  filter(!grepl("predict",as_comments,fixed = T)) %>% 
+  filter(!grepl("non-immunogenic",as_comments,fixed = T)) 
 
 iedb.elution = vroom("data/source/epi_mhc_elution_human_total.csv",delim = ";",col_types = cols(as_num_value = "d", 
                                                                                                 as_inequality = "c",
@@ -14,7 +20,13 @@ iedb.elution = vroom("data/source/epi_mhc_elution_human_total.csv",delim = ";",c
                                                                                                 as_response_frequency = "i",
                                                                                                 e_ref_start = "i",
                                                                                                 e_ref_end = "i"), show_col_types = F)%>% 
-  mutate(as_char_value = if_else(as_char_value == 'Negative', 'Negative', 'Positive'))
+  mutate(as_char_value = if_else(as_char_value == 'Negative', 'Negative', 'Positive')) %>% 
+  filter(grepl("Exact Epitope", e_region_domain_flag,fixed = T)) %>% 
+  filter(!grepl("bad",as_comments,fixed = T)) %>% 
+  filter(!grepl("did not",as_comments,fixed = T)) %>% 
+  filter(!grepl("TAP deficient",as_comments,fixed = T)) %>% 
+  filter(!grepl("predict",as_comments,fixed = T)) %>% 
+  filter(!grepl("ERAP1 silencing",as_comments,fixed = T)) 
   
 flurry = vroom("data/source/MHCflurry.csv", delim = ",",show_col_types = FALSE)
 flurry.bind = flurry %>% filter(measurement_kind == 'affinity') %>% filter(grepl("HLA", allele)) 
@@ -194,6 +206,8 @@ vroom_write(combined.positive.I.clean %>% select(-all_of(folds)),"data/AA_for_tr
 for (f in folds) {
   vroom_write(combined.total.I.clean %>% filter(get(f)) %>% select(-all_of(folds)),paste0("data/AA_for_transplantology/combined_total_I_clean_",f,".csv"), delim = ";")
   vroom_write(combined.positive.I.clean %>% filter(get(f)) %>% select(-all_of(folds)),paste0("data/AA_for_transplantology/combined_positive_I_clean_",f,".csv"), delim = ";")
+  vroom_write(combined.total.I.clean %>% filter(!get(f)) %>% select(-all_of(folds)),paste0("data/AA_for_transplantology/combined_total_I_clean_test",f,".csv"), delim = ";")
+  vroom_write(combined.positive.I.clean %>% filter(!get(f)) %>% select(-all_of(folds)),paste0("data/AA_for_transplantology/combined_positive_I_clean_test",f,".csv"), delim = ";")
 }
 
 #prepare MHC II datasets
