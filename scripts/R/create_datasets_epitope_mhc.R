@@ -206,8 +206,8 @@ vroom_write(combined.positive.I.clean %>% select(-all_of(folds)),"data/AA_for_tr
 for (f in folds) {
   vroom_write(combined.total.I.clean %>% filter(get(f)) %>% select(-all_of(folds)),paste0("data/AA_for_transplantology/combined_total_I_clean_",f,".csv"), delim = ";")
   vroom_write(combined.positive.I.clean %>% filter(get(f)) %>% select(-all_of(folds)),paste0("data/AA_for_transplantology/combined_positive_I_clean_",f,".csv"), delim = ";")
-  vroom_write(combined.total.I.clean %>% filter(!get(f)) %>% select(-all_of(folds)),paste0("data/AA_for_transplantology/combined_total_I_clean_test",f,".csv"), delim = ";")
-  vroom_write(combined.positive.I.clean %>% filter(!get(f)) %>% select(-all_of(folds)),paste0("data/AA_for_transplantology/combined_positive_I_clean_test",f,".csv"), delim = ";")
+  vroom_write(combined.total.I.clean %>% filter(!get(f)) %>% select(-all_of(folds)),paste0("data/AA_for_transplantology/combined_total_I_clean_test_",f,".csv"), delim = ";")
+  vroom_write(combined.positive.I.clean %>% filter(!get(f)) %>% select(-all_of(folds)),paste0("data/AA_for_transplantology/combined_positive_I_clean_test_",f,".csv"), delim = ";")
 }
 
 #prepare MHC II datasets

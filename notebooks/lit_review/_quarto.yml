@@ -33,7 +33,7 @@ book:
     - references.qmd
 
 bibliography: references.bib
-csl: gost2.csl
+csl: gost-num-appear.csl
 toc: true
 toc-depth: 3
 toc-title: "Оглавление"

@@ -1,0 +1,248 @@
+---
+title: "Сравнение моделей, содержащие только положительные активности, и моделей, содержащие положительные и отрицательные активности. 5-кратная кросс-валидация. Проверка подходов к интеграции моделей."
+author: "Антон Смирнов"
+date: "Apr 01, 2023"
+date-format: "MMM D, YYYY"
+toc: true
+toc-depth: 3
+tbl-cap-location: top
+toc-title: "Оглавление"
+fontsize: 14pt
+engine: knitr
+linestretch: 1.5
+geometry:
+  - top=10mm
+  - left=20mm
+  - right=20mm
+  - heightrounded
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: report
+    pdf-engine: xelatex
+    header-includes: |
+      \usepackage[utf8]{inputenc}
+      \usepackage[american,russian]{babel}
+      \usepackage{hyperref}  
+      \usepackage{unicode-math}
+mainfont: Arial
+monofont: Arial
+sansfont: Arial
+editor: visual
+---
+
+# Описание
+
+В предыдущем эксперименте было замечено, что наличие в модели отрицательных активностей, снижает среднюю точность модели. Для выбора окончательной модели было решено сравнить пятикратной кросс-валидацией модели, содержащие только положительные активности, и модели, содержащие как положительные, так и отрицательные активности. Подготовка данных описана в скрипте *create_datasets_epitope_mhc.R*[^1]. Данные разбивались на выборки случайно в пропорции 80/20 от каждой активности с помощью пакета *caret*. Источники данных - IEDB, MHCflurry 2.0. Данные как исследования аффиности, так и масс-спектрометрии.
+
+[^1]: Осторожно, при повторном запуск скриптов, обратить внимание, что нарушены правила наименования файлов!
+
+# Обработка
+
+## Общее сравнение
+
+```{r}
+#| echo: false
+suppressPackageStartupMessages(library(dplyr)) 
+suppressPackageStartupMessages(library(knitr))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(vroom))
+suppressPackageStartupMessages(library(readxl))
+```
+
+```{r}
+#| echo: false
+
+positive.result = read_excel("../data/cross_val/positive_result_allele/positive_results.xlsx")
+total.result = read_excel("../data/cross_val/total_result_allele/total_results.xlsx")
+```
+
+**Только положительные**
+
+```{r}
+#| echo: false
+
+kable(positive.result %>% group_by(model_name) %>%
+  summarise(num_activity = n(),
+            mean_iap = mean(iap),
+            mean_20_fold = mean(twentyCV)))
+```
+
+**И положительные, и отрицательные**
+
+```{r}
+#| echo: false
+
+kable(total.result %>% group_by(model_name) %>%
+  summarise(num_activity = n(),
+            mean_iap = mean(iap),
+            mean_20_fold = mean(twentyCV)))
+```
+
+**График**
+
+```{r}
+#| echo: false
+
+d1 = positive.result %>% group_by(model_name) %>%
+  summarise(num_activity = n(),
+            mean_iap = mean(iap),
+            mean_20_fold = mean(twentyCV)) %>% 
+  mutate(type = "Pos")
+
+d2 = total.result %>% group_by(model_name) %>%
+  summarise(num_activity = n(),
+            mean_iap = mean(iap),
+            mean_20_fold = mean(twentyCV)) %>% 
+  mutate(type = "Pos+Neg")
+
+d = bind_rows(d1,d2) %>% mutate(model_name = stringr::str_to_lower(model_name))
+
+ggplot(d) + geom_col(aes(x = model_name, y = mean_20_fold, fill = type), position = "dodge")
+```
+
+**Результаты 5-кратной кросс-валидации**
+Только положительные активности
+```{bash}
+#| echo: false
+/home/stotoshka/Soft/anaconda3/envs/research/bin/python /home/stotoshka/Documents/Epitops/PredictionEpitopes/scripts/python/parse5CV.py  /home/stotoshka/Documents/Epitops/PredictionEpitopes/data/cross_val/positive_result_allele /home/stotoshka/Documents/Epitops/PredictionEpitopes/data/positive_metrics_pMHC.csv
+```
+
+И положительные, и отрицательные активности
+```{bash}
+#| echo: false
+/home/stotoshka/Soft/anaconda3/envs/research/bin/python /home/stotoshka/Documents/Epitops/PredictionEpitopes/scripts/python/parse5CV.py  /home/stotoshka/Documents/Epitops/PredictionEpitopes/data/cross_val/total_result_allele /home/stotoshka/Documents/Epitops/PredictionEpitopes/data/total_metrics_pMHC.csv
+```
+
+## Только положительные
+Загрузим данные
+```{r,echo=F}
+positive.metrics = read.csv2("../data/positive_metrics_pMHC.csv",dec = ".")
+ggplot(positive.metrics) + geom_density(aes(x = AUROC))
+```
+
+```{r,echo=F}
+print(paste("Activities with AUROC < 0.7 =",nrow(positive.metrics[positive.metrics$AUROC < 0.7,])))
+print(paste(positive.metrics[positive.metrics$AUROC < 0.7,"Activity"], collapse = " "))
+```
+
+Средний AUC с отфильтрованными активностями
+```{r,echo=F}
+positive.metrics %>% filter(AUROC >= 0.7) %>% summarise(mean_AUC = round(mean(AUROC),4))
+```
+
+10 наилучших активностей
+
+```{r,echo=F}
+top10 = positive.metrics %>% slice_max(AUROC, n = 10) %>% arrange(desc(AUROC))
+additional = positive.result %>% filter(activity %in% top10$Activity) %>% group_by(activity) %>% summarise(num_subst = max(num_subst),mean_iap = mean(iap, na.rm = T), mean_twentyCV = mean(twentyCV, na.rm = T))
+top10 = inner_join(top10, additional, by = c("Activity"="activity")) %>% mutate_if(is.numeric, round, 4)
+kable(top10)
+```
+
+Топ-10 наихудших активностей
+
+```{r,echo=F}
+less10 = positive.metrics %>% filter(AUROC >= 0.7) %>%  slice_min(AUROC, n = 10) %>% arrange(desc(AUROC))
+additional = positive.result %>% filter(activity %in% less10$Activity) %>% group_by(activity) %>% summarise(num_subst = max(num_subst),mean_iap = mean(iap, na.rm = T), mean_twentyCV = mean(twentyCV, na.rm = T))
+less10 = inner_join(less10, additional, by = c("Activity"="activity")) %>% mutate_if(is.numeric, round, 4)
+kable(less10)
+```
+
+## И положительные, и отрицательные
+Загрузим данные
+```{r,echo=F}
+total.metrics = read.csv2("../data/total_metrics_pMHC.csv",dec = ".")
+
+ggplot(total.metrics) + geom_density(aes(x = AUROC))
+```
+
+```{r,echo=F}
+print(paste("Activities with AUROC < 0.7 =",nrow(total.metrics[total.metrics$AUROC < 0.7,])))
+print(paste(total.metrics[total.metrics$AUROC < 0.7,"Activity"], collapse = " "))
+```
+
+Средний AUC с отфильтрованными активностями
+```{r,echo=F}
+total.metrics %>% filter(AUROC >= 0.7) %>% summarise(mean_AUC = round(mean(AUROC),4))
+```
+
+10 наилучших активностей
+
+```{r,echo=F}
+top10 = total.metrics %>% slice_max(AUROC, n = 10) %>% arrange(desc(AUROC))
+additional = total.result %>% filter(activity %in% top10$Activity) %>% group_by(activity) %>% summarise(num_subst = max(num_subst),mean_iap = mean(iap, na.rm = T), mean_twentyCV = mean(twentyCV, na.rm = T))
+top10 = inner_join(top10, additional, by = c("Activity"="activity")) %>% mutate_if(is.numeric, round, 4)
+kable(top10)
+```
+
+Топ-10 наихудших активностей
+
+```{r,echo=F}
+less10 = positive.metrics %>% filter(AUROC >= 0.7) %>%  slice_min(AUROC, n = 10) %>% arrange(desc(AUROC))
+additional = positive.result %>% filter(activity %in% less10$Activity) %>% group_by(activity) %>% summarise(num_subst = max(num_subst),mean_iap = mean(iap, na.rm = T), mean_twentyCV = mean(twentyCV, na.rm = T))
+less10 = inner_join(less10, additional, by = c("Activity"="activity")) %>% mutate_if(is.numeric, round, 4)
+kable(less10)
+```
+
+
+# Проверка подходов интеграции оценок
+
+```{python}
+#|warning: false
+#|error: false
+
+import pandas as pd
+import os
+from sklearn import metrics
+from glob import glob
+import numpy as np
+
+WORKDIR = "/home/stotoshka/Documents/Epitops/PredictionEpitopes/data/cross_val/total_result_allele"
+folds = glob(os.path.join(WORKDIR, "*.CSV"))
+union = pd.DataFrame()
+for f in folds:
+    tbl = pd.read_csv(f, sep=";", header=4,decimal=",")
+    union = pd.concat([union, tbl])
+union = union.drop(columns=["Substructure Descriptors","New Descriptors","Possible Activities at Pa > Pi"])
+union = union.rename(columns = {"<activity>":"activity"})   
+activities = union.columns[1:]
+prediction = union.query("activity in @activities")
+negative_activities = sorted([a for a in activities  if "!" in a])
+positive_activities = sorted([a for a in activities  if "!" not in a and "!"+a in negative_activities])
+total_train_data = pd.read_excel("/home/stotoshka/Documents/Epitops/PredictionEpitopes/data/cross_val/total_result_allele/total_results.xlsx").query('activity in @positive_activities or activity in @negative_activities').groupby("activity")["iap","twentyCV"].aggregate('mean').T
+
+result = pd.DataFrame(columns=["Activity","AUROC", "Average precision"])
+for i, (pos, neg) in enumerate(zip(positive_activities,negative_activities)):
+	pred = np.where((prediction.loc[prediction[pos].notnull() & prediction[neg].notnull(),pos] > 0) | (prediction.loc[prediction[pos].notnull() & prediction[neg].notnull(),neg] < 0), (prediction.loc[prediction[pos].notnull() & prediction[neg].notnull(),pos]+prediction.loc[prediction[pos].notnull() & prediction[neg].notnull(),neg]) / 2, 0)
+	true = np.where(prediction.loc[prediction[pos].notnull() & prediction[neg].notnull(),"activity"] == pos, 1, 0)
+	roc_auc = metrics.roc_auc_score(true, pred)
+	pr_auc = metrics.average_precision_score(true, pred)
+	result.loc[i] = [pos + "/" +neg, roc_auc, pr_auc]
+
+result1 = pd.DataFrame(columns=["Activity","AUROC", "Average precision"])
+for i, (pos, neg) in enumerate(zip(positive_activities,negative_activities)):
+	pred = np.where((prediction.loc[prediction[pos].notnull() & prediction[neg].notnull(),pos] > 0) | (prediction.loc[prediction[pos].notnull() & prediction[neg].notnull(),neg] < 0), (total_train_data.loc["twentyCV", pos] * prediction.loc[prediction[pos].notnull() & prediction[neg].notnull(),pos] + total_train_data.loc["twentyCV", neg] * prediction.loc[prediction[pos].notnull() & prediction[neg].notnull(),neg]), 0)
+	true = np.where(prediction.loc[prediction[pos].notnull() & prediction[neg].notnull(),"activity"] == pos, 1, 0)
+	roc_auc = metrics.roc_auc_score(true, pred)
+	pr_auc = metrics.average_precision_score(true, pred)
+	result1.loc[i] = [pos + "/" +neg, roc_auc, pr_auc]
+```
+
+Area under ROC
+```{python, echo = F}
+print("Усреднение " + str(round(result["AUROC"].mean(),4)))
+print("Взвешенное по 20CV " + str(round(result1["AUROC"].mean(),4)))
+```
+
+Area under Precision-Recall curve
+```{python, echo = F}
+print("Усреднение " + str(round(result["Average precision"].mean(),4)))
+print("Взвешенное по 20CV " + str(round(result1["Average precision"].mean(),4)))
+```
+
+# Выводы
+1. Модели с использованием только положительных активностей дают большую точность по результатам 5-кратной, 20-кратной и leave-one-out кросс-валидации.
+2. Модели имеют хороший AUROC, но крайне низкий AUC-PR.
+3. Взвешивание по 20-кратной кросс-валидации дает большую точность прогноза, чем простое усреднение.
