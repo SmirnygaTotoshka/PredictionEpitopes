@@ -6,10 +6,10 @@ book:
   author: "Смирнов Антон Сергеевич"
   date: today
   date-format: "MMM D, YYYY"
+  
   chapters:
-    - index.qmd
     - abbreviatures.qmd
-    - intro.qmd
+    - index.qmd
     - part: "Обзор литературы"
       chapters:
         - mhc.qmd

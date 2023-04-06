@@ -16,12 +16,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="Path to directory with prediction in csv format. You shouldn`t manually edit the files! Only prediction result should be in the csv format(sep=';') in the input.")
     parser.add_argument("output", help="Path to output table.")
+    parser.add_argument("-v", help="Verbose. Print metrics.", action="store_true")
 
 
     args = parser.parse_args()
 
     input = args.input
     output = args.output
+    verbose = args.v
 
     folds = glob(os.path.join(input, "*.CSV"))
 
@@ -44,6 +46,8 @@ if __name__ == '__main__':
         try:
             roc_auc = metrics.roc_auc_score(true, pred)
             pr_auc = metrics.average_precision_score(true, pred)
+            if verbose:
+                print(f"{a}\t{roc_auc}\t{pr_auc}")
             result.loc[i] = [a, roc_auc, pr_auc]
         except ValueError as ve:
             print(f"{a} {ve}")

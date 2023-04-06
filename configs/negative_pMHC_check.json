@@ -1,0 +1,12 @@
+{
+  "model_names":[ "negative_fold1",  "negative_fold2",
+"negative_fold3",    "negative_fold4",
+"negative_fold5"],
+  "min_desc_level": 7,
+  "max_desc_level": 7,
+  "local_configs": "/home/stotoshka/Documents/Epitops/experiments/configs",
+  "csv_input": "/home/stotoshka/Documents/Epitops/PredictionEpitopes/data/cross_val/cross_val_negative",
+  "converter_output": "/home/stotoshka/Documents/Epitops/experiments/SDF",
+  "converter_column": "epitope",
+  "converter_threads": 10
+}
