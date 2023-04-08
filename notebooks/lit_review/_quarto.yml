@@ -8,8 +8,8 @@ book:
   date-format: "MMM D, YYYY"
   
   chapters:
-    - abbreviatures.qmd
     - index.qmd
+    - intro.qmd
     - part: "Обзор литературы"
       chapters:
         - mhc.qmd
@@ -49,8 +49,9 @@ format:
     theme: cosmo
     grid:
       sidebar-width: 350px
-  docx: 
-    reference-doc: "diplom_template.docx"
+  docx:
+    toc: true
+    reference-doc: diplom-style.docx
   pdf:
     pdf-engine: xelatex
     header-includes: |
@@ -58,8 +59,8 @@ format:
       \usepackage[american,russian]{babel}
       \usepackage{hyperref}  
       \usepackage{unicode-math}
-mainfont: Arial
-monofont: Arial
-sansfont: Arial
+mainfont: Times New Roman
+monofont: Times New Roman
+sansfont: Times New Roman
 editor: visual
 
