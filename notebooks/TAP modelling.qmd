@@ -1,0 +1,200 @@
+---
+title: "Предсказание связывания пептидов с ТАР транспортером."
+author: "Антон Смирнов"
+date: "Apr 12, 2023"
+date-format: "MMM D, YYYY"
+toc: true
+toc-depth: 3
+tbl-cap-location: top
+toc-title: "Оглавление"
+fontsize: 12pt
+engine: knitr
+linestretch: 1.5
+geometry:
+  - top=10mm
+  - left=20mm
+  - right=20mm
+  - heightrounded
+format:
+  html: 
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+    pdf-engine: xelatex
+    header-includes: |
+      \usepackage[utf8]{inputenc}
+      \usepackage[american,russian]{babel}
+      \usepackage{hyperref}  
+      \usepackage{unicode-math}
+mainfont: Arial
+monofont: Arial
+sansfont: Arial
+editor: visual
+bibliography: references.bib
+---
+
+# Введение
+
+ТАР1/2 - важное звено в процессинге антигенов для МНС I. Он транспортирует пептиды из цитоплазмы в полость эндоплазматической сети. Экспериментальных данных по связыванию пептидов с этим транспортером крайне мало. Методика определения аффиности своеобразная. Определяют IC~50~ в эксперименте с микросомами относительно некоторого меченого ^125^I пептида. Чаще всего в публикациях используется RRYNASTEL, по методике описанной в работе Ван Эндерта[@vanendert1994].
+
+# Материалы
+
+Было найдено два датасета.
+
+1.  База данных MHC BN[@lata2009]
+2.  Данные, использованные при обучении TAPREG[@diez-rivero2010]
+    -   Два экспериментальных датасета[@daniel1998; @toseland2005]
+
+    -   Сгенерированные с помощью "Gibbs sampler with an exhaustive method and maximum blosum 62 relatedness scores of 25, 30, 35, and 37."[@neuwald1995]
+
+Фильтрация данных
+
+```{r,eval=F}
+library(dplyr)
+library(vroom)
+library(stringr)
+library(readxl)
+library(caret)
+library(ggplot2)
+#MHC BN
+mhcbn = vroom("data/source/TAP/MHCBN_2023-02-16.tsv", delim = "\t") %>% 
+  select(-1) %>% 
+  filter(`MHC Allele` == "TAP") %>% 
+  filter(`Host Organism` == "HUMAN") %>% 
+  filter(!is.na(Comment)) %>% 
+  mutate(dup_check = paste(`Peptide Sequence`, Comment)) %>% 
+  filter(!duplicated(dup_check)) %>% 
+  filter(grepl("Relative", Comment)) %>% 
+  filter(!grepl("approx", Comment)) %>% 
+  filter(grepl("nM|uM",Comment,ignore.case = T)) %>% 
+  mutate(unit = str_extract(Comment,"\\(([^)]+)\\)",group = T), 
+         value = if_else(grepl("u",unit), 
+                         sapply(str_split(Comment,"="),function(x){as.double(x[2])}) * 1000,
+                         sapply(str_split(Comment,"="),function(x){as.double(x[2])}))) %>% 
+  filter(!is.na(value)) %>% 
+  mutate(log_IC50_rel = log10(value)) %>% 
+  select(all_of(c("Peptide Sequence", "log_IC50_rel"))) %>% 
+  rename("PEPTIDE" = "Peptide Sequence")
+#activity = if_else(pIC50 < (9 - log10(800)), 0, 1)
+table(mhcbn$activity)
+#TAPREG supplementary
+# 1 - 10.4049/jimmunol.161.2.617 + 10.1186/1745-7580-1-4
+# 2 - 5 613-peptide dataset using the purge utility of the Gibbs Sampler (10.1002/pro.556004082) 
+# with an exhaustive method and maximum blosum 62 relatedness scores of 25, 30, 35, and 37.
+# 6 - 723 unique 9-mer CD8 T cell epitopes obtained from the IMMUNEEPITOPE and EPIMHC databases
+# 7- tapreg parameters
+
+#let tapreg log(IC50_relative) as is pIC50_relative in mhc bn 
+first = read_excel("data/source/TAP/TAPREG/prot_22535_sm_supptable1.xls") %>% 
+  rename("log_IC50_rel" = "log(IC50_relative)")
+
+second = read_excel("data/source/TAP/TAPREG/prot_22535_sm_supptable2.xls") %>% 
+  rename("log_IC50_rel" = "log(IC50_relative)")
+
+third = read_excel("data/source/TAP/TAPREG/prot_22535_sm_supptable3.xls") %>% 
+  rename("log_IC50_rel" = "log(IC50_relative)")
+
+fourth = read_excel("data/source/TAP/TAPREG/prot_22535_sm_supptable4.xls") %>% 
+  rename("log_IC50_rel" = "log(IC50_relative)")
+
+fifth = read_excel("data/source/TAP/TAPREG/prot_22535_sm_supptable5.xls") %>% 
+  rename("log_IC50_rel" = "log(IC50_relative)")
+
+total = bind_rows(mhcbn, first,second,third,fourth,fifth) %>% 
+  group_by(PEPTIDE) %>% 
+  summarise(median_log10_IC50_rel = median(log_IC50_rel)) %>% 
+  mutate(activity = if_else(median_log10_IC50_rel <= (log10(800)), 0, 1))
+```
+
+Порог в 800 нМ был взять по данным из аналогичных сервисов: там прогнозируют результат по ранговой шкале, где 0 баллов для IC50\>1000 нМ, 10 баллов IC50\<0,03 нМ[@daniel]. Пептиды с баллами 0-2 считаются неактивными[@zhang2006]. В итоге обучающая выборка состояла из 683 пептидов: 388 неактивных и 295 активных. Модель строилась с помощью программы PASS на MNA дескрипторах.
+
+# Результаты
+
+Оптимальный уровень для моделирования - 5.
+
+```{r}
+#| echo: false
+#| warning: false
+library(ggplot2)
+library(readxl)
+result = read_excel("../data/TAP/results.xlsx")
+ggplot(result) + 
+  geom_point(aes(x = descriptor_level, y = twentyCV, color = activity))+ 
+  geom_line(aes(x = descriptor_level, y = twentyCV, color = activity))+
+  scale_x_discrete(limits = result$descriptor_level)+
+  labs(x = "MNA level",
+       y = "AUC20CV", 
+       title = "TAP") + 
+  guides(color=guide_legend(title="Model type"))
+
+```
+
+Была проведена 5-кратная кросс-валидация.
+
+```{python, error = F}
+import pandas as pd
+import os
+from sklearn import metrics
+from glob import glob
+import numpy as np
+folds = glob(os.path.join("/media/stotoshka/STotoshka/cross_val", "*.CSV"))
+#print(folds)
+
+union = pd.DataFrame()
+#print("Parse results")
+for f in folds:
+	tbl = pd.read_csv(f, sep=";", header=4, decimal=",")
+	union = pd.concat([union, tbl])
+#print(f"Folds union {union.shape}")
+
+union = union.drop(columns=["Substructure Descriptors", "New Descriptors", "Possible Activities at Pa > Pi"])
+union = union.rename(columns={union.columns[0]: "activity"})
+activities = union.columns[1:]
+prediction = union.copy(deep = True)
+result = pd.DataFrame(columns=["AUROC", "Average precision", "Precision", "Accuracy", "BA", "Recall", "F1", "Sens","Spec"])
+#print("a\troc_auc\tpr_auc\tprecision\taccuracy\tba\trecall\tf1\tsensitivity\tspecifity")
+#print("a\ttp\ttn\tfp\tfn")
+pred = np.where(prediction.loc[prediction["1"].notnull(), "1"] <= 0, 0, 1)
+true = prediction.loc[prediction["1"].notnull(), "activity"]
+try:
+	roc_auc = round(metrics.roc_auc_score(true, pred),4)
+	pr_auc = round(metrics.average_precision_score(true, pred),4)
+	precision = round(metrics.precision_score(true,pred),4)
+	accuracy = round(metrics.accuracy_score(true, pred),4)
+	ba = round(metrics.balanced_accuracy_score(true, pred),4)
+	recall = round(metrics.recall_score(true, pred),4)
+	f1 = round(metrics.f1_score(true, pred),4)
+	tn, fp, fn, tp = metrics.confusion_matrix(true, pred).ravel()
+	sensitivity = round(tp / (tp + fn),4)
+	specifity = round(tn / (tn + fp),4)
+		#print(f"{a}\t{roc_auc}\t{pr_auc}\t{precision}\t{accuracy}\t{ba}\t{recall}\t{f1}\t{sensitivity}\t{specifity}")
+		#print(f"{a}\t{tp}\t{tn}\t{fp}\t{fn}")
+	result.loc[0] = [roc_auc, pr_auc,precision,accuracy,ba,recall,f1,sensitivity,specifity]
+except ValueError as ve:
+	print(f"{a} {ve}")
+```
+
+```{r}
+#| echo : false
+#| warning : false
+library(knitr)
+library(reticulate)
+kable(py$result)
+```
+
+Без жесткого порога AUROC и AUC-PR будут несколько выше.
+
+```{python}
+pred = np.where(prediction.loc[prediction["1"].notnull(), "1"] <= 0, 0, prediction.loc[prediction["1"].notnull(), "1"])
+true = prediction.loc[prediction["1"].notnull(), "activity"]
+curve = metrics.roc_curve(true,pred)
+#plt.plot(curve)
+print(f"AUC ROC = {metrics.roc_auc_score(true,pred)}")
+print(f"AUC PRC = {metrics.average_precision_score(true,pred)}")
+```
+
+# Выводы
+
+Модели получились удолетворительного качества. Необходимо сравнить с аналогами. Существует недостаток экспериментальных данных. В дальнейшем возможно необходимо задавать малый вес выходу модели для принятия решения
+
+# Список литературы

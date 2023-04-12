@@ -1,0 +1,12 @@
+{
+  "model_names":[ "TAP_train_1",  "TAP_train_2",
+"TAP_train_3",    "TAP_train_4",
+"TAP_train_5","TAP_test_1","TAP_test_2","TAP_test_3","TAP_test_4","TAP_test_5"],
+  "min_desc_level": 7,
+  "max_desc_level": 7,
+  "local_configs": "/home/stotoshka/Documents/Epitops/experiments/TAP/configs",
+  "csv_input": "/home/stotoshka/Documents/Epitops/PredictionEpitopes/data/TAP",
+  "converter_output": "/home/stotoshka/Documents/Epitops/experiments/TAP/SDF",
+  "converter_column": "PEPTIDE",
+  "converter_threads": 10
+}
